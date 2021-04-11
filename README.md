@@ -54,7 +54,7 @@ All required OS and other for lavalink server available [here](https://github.co
 - spotify
 - deezer
 <br>  
-  **Note:**
+  **Note:**  
     - `*` is depend on your lavalink's configuration
 
 ## Configuration & Starting the bot:
