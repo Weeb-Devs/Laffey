@@ -215,5 +215,5 @@ All required OS and other for lavalink server available [here](https://github.co
 
 ## Description & About
 Created at: Friday, 2 April 2021  
-Published at: Wednesday, 14 April 2021  
+Published at: Sunday, 11 April 2021  
   [Laffey](https://github.com/Weeb-Devs/Laffey) is [Weeb-Devs](https://github.com/Weeb-Devs)'s first project. Was created by our first member aka owner, Takiyo. He really wants to make his first open source project ever. Because he wants more for coding experience. In this project, he was challenged to make project with less bugs. Hope you enjoy using Laffey!
