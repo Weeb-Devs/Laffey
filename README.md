@@ -58,7 +58,7 @@ All required OS and other for lavalink server available [here](https://github.co
     - `*` is depend on your lavalink's configuration
 
 ## Configuration & Starting the bot:
-1. First, change `config.json.txt` file's name into `config.json`, and fill it
+1. First, change `config.json.example` file's name into `config.json`, and fill it
 ```json
 {
     "TOKEN": "YOUR TOKEN",
