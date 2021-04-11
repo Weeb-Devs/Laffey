@@ -1,0 +1,24 @@
+{
+    "TOKEN": "",
+    "PREFIX": "?",
+    "OWNERS": [
+        ""
+    ],
+    "MONGODB_URI": "",
+    "SPOTIFY_CLIENT_ID": "",
+    "SPOTIFY_CLIENT_SECRET": "",
+    "KSOFT_API_KEY": "",
+    "NODES": [
+        {
+            "HOST": "",
+            "PASSWORD": "",
+            "PORT": ,
+            "IDENTIFIER": "",
+            "RETRY_AMOUNT": 3,
+            "RETRY_DELAY": 1000,
+            "SECURE": false
+        }
+    ],
+    "DEBUG": true,
+    "LOG_USAGE": false
+}
