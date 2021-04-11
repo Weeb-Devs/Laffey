@@ -8,7 +8,7 @@
     "abort-controller": "^3.0.0",
     "asynckit": "^0.4.0",
     "aws4": "^1.11.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "chalk": "^4.1.0",
     "combined-stream": "^1.0.8",
     "delayed-stream": "^1.0.0",
