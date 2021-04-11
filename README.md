@@ -14,11 +14,11 @@
 ✓ and of course, adorable shipgirl  
 
 ## Current version:
-- 0.1.0 (latest) [Release](https://www.google.com) | [Change Log](https://www.google.com) 
+- 0.1.0 (latest) [Release](https://www.google.com) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.0.md) 
 
 ## Requirements:
 ### Lavalink server
-You need dev lavalink version to use our filters. You can get it by clicking [Here](https://ci.fredboat.com/viewLog.html?buildId=8767&buildTypeId=Lavalink_Build&tab=artifacts&branch_Lavalink=refs%2Fheads%2Fdev) and then, click on `Lavalink.jar` files [How to setup]()  
+You need dev lavalink version to use our filters. You can get it by clicking [Here](https://ci.fredboat.com/viewLog.html?buildId=8767&buildTypeId=Lavalink_Build&tab=artifacts&branch_Lavalink=refs%2Fheads%2Fdev) and then, click on `Lavalink.jar` files [How to setup](https://github.com/Weeb-Devs/Laffey/blob/main/readme/LAVALINK_INSTALLATION.md)  
 All required OS and other for lavalink server available [here](https://github.com/Frederikam/Lavalink#requirements)
 
 ### Server for the bot to run
@@ -26,7 +26,7 @@ All required OS and other for lavalink server available [here](https://github.co
 - discordjs v12.x.x or higher
 
 ### Data
-- Discord bot's token `You should know why you need this or you won't go to this repo` [Get or create bot here](https://discord.com/developers/applications) | [How to get token]()
+- Discord bot's token `You should know why you need this or you won't go to this repo` [Get or create bot here](https://discord.com/developers/applications) | [How to get token](https://github.com/Weeb-Devs/Laffey/blob/main/readme/CREATE_FIRST_BOT.md)
 - Mongodb URI `for prefix feature. It won't work if you enter invalid or no URI` [MongoDB](https://account.mongodb.com/account/login)
 - Your ID `for eval command. It's dangerous if eval accessible to everyone`
 - Spotify client ID `for spotify support` [Click here to get](https://developer.spotify.com/dashboard/login)
