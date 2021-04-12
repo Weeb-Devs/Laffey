@@ -55,15 +55,6 @@ class Laffey extends Client {
         })
 
         this.on('voiceStateUpdate', (oldC, newC) => {
-            if (oldC.id != this.user.id) return;
-            if (oldC.channelID && !newC.channelID) {
-                if (this.player.players.get(oldC.guild.id)) {
-                    this.player.destroy(oldC.guild.id)
-                }
-            }
-        })
-
-        this.on('voiceStateUpdate', (oldC, newC) => {
             if (oldC.id == this.user.id) return;
             if (this.player.players.get(newC.guild.id) && oldC.channelID && !newC.channelID) {
                 if (this.channels.cache.get(this.player.players.get(newC.guild.id).voiceChannel).members.filter(x => !x.user.bot).size == 0) {
