@@ -14,7 +14,8 @@
 ✓ and of course, adorable shipgirl  
 
 ## Current version:
-- 0.1.0 (latest) [Release](https://www.google.com) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.0.md) 
+- 0.1.1 (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.1) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.1.md) 
+- 0.1.0 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.0) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.0.md) 
 
 ## Requirements:
 ### Lavalink server
@@ -148,7 +149,7 @@ All required OS and other for lavalink server available [here](https://github.co
       -example: `?join`  
 
   - leave `Leave a voice channel`  
-      -aliases: -    
+      -aliases: stop    
       -example: `?leave`  
 
   - shuffle `Shuffle queue`  
