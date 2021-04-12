@@ -2,6 +2,7 @@ const handler = require('../../handlers/message.ts');
 
 module.exports = {
     name: 'leave',
+    aliases: ['stop'],
     description: 'Leave voice channel',
     usage: 'leave',
     async execute(message, args, client) {

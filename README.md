@@ -149,7 +149,7 @@ All required OS and other for lavalink server available [here](https://github.co
       -example: `?join`  
 
   - leave `Leave a voice channel`  
-      -aliases: -    
+      -aliases: stop    
       -example: `?leave`  
 
   - shuffle `Shuffle queue`  
