@@ -38,7 +38,7 @@ class lavalink extends Manager {
             console.log(chalk.yellowBright(`[LAVALINK] => [STATUS] ${node.options.identifier} is now reconnecting...`))
         })
         this.on('socketClosed', (player, payload) => {
-            console.log(payload)
+            if (payload.reason == 'Disconnected.' && payload.byRemote && payload.code == 4014) return player.destroy()
             if (!payload.byRemote) {
                 setTimeout(() => {
                     if (player.playing) {
@@ -108,7 +108,7 @@ class lavalink extends Manager {
             if (player.get('nowplaying')) { clearInterval(player.get('nowplaying')); player.get('nowplayingMSG').delete().catch(() => { }) }
             setTimeout(() => {
                 const e = client.player.players.get(player.guild)
-                if (e) {
+                if (e && !e.queue.current) {
                     e.destroy()
                     var leftEmbed = new MessageEmbed()
                         .setAuthor("End")
