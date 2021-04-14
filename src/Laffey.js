@@ -46,9 +46,18 @@ class Laffey extends Client {
         // Events start here //
 
         this.on('ready', async () => {
-            this.user.setActivity(`${PREFIX}help | Currently in ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'}`)
             this.player = new lavalink(this)
             this.player.init(this.user.id)
+            this.user.setActivity(`${PREFIX}help | Currently in ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.3`)
+            setInterval(() => {
+                let statusList = [
+                    `${PREFIX}help | ${this.guilds.cache.size}guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.3`,
+                    `${PREFIX}help | ${this.users.cache.size}user${this.users.cache.size <= 1 ? '' : 's'} | 0.1.3`,
+                    `${PREFIX}help | ${this.player?.players.size}player${this.player?.players.size <= 1 ? '' : 's'} | 0.1.3`,
+                ]
+                let choosenStatus = statusList[Math.round(Math.random() * statusList.length)]
+                this.user.setActivity(choosenStatus, { type: 3 })
+            }, 40 * 1000);
             console.log(chalk.green(`[CLIENT] => [READY] ${this.user.tag} is now ready!`))
             await Util.delayFor(800)
             this.on('raw', (d) => this.player.updateVoiceState(d))
