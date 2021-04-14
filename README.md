@@ -184,6 +184,14 @@ All required OS and other for lavalink server available [here](https://github.co
       -aliases: pr    
       -example: `?previous`  
 
+  - resume `Resume the player`  
+      -aliases: r    
+      -example: `?resume`  
+
+  - pause `Pause the player`  
+      -aliases: -    
+      -example: `?pause`  
+
 - config
   - prefix `get, set, or reset prefix on guild`  
       -aliases: -    
@@ -209,6 +217,10 @@ All required OS and other for lavalink server available [here](https://github.co
   - stats `Give bot's stats`  
       -aliases: -    
       -example: `?stats adv` 
+
+  - node `Give lavalink's stats`  
+      -aliases: -    
+      -example: `?node` 
 
   - invite `Invite your bot to another guild`  
       -aliases: -    
