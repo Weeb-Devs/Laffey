@@ -35,6 +35,7 @@ class Laffey extends Client {
         // Start making base data on client //
         this.prefixes = new Map();
         this.commands = new Collection();
+        this.voiceTimeout = new Collection();
         this.logger = new loggerHandler();
         this.owners = OWNERS;
         this.defaultPrefix = PREFIX;
@@ -51,9 +52,9 @@ class Laffey extends Client {
             this.user.setActivity(`${PREFIX}help | Currently in ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.3`)
             setInterval(() => {
                 let statusList = [
-                    `${PREFIX}help | ${this.guilds.cache.size}guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.3`,
-                    `${PREFIX}help | ${this.users.cache.size}user${this.users.cache.size <= 1 ? '' : 's'} | 0.1.3`,
-                    `${PREFIX}help | ${this.player?.players.size}player${this.player?.players.size <= 1 ? '' : 's'} | 0.1.3`,
+                    `${PREFIX}help | ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.3`,
+                    `${PREFIX}help | ${this.users.cache.size} user${this.users.cache.size <= 1 ? '' : 's'} | 0.1.3`,
+                    `${PREFIX}help | ${this.player?.players.size} player${this.player?.players.size <= 1 ? '' : 's'} | 0.1.3`,
                 ]
                 let choosenStatus = statusList[Math.round(Math.random() * statusList.length)]
                 this.user.setActivity(choosenStatus, { type: 3 })
@@ -67,7 +68,8 @@ class Laffey extends Client {
             if (oldC.id == this.user.id) return;
             if (this.player.players.get(newC.guild.id) && oldC.channelID && !newC.channelID) {
                 if (this.channels.cache.get(this.player.players.get(newC.guild.id).voiceChannel).members.filter(x => !x.user.bot).size == 0) {
-                    setTimeout(() => {
+                    if (this.voiceTimeout.get(newC.guild.id)) clearTimeout(this.voiceTimeout.get(newC.guild.id))
+                    const timeout = setTimeout(() => {
                         if (this.player.players.get(newC.guild.id) && this.channels.cache.get(this.player.players.get(newC.guild.id).voiceChannel).members.filter(x => !x.user.bot).size == 0) {
                             const leftEmbed = new MessageEmbed()
                                 .setDescription('Destroying player and leaving voice channel due to inactivity')
@@ -75,7 +77,9 @@ class Laffey extends Client {
                             this.channels.cache.get(this.player.players.get(newC.guild.id).textChannel)?.send(leftEmbed)
                             this.player.players.get(newC.guild.id).destroy()
                         }
+                        clearTimeout(this.voiceTimeout.get(newC.guild.id))
                     }, 120000);
+                    this.voiceTimeout.set(newC.guild.id, { timeout })
                 }
             }
         })
@@ -98,7 +102,7 @@ class Laffey extends Client {
                 .setDescription(`My prefix in \`${message.guild.name}\` is ${this.prefixes.get(message.guild.id) ? this.prefixes.get(message.guild.id).prefix : PREFIX}`)
                 .setColor('#f50ae5')
             if (message.content == `<@!${this.user.id}>` || message.content == `<@${this.user.id}>`) {
-                if (!message.guild.me.permissions.has('SEND_MESSAGES')) return message.author.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
+                if (!message.channel.permissionsFor(this.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
                 return message.channel.send(intro)
             }
 
@@ -125,7 +129,7 @@ class Laffey extends Client {
                 command = this.commands.get(commandName) || this.commands.find(x => x.aliases && x.aliases.includes(commandName));
             }
             if (!command) return;
-            if (!message.guild.me.permissions.has('SEND_MESSAGES')) return message.author.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
+            if (!message.channel.permissionsFor(this.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
 
             try {
                 if (LOG_USAGE) {
