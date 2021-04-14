@@ -24,6 +24,7 @@ module.exports = {
         }
         player = client.player.players.get(message.guild.id);
         let search = args.join(' ');
+        if (player.get('rateLimitStatus').status == true) return message.channel.send(new handler().normalEmbed(`Our node (${client.player.players.get(message.guild.id).node?.options?.identifier}) is currently being rate limited. Please try again later`))
         let res = await player.search(search, message.author)
         if (res.loadType == 'LOAD_FAILED') {
             if (!player.queue.current) player.destroy();
