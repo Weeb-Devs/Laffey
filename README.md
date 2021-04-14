@@ -165,6 +165,10 @@ All required OS and other for lavalink server available [here](https://github.co
       -aliases: bb    
       -example: `?bassboost [reset | 1 - 2000]`  
 
+  - 24h `whether the bot to leave vc when there's no user or not`  
+      -aliases: -    
+      -example: `?24h`  
+
   - vaporwave `Set vaporwave filter for the player`  
       -aliases: -    
       -example: `?vaporwave`  
