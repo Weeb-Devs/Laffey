@@ -16,7 +16,7 @@ module.exports = {
             player.setVolume(parseInt(args[0]))
             return message.channel.send(new handler().normalEmbed('Set the volume to **' + args[0] + '%**'))
         } catch (err) {
-            Handler.sendError(message, `Oops, there was an error! ` + err)
+            message.channel.send(new handler().normalEmbed(`Oops, there was an error! ` + err))
         }
     }
 };
