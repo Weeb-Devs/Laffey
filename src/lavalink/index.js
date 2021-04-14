@@ -67,6 +67,7 @@ class lavalink extends Manager {
         })
         this.on('playerCreate', (player) => {
             player.set('rateLimitStatus', { status: false })
+            player.set('24h', { status: false })
         })
         this.on('trackStart', (player, track) => {
             if (player.get('rateLimitStatus').status == true) return;
