@@ -64,8 +64,10 @@ class Laffey extends Client {
             this.on('raw', (d) => this.player.updateVoiceState(d))
         })
 
-        this.on('voiceStateUpdate', (oldC, newC) => {
+        this.on('voiceStateUpdate', async (oldC, newC) => {
             if (oldC.id == this.user.id) return;
+            const target = await this.users.fetch(oldC.id)
+            if(target.bot) return;
             if (this.player.players.get(newC.guild.id) && oldC.channelID && !newC.channelID) {
                 if(this.player.players.get(newC.guild.id).get('24h').status == true) return console.log('enabled');
                 if (this.channels.cache.get(this.player.players.get(newC.guild.id).voiceChannel).members.filter(x => !x.user.bot).size == 0) {
