@@ -88,7 +88,10 @@ class Laffey extends Client {
                 .setAuthor('Laffey', 'https://i.imgur.com/oAmrqHD.png')
                 .setDescription(`My prefix in \`${message.guild.name}\` is ${this.prefixes.get(message.guild.id) ? this.prefixes.get(message.guild.id).prefix : PREFIX}`)
                 .setColor('#f50ae5')
-            if (message.content == `<@!${this.user.id}>` || message.content == `<@${this.user.id}>`) return message.channel.send(intro)
+            if (message.content == `<@!${this.user.id}>` || message.content == `<@${this.user.id}>`) {
+                if (!message.guild.me.permissions.has('SEND_MESSAGES')) return message.author.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
+                return message.channel.send(intro)
+            }
 
             if (!message.content) return;
 
@@ -113,6 +116,7 @@ class Laffey extends Client {
                 command = this.commands.get(commandName) || this.commands.find(x => x.aliases && x.aliases.includes(commandName));
             }
             if (!command) return;
+            if (!message.guild.me.permissions.has('SEND_MESSAGES')) return message.author.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
 
             try {
                 if (LOG_USAGE) {
