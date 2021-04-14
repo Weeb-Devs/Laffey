@@ -49,12 +49,12 @@ class Laffey extends Client {
         this.on('ready', async () => {
             this.player = new lavalink(this)
             this.player.init(this.user.id)
-            this.user.setActivity(`${PREFIX}help | Currently in ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.3`)
+            this.user.setActivity(`${PREFIX}help | Currently in ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.2`)
             setInterval(() => {
                 let statusList = [
-                    `${PREFIX}help | ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.3`,
-                    `${PREFIX}help | ${this.users.cache.size} user${this.users.cache.size <= 1 ? '' : 's'} | 0.1.3`,
-                    `${PREFIX}help | ${this.player?.players.size} player${this.player?.players.size <= 1 ? '' : 's'} | 0.1.3`,
+                    `${PREFIX}help | ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.2`,
+                    `${PREFIX}help | ${this.users.cache.size} user${this.users.cache.size <= 1 ? '' : 's'} | 0.1.2`,
+                    `${PREFIX}help | ${this.player?.players.size} player${this.player?.players.size <= 1 ? '' : 's'} | 0.1.2`,
                 ]
                 let choosenStatus = statusList[Math.round(Math.random() * statusList.length)]
                 this.user.setActivity(choosenStatus, { type: 3 })
