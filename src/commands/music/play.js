@@ -10,6 +10,10 @@ module.exports = {
         let player = client.player.players.get(message.guild.id);
         const { channel } = message.member.voice;
         if (!channel) return message.channel.send(new handler().normalEmbed('You\'re not in a voice channel'))
+        const permissions = message.member.voice.channel.permissionsFor(message.client.user);
+        if (!permissions.has('CONNECT')) return message.channel.send(new handler().normalEmbed('I don\'t have \`CONNECT\` permission'))
+        if (!permissions.has('SPEAK')) return message.channel.send(new handler().normalEmbed('I don\'t have \`SPEAK\` permission'))
+        
         if (player && (channel.id != player?.voiceChannel)) return message.channel.send(new handler().normalEmbed('You\'re not in my voice channel'))
         if (!args[0]) return message.channel.send(new handler().noArgument(client, this.name, ['play < youtube url | query | youtube playlist | spotify track | spotify playlist | spotify album | twitch >']))
         if (!player) {
