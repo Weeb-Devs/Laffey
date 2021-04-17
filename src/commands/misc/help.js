@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const handler = require('../../handlers/message.ts');
+const handler = require('../../handlers/message');
 const fs = require('fs');
 const { join } = require("path");
 

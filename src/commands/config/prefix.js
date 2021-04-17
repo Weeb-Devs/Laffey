@@ -1,6 +1,6 @@
 const { get, set, reset } = require('../../functions/prefix');
 const { MessageEmbed } = require('discord.js');
-const handler = require('../../handlers/message.ts');
+const handler = require('../../handlers/message');
 
 module.exports = {
     name: 'prefix',
