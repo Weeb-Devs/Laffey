@@ -1,8 +1,8 @@
 const { Client, MessageEmbed, Util, Collection } = require('discord.js');
 const { TOKEN, PREFIX, MONGODB_URI, OWNERS, LOG_USAGE } = require('../config.json');
 const chalk = require('chalk');
-const commandHandler = require('./handlers/command.ts');
-const loggerHandler = require('./handlers/logger.ts');
+const commandHandler = require('./handlers/command.js');
+const loggerHandler = require('./handlers/logger.js');
 const mongoose = require('mongoose');
 const cache = require('./cache/manager');
 const lavalink = require('./lavalink/index');
@@ -35,6 +35,7 @@ class Laffey extends Client {
         // Start making base data on client //
         this.prefixes = new Map();
         this.commands = new Collection();
+        this.voiceTimeout = new Collection();
         this.logger = new loggerHandler();
         this.owners = OWNERS;
         this.defaultPrefix = PREFIX;
@@ -46,19 +47,32 @@ class Laffey extends Client {
         // Events start here //
 
         this.on('ready', async () => {
-            this.user.setActivity(`${PREFIX}help | Currently in ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'}`)
             this.player = new lavalink(this)
             this.player.init(this.user.id)
+            this.user.setActivity(`${PREFIX}help | Currently in ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.2`)
+            setInterval(() => {
+                let statusList = [
+                    `${PREFIX}help | ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.2`,
+                    `${PREFIX}help | ${this.users.cache.size} user${this.users.cache.size <= 1 ? '' : 's'} | 0.1.2`,
+                    `${PREFIX}help | ${this.player?.players.size} player${this.player?.players.size <= 1 ? '' : 's'} | 0.1.2`,
+                ]
+                let choosenStatus = statusList[Math.round(Math.random() * statusList.length)]
+                this.user.setActivity(choosenStatus, { type: 3 })
+            }, 40 * 1000);
             console.log(chalk.green(`[CLIENT] => [READY] ${this.user.tag} is now ready!`))
             await Util.delayFor(800)
             this.on('raw', (d) => this.player.updateVoiceState(d))
         })
 
-        this.on('voiceStateUpdate', (oldC, newC) => {
+        this.on('voiceStateUpdate', async (oldC, newC) => {
             if (oldC.id == this.user.id) return;
+            const target = await this.users.fetch(oldC.id)
+            if(target.bot) return;
             if (this.player.players.get(newC.guild.id) && oldC.channelID && !newC.channelID) {
+                if(this.player.players.get(newC.guild.id).get('24h').status == true) return console.log('enabled');
                 if (this.channels.cache.get(this.player.players.get(newC.guild.id).voiceChannel).members.filter(x => !x.user.bot).size == 0) {
-                    setTimeout(() => {
+                    if (this.voiceTimeout.get(newC.guild.id)) clearTimeout(this.voiceTimeout.get(newC.guild.id))
+                    const timeout = setTimeout(() => {
                         if (this.player.players.get(newC.guild.id) && this.channels.cache.get(this.player.players.get(newC.guild.id).voiceChannel).members.filter(x => !x.user.bot).size == 0) {
                             const leftEmbed = new MessageEmbed()
                                 .setDescription('Destroying player and leaving voice channel due to inactivity')
@@ -66,7 +80,9 @@ class Laffey extends Client {
                             this.channels.cache.get(this.player.players.get(newC.guild.id).textChannel)?.send(leftEmbed)
                             this.player.players.get(newC.guild.id).destroy()
                         }
+                        clearTimeout(this.voiceTimeout.get(newC.guild.id))
                     }, 120000);
+                    this.voiceTimeout.set(newC.guild.id, { timeout })
                 }
             }
         })
@@ -88,7 +104,10 @@ class Laffey extends Client {
                 .setAuthor('Laffey', 'https://i.imgur.com/oAmrqHD.png')
                 .setDescription(`My prefix in \`${message.guild.name}\` is ${this.prefixes.get(message.guild.id) ? this.prefixes.get(message.guild.id).prefix : PREFIX}`)
                 .setColor('#f50ae5')
-            if (message.content == `<@!${this.user.id}>` || message.content == `<@${this.user.id}>`) return message.channel.send(intro)
+            if (message.content == `<@!${this.user.id}>` || message.content == `<@${this.user.id}>`) {
+                if (!message.channel.permissionsFor(this.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
+                return message.channel.send(intro)
+            }
 
             if (!message.content) return;
 
@@ -113,6 +132,7 @@ class Laffey extends Client {
                 command = this.commands.get(commandName) || this.commands.find(x => x.aliases && x.aliases.includes(commandName));
             }
             if (!command) return;
+            if (!message.channel.permissionsFor(this.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
 
             try {
                 if (LOG_USAGE) {

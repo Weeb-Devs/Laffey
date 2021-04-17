@@ -1,4 +1,4 @@
-const handler = require('../../handlers/message.ts');
+const handler = require('../../handlers/message');
 const { KSOFT_API_KEY } = require('../../../config.json');
 const { MessageEmbed } = require('discord.js');
 const palette = require('image-palette');

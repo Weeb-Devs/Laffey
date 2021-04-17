@@ -1,4 +1,4 @@
-const handler = require('../../handlers/message.ts');
+const handler = require('../../handlers/message');
 const createBar = require('string-progressbar');
 const { MessageEmbed } = require('discord.js');
 
