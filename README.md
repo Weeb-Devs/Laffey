@@ -14,7 +14,8 @@
 ✓ and of course, adorable shipgirl  
 
 ## Current version:
-- 0.1.1 (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.1) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.1.md) 
+- 0.1.2 (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.2) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.2.md) 
+- 0.1.1 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.1) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.1.md) 
 - 0.1.0 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.0) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.0.md) 
 
 ## Requirements:
@@ -164,6 +165,10 @@ All required OS and other for lavalink server available [here](https://github.co
       -aliases: bb    
       -example: `?bassboost [reset | 1 - 2000]`  
 
+  - 24h `whether the bot to leave vc when there's no user or not`  
+      -aliases: -    
+      -example: `?24h`  
+
   - vaporwave `Set vaporwave filter for the player`  
       -aliases: -    
       -example: `?vaporwave`  
@@ -183,6 +188,14 @@ All required OS and other for lavalink server available [here](https://github.co
   - previous `Play song that played previously`  
       -aliases: pr    
       -example: `?previous`  
+
+  - resume `Resume the player`  
+      -aliases: r    
+      -example: `?resume`  
+
+  - pause `Pause the player`  
+      -aliases: -    
+      -example: `?pause`  
 
 - config
   - prefix `get, set, or reset prefix on guild`  
@@ -209,6 +222,10 @@ All required OS and other for lavalink server available [here](https://github.co
   - stats `Give bot's stats`  
       -aliases: -    
       -example: `?stats adv` 
+
+  - node `Give lavalink's stats`  
+      -aliases: -    
+      -example: `?node` 
 
   - invite `Invite your bot to another guild`  
       -aliases: -    

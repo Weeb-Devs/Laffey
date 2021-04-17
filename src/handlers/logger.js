@@ -3,7 +3,7 @@ const chalk = require('chalk');
 
 class logger {
     error(error) {
-        console.error(chalk.red(`[ERROR]` + error))
+        console.error(error)
     }
 
     debug(name, content) {

@@ -1,4 +1,4 @@
-const handler = require('../../handlers/message.ts');
+const handler = require('../../handlers/message');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {

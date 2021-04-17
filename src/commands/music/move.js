@@ -1,4 +1,4 @@
-const handler = require('../../handlers/message.ts');
+const handler = require('../../handlers/message');
 
 module.exports = {
     name: 'move',
