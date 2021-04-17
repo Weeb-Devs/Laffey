@@ -21,7 +21,7 @@
 ## Requirements:
 ### Lavalink server
 You need dev lavalink version to use our filters. You can get it by clicking [Here](https://ci.fredboat.com/viewLog.html?buildId=8767&buildTypeId=Lavalink_Build&tab=artifacts&branch_Lavalink=refs%2Fheads%2Fdev) and then, click on `Lavalink.jar` files [How to setup](https://github.com/Weeb-Devs/Laffey/blob/main/readme/LAVALINK_INSTALLATION.md)  
-All required OS and other for lavalink server available [here](https://github.com/Frederikam/Lavalink#requirements)
+All required OS and other for lavalink server available [here](https://github.com/freyacodes/Lavalink#requirements)
 
 ### Server for the bot to run
 - nodejs v14.x.x or higher `because we're using ? method`
