@@ -1,8 +1,8 @@
 const { Client, MessageEmbed, Util, Collection } = require('discord.js');
 const { TOKEN, PREFIX, MONGODB_URI, OWNERS, LOG_USAGE } = require('../config.json');
 const chalk = require('chalk');
-const commandHandler = require('./handlers/command.ts');
-const loggerHandler = require('./handlers/logger.ts');
+const commandHandler = require('./handlers/command.js');
+const loggerHandler = require('./handlers/logger.js');
 const mongoose = require('mongoose');
 const cache = require('./cache/manager');
 const lavalink = require('./lavalink/index');
