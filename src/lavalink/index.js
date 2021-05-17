@@ -99,7 +99,7 @@ class lavalink extends Manager {
             const rate = client.rateLimit.get(player.guild)
             const time1 = new Date()
             const time2 = new Date()
-            if (rate && (time2 - rate.time <= 1000) && player.get('rateLimitStatus').status == false) {
+            if (rate && (time2 - rate.time <= 500) && player.get('rateLimitStatus').status == false) {
                 const channel = client.channels.cache.get(player.textChannel);
                 const guild = client.guilds.cache.get(player.guild)
                 var playembed = new MessageEmbed()
