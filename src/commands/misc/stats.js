@@ -9,22 +9,22 @@ module.exports = {
         if (args[0]?.toLowerCase() == 'adv') {
             let page = new paginator([], { filter: (reaction, user) => user.id === message.author.id, timeout: 3600000 })
             const pageOne = new MessageEmbed()
-                .setAuthor('Stats', client.user.displayAvatarURL())
-                .setColor('#f5f5f5')
+                .setAuthor('My Stats', client.user.displayAvatarURL())
+                .setColor('#f51212')
                 .setDescription(`\`\`\`nim` + '\n' +
-                    `Guilds          :: ${client.guilds.cache.size} guild${client.guilds.cache.size > 1 ? 's' : ''}\n` +
-                    `Users/Cached    :: ${client.users.cache.size} user${client.users.cache.size > 1 ? 's' : ''}/${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} cached user${(client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)) > 1 ? 's' : ''}\n` +
-                    `Channels        :: ${client.channels.cache.size} channel${client.channels.cache.size > 1 ? 's' : ''}\n` +
-                    `Emojis          :: ${client.emojis.cache.size} emoji${client.emojis.cache.size > 1 ? 's' : ''}\n` +
-                    `Roles           :: ${client.guilds.cache.reduce((acc, guild) => acc + guild.roles.cache.size, 0)} role${(client.guilds.cache.reduce((acc, guild) => acc + guild.roles.cache.size, 0)) > 1 ? 's' : ''}\n` +
-                    `Players         :: ${client.player.players.size} player${client.player.players.size > 1 ? 's' : ''}\n` +
-                    `Uptime          :: ${require('pretty-ms')(client.uptime)}\n` +
-                    `Server Uptime   :: ${require('pretty-ms')(require('os').uptime() * 1000)}\n` +
+                    ` Guilds          :: ${client.guilds.cache.size} guild${client.guilds.cache.size > 1 ? 's' : ''}\n` +
+                    ` Users/Cached    :: ${client.users.cache.size} user${client.users.cache.size > 1 ? 's' : ''}/${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} cached user${(client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)) > 1 ? 's' : ''}\n` +
+                    ` Channels        :: ${client.channels.cache.size} channel${client.channels.cache.size > 1 ? 's' : ''}\n` +
+                    ` Emojis          :: ${client.emojis.cache.size} emoji${client.emojis.cache.size > 1 ? 's' : ''}\n` +
+                    ` Roles           :: ${client.guilds.cache.reduce((acc, guild) => acc + guild.roles.cache.size, 0)} role${(client.guilds.cache.reduce((acc, guild) => acc + guild.roles.cache.size, 0)) > 1 ? 's' : ''}\n` +
+                    ` Players         :: ${client.player.players.size} player${client.player.players.size > 1 ? 's' : ''}\n` +
+                    ` Uptime          :: ${require('pretty-ms')(client.uptime)}\n` +
+                    `> Server Uptime   :: ${require('pretty-ms')(require('os').uptime() * 1000)}\n` +
                     `\n` + `\`\`\``)
 
             const pageTwo = new MessageEmbed()
                 .setAuthor('Stats', client.user.displayAvatarURL())
-                .setColor('#f5f5f5')
+                .setColor('#f51212')
                 .setDescription(`\`\`\`nim` + '\n' +
                     `Total Memory  :: ${Math.round(require('os').totalmem() / 1024 / 1024)} mb\n` +
                     `Free Memory   :: ${Math.round(require('os').freemem() / 1024 / 1024)} mb\n` +
@@ -37,7 +37,7 @@ module.exports = {
 
             const pageThree = new MessageEmbed()
                 .setAuthor('Stats', client.user.displayAvatarURL())
-                .setColor('#f5f5f5')
+                .setColor('#f51212')
                 .setDescription(`\`\`\`nim` + '\n' +
                     `CPU Model     :: ${require('os').cpus()[0].model}\n` +
                     `Cores         :: ${require('os').cpus().length}\n` +
@@ -58,15 +58,15 @@ module.exports = {
         } else {
             const mainEmbed = new MessageEmbed()
                 .setAuthor('Stats', client.user.displayAvatarURL())
-                .setColor('#f5f5f5')
-                .setFooter('Use \`stats adv\` for more information')
+                .setColor('#f51212')
+               
                 .setDescription(`\`\`\`nim` + '\n' +
-                    `Guilds          :: ${client.guilds.cache.size} guild${client.guilds.cache.size > 1 ? 's' : ''}\n` +
-                    `Users/Cached    :: ${client.users.cache.size} user${client.users.cache.size > 1 ? 's' : ''}/${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} cached user${(client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)) > 1 ? 's' : ''}\n` +
-                    `Channels        :: ${client.channels.cache.size} channel${client.channels.cache.size > 1 ? 's' : ''}\n` +
-                    `Players         :: ${client.player.players.size} player${client.player.players.size > 1 ? 's' : ''}\n` +
-                    `RSS/Heap Total  :: ${Math.round(process.memoryUsage().rss / 1024 / 1024)} mb/${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)} mb\n` +
-                    `Uptime          :: ${require('pretty-ms')(client.uptime)}\n` +
+                    `> Guilds          :: ${client.guilds.cache.size} guild${client.guilds.cache.size > 1 ? 's' : ''}\n` +
+                    `> Users/Cached    :: ${client.users.cache.size} user${client.users.cache.size > 1 ? 's' : ''}/${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} cached user${(client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)) > 1 ? 's' : ''}\n` +
+                    `> Channels        :: ${client.channels.cache.size} channel${client.channels.cache.size > 1 ? 's' : ''}\n` +
+                    `> Players         :: ${client.player.players.size} player${client.player.players.size > 1 ? 's' : ''}\n` +
+                    `> RSS/Heap Total  :: ${Math.round(process.memoryUsage().rss / 1024 / 1024)} mb/${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)} mb\n` +
+                    `> Uptime          :: ${require('pretty-ms')(client.uptime)}\n` +
                     `\n` + `\`\`\``)
             message.channel.send(mainEmbed)
         }
