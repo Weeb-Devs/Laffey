@@ -43,7 +43,7 @@ module.exports = {
                     createBar(musicLength ? Number(musicLength) : 1, nowTime ? Number(nowTime) : 2, 26, '=', 'X')[0] +
                     `[${player.queue.current.isStream ? '◉ LIVE' : `${new Date(player.queue.current.duration).toISOString().slice(11, 19)}`}]`)
 
-            player?.get('nowplayingMSG') ? player.get('nowplayingMSG').edit(embed) : message.channel.send(embed).then(msg => player.set('nowplayingMSG', msg))
+            player?.get('nowplayingMSG') ? player.get('nowplayingMSG').edit("",embed) : message.channel.send(embed).then(msg => player.set('nowplayingMSG', msg))
         }, 5000);
         player.set('nowplaying', interval)
     }
