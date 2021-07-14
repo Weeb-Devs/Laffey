@@ -2,3 +2,5 @@
 .vscode
 /config.json
 .github
+.idea
+.package-lock.json
