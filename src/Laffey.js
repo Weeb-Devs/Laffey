@@ -1,5 +1,5 @@
 const { Client, Util, Collection } = require('discord.js');
-const { TOKEN, PREFIX, MONGODB_URI, OWNERS, LOG_USAGE } = require('../config.json');
+const { TOKEN, PREFIX, MONGODB_URI, OWNERS } = require('../config.json');
 const eventHandler = require('./modules/eventHandler');
 const chalk = require('chalk');
 const commandHandler = require('./handlers/command.js');
