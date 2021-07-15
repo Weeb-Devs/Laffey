@@ -23,6 +23,7 @@
     "image-pixels": "^2.2.2",
     "mime-db": "^1.46.0",
     "mime-types": "^2.1.29",
+    "moment": "^2.29.1",
     "mongoose": "^5.12.3",
     "node-fetch": "^2.6.1",
     "os": "^0.1.1",
@@ -30,6 +31,7 @@
     "pretty-ms": "^7.0.1",
     "prism-media": "^1.2.9",
     "setimmediate": "^1.0.5",
+    "shortid": "^2.2.16",
     "string-progressbar": "^1.0.3",
     "tweetnacl": "^1.0.3",
     "ws": "^7.4.4"
