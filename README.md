@@ -92,6 +92,7 @@ All required OS and other for lavalink server available [here](https://github.co
 3. You're ready to go, use `node .` or `npm start` to start the bot  
 <br>  
   **Note:**
+  
     - `DEBUG` is to see more data when your bot starting and other warning
     - `LOG_USAGE` is to log all command usage by user. Default to false because it'll be annoying
     - `AUTO_RESUME_DELAY` is how many ms do you want to add a delay between guild on auto resume
