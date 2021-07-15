@@ -1,6 +1,7 @@
 const { Client, Util, Collection } = require('discord.js');
 const { TOKEN, PREFIX, MONGODB_URI, OWNERS } = require('../config.json');
 const eventHandler = require('./modules/eventHandler');
+const playerHandler = require('./modules/playerHandler');
 const chalk = require('chalk');
 const commandHandler = require('./handlers/command.js');
 const loggerHandler = require('./handlers/logger.js');
@@ -37,6 +38,7 @@ class Laffey extends Client {
         this.commands = new Collection();
         this.voiceTimeout = new Collection();
         this.logger = new loggerHandler();
+        this.playerHandler = new playerHandler(this);
         this.owners = OWNERS;
         this.defaultPrefix = PREFIX;
 
