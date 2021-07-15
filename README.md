@@ -7,6 +7,7 @@
 ## Features:
 ✓ High quality  
 ✓ Support filters  
+✓ Auto resume  
 ✓ Stable  
 ✓ Suport 8 music sources  
 ✓ Feature-rich  
@@ -30,7 +31,7 @@ All required OS and other for lavalink server available [here](https://github.co
 
 ### Data
 - Discord bot's token `You should know why you need this or you won't go to this repo` [Get or create bot here](https://discord.com/developers/applications) | [How to get token](https://github.com/Weeb-Devs/Laffey/blob/main/readme/CREATE_FIRST_BOT.md)
-- Mongodb URI `for prefix feature. It won't work if you enter invalid or no URI` [MongoDB](https://account.mongodb.com/account/login)
+- Mongodb URI `for prefix and auto resume feature. It won't work if you enter invalid or no URI` [MongoDB](https://account.mongodb.com/account/login)
 - Your ID `for eval command. It's dangerous if eval accessible to everyone`
 - Spotify client ID `for spotify support` [Click here to get](https://developer.spotify.com/dashboard/login)
 - Spotify client Secret `for spotify support` [Click here to get](https://developer.spotify.com/dashboard/login)
@@ -43,9 +44,11 @@ All required OS and other for lavalink server available [here](https://github.co
     - Retry amount `retry amount when the node encounted error. Default is 3`
     - Retry delay `delay for each retry. Default is 1000 (1s)`
     - Secure `wether your node use ssl connection. Default is false`   
+- Debug `for more information in console`
+- Auto resume delay `how many ms do you want to add a delay between guild on auto resume`
 
 **Note**  
-- Why use ksoft.si api and not other? Because other modules are bad and we have to provide a very specific title which is ksoft.si didn't
+- Why use ksoft.si API and not other? Because other modules are bad and we have to provide a very specific title which is ksoft.si didn't
 
 ## Available music sources:
 - youtube`*`
@@ -64,28 +67,27 @@ All required OS and other for lavalink server available [here](https://github.co
 1. First, change `config.json.example` file's name into `config.json`, and fill it
 ```json
 {
-    "TOKEN": "YOUR TOKEN",
-    "PREFIX": "?",
-    "OWNERS": [
-        "Your discord id for eval, can be more than 1 user"
-    ],
-    "MONGODB_URI": "Additional, but needed for custom prefix feautre",
-    "SPOTIFY_CLIENT_ID": "spotify client id for spotify support",
-    "SPOTIFY_CLIENT_SECRET": "spotify client secret for spotify support",
-    "KSOFT_API_KEY": "KSOFT API Key to use lyrics feature",
-    "NODES": [
-        {
-            "HOST": "lavalink's host",
-            "PASSWORD": "lavalink's password",
-            "PORT": 80,
-            "IDENTIFIER": "lavalink's identifier. Additional",
-            "RETRY_AMOUNT": 3,
-            "RETRY_DELAY": 1000,
-            "SECURE": false
-        }
-    ],
-    "DEBUG": true,
-    "LOG_USAGE": false
+  "TOKEN": "Your bot's token",
+  "PREFIX": "?",
+  "OWNERS": ["Your id, can be more than 1"],
+  "MONGODB_URI": "For database",
+  "SPOTIFY_CLIENT_ID": "For spotify support",
+  "SPOTIFY_CLIENT_SECRET": "For spotify support",
+  "KSOFT_API_KEY": "For the lyrics because it's the best so far",
+  "NODES": [
+    {
+      "HOST": "Your node's host",
+      "PASSWORD": "Your node's password",
+      "PORT": 80,
+      "IDENTIFIER": "This node's identifier, it's up to you",
+      "RETRY_AMOUNT": 3,
+      "RETRY_DELAY": 1000,
+      "SECURE": false
+    }
+  ],
+  "AUTO_RESUME_DELAY": 1500,
+  "DEBUG": true,
+  "LOG_USAGE": false
 }
 ```
 2. Go to your console, and type `cd "path to laffey's file"` and install all dependencies by typing `npm i`
