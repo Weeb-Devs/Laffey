@@ -3,7 +3,7 @@ name: Bug report
 about: I found a new bug!
 title: A wild bug appeared!
 labels: unverified-bug
-assignees: Takiyo0
+assignees: ''
 
 ---
 
