@@ -9,9 +9,11 @@ module.exports = {
         if (!player) return message.channel.send(new handler().normalEmbed('There\'s no active player'))
         if (player.get('24h').status == false) {
             player.set('24h', { status: true })
+            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
             message.channel.send(new handler().normalEmbed(`24h \`ENABLED\``))
         } else {
             player.set('24h', { status: false })
+            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
             message.channel.send(new handler().normalEmbed(`24h \`DISABLED\``))
         }
     }
