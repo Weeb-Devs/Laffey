@@ -44,8 +44,6 @@ All required OS and other for lavalink server available [here](https://github.co
     - Retry amount `retry amount when the node encounted error. Default is 3`
     - Retry delay `delay for each retry. Default is 1000 (1s)`
     - Secure `wether your node use ssl connection. Default is false`   
-- Debug `for more information in console`
-- Auto resume delay `how many ms do you want to add a delay between guild on auto resume`
 
 **Note**  
 - Why use ksoft.si API and not other? Because other modules are bad and we have to provide a very specific title which is ksoft.si didn't
@@ -96,6 +94,7 @@ All required OS and other for lavalink server available [here](https://github.co
   **Note:**
     - `DEBUG` is to see more data when your bot starting and other warning
     - `LOG_USAGE` is to log all command usage by user. Default to false because it'll be annoying
+    - `AUTO_RESUME_DELAY` is how many ms do you want to add a delay between guild on auto resume
 <br>
 <br>
 
@@ -107,103 +106,120 @@ All required OS and other for lavalink server available [here](https://github.co
 
 ## Commands
 - music
-  - play `play music from 7 music sources`   
-    -aliases: p  
-    -example: `?play https://www.youtube.com/playlist?list=PL0jh16Vp3NzVjEjKbZ3pV4f15Jze5EANV`  
+    - play `play music from 7 music sources`   
+        -aliases: p  
+        -example: `?play https://www.youtube.com/playlist?list=PL0jh16Vp3NzVjEjKbZ3pV4f15Jze5EANV`  
 
-  - forceplay `same like play, but this will force the player to play specific song`   
-    -aliases: fp  
-    -example: `?forceplay https://www.youtube.com/watch?v=dQw4w9WgXcQ`  
-
-  - loop `toggle track/queue loop`   
-    -aliases: l  
-    -example: `?loop`  
-
-  - lyrics `Get specific/current playing song's lyrics`   
-    -aliases: ly  
-    -example: `?lyrics [ song's title ]`  
-
-  - volume `Set player's volume. 0-1000`   
-    -aliases: v  
-    -example: `?volume 1000`  
-
-
-  - nowplaying `see current playing song`  
-      -aliases: np    
-      -example: `?nowplaying`  
-
-  - move `Move song`  
-      -aliases: -    
-      -example: `?move 2` | `?move 4 3`  
-
-  - queue `check all songs inside queue`  
-      -aliases: q    
-      -example: `?queue`  
-
-  - skip `skip the song`  
-      -aliases: s    
-      -example: `?skip`  
-
+     - forceplay `same like play, but this will force the player to play specific song`   
+        -aliases: fp  
+        -example: `?forceplay https://www.youtube.com/watch?v=dQw4w9WgXcQ`  
+    
+     - loop `toggle track/queue loop`   
+        -aliases: l  
+        -example: `?loop`  
+    
+     - lyrics `Get specific/current playing song's lyrics`   
+        -aliases: ly  
+        -example: `?lyrics [ song's title ]`  
+      
+     - volume `Set player's volume. 0-1000`   
+        -aliases: v  
+        -example: `?volume 1000`  
+    
+     - nowplaying `see current playing song`  
+          -aliases: np    
+          -example: `?nowplaying`  
+    
+   - move `Move song`  
+          -aliases: -    
+          -example: `?move 2` | `?move 4 3`  
+    
+    - queue `check all songs inside queue`  
+          -aliases: q    
+          -example: `?queue`  
+    
+   - skip `skip the song`  
+          -aliases: s    
+          -example: `?skip`  
+       
   - skipto `skip to specific song`  
-      -aliases: st, jump, jumpto    
-      -example: `?skipto 3`  
-
+          -aliases: st, jump, jumpto    
+          -example: `?skipto 3`  
+    
   - join `Join a voice channel`  
-      -aliases: -    
-      -example: `?join`  
+          -aliases: -    
+          -example: `?join`  
+    
+   - leave `Leave a voice channel`  
+          -aliases: stop    
+          -example: `?leave`  
+    
+   - shuffle `Shuffle queue`  
+          -aliases: -    
+          -example: `?shuffle`  
+    
+   - clear `Clear the queue`  
+          -aliases: -    
+          -example: `?clear`  
+    
+   - bassboost `Set bassboost filter for the player`  
+          -aliases: bb    
+          -example: `?bassboost [reset | 1 - 2000]`  
+    
+   - 24h `whether the bot to leave vc when there's no user or not`  
+          -aliases: -    
+          -example: `?24h`  
+    
+   - vaporwave `Set vaporwave filter for the player`  
+          -aliases: -    
+          -example: `?vaporwave`  
+    
+   - nightcore `Set nightcore filter for the player`  
+          -aliases: nc    
+          -example: `?nightcore`  
+    
+   - 8d `Set 8d filter for the player`  
+          -aliases: -    
+          -example: `?8d`  
+    
+   - speed `Set speed for the player`  
+         -aliases: -    
+         -example: `?speed [reset | 0-5]`
+    
+   - pitch `Set pitch for the player`  
+         -aliases: -    
+         -example: `?pitch [reset | 0-5]`
+    
+   - reset `Reset the filters`  
+         -aliases: -    
+         -example: `?reset`
+          
+   - filters `Get all filters status`  
+         -aliases: -    
+         -example: `?filters`
+      
+   - remove `Remove song from queue`  
+          -aliases: -    
+          -example: `?remove 3`  
+    
+   - previous `Play song that played previously`  
+          -aliases: pr    
+          -example: `?previous`  
+    
+   - resume `Resume the player`  
+          -aliases: r    
+          -example: `?resume`  
+    
+   - pause `Pause the player`  
+          -aliases: -    
+          -example: `?pause`  
 
-  - leave `Leave a voice channel`  
-      -aliases: stop    
-      -example: `?leave`  
-
-  - shuffle `Shuffle queue`  
-      -aliases: -    
-      -example: `?shuffle`  
-
-  - clear `Clear the queue`  
-      -aliases: -    
-      -example: `?clear`  
-
-  - bassboost `Set bassboost filter for the player`  
-      -aliases: bb    
-      -example: `?bassboost [reset | 1 - 2000]`  
-
-  - 24h `whether the bot to leave vc when there's no user or not`  
-      -aliases: -    
-      -example: `?24h`  
-
-  - vaporwave `Set vaporwave filter for the player`  
-      -aliases: -    
-      -example: `?vaporwave`  
-
-  - nightcore `Set nightcore filter for the player`  
-      -aliases: nc    
-      -example: `?nightcore`  
-
-  - 8d `Set 8d filter for the player`  
-      -aliases: -    
-      -example: `?8d`  
-
-  - remove `Remove song from queue`  
-      -aliases: -    
-      -example: `?remove 3`  
-
-  - previous `Play song that played previously`  
-      -aliases: pr    
-      -example: `?previous`  
-
-  - resume `Resume the player`  
-      -aliases: r    
-      -example: `?resume`  
-
-  - pause `Pause the player`  
-      -aliases: -    
-      -example: `?pause`  
 
 - config
   - prefix `get, set, or reset prefix on guild`  
       -aliases: -    
       -example: `?prefix set !` | `?prefix reset` | `?prefix get` 
+
 
 - misc
   - ping `get bot's ping`  
@@ -237,4 +253,4 @@ All required OS and other for lavalink server available [here](https://github.co
 ## Description & About
 Created at: Friday, 2 April 2021  
 Published at: Sunday, 11 April 2021  
-  [Laffey](https://github.com/Weeb-Devs/Laffey) is [Weeb-Devs](https://github.com/Weeb-Devs)'s first project. Was created by our first member aka owner, Takiyo. He really wants to make his first open source project ever. Because he wants more for coding experience. In this project, he was challenged to make project with less bugs. Hope you enjoy using Laffey!
+  [Laffey](https://github.com/Weeb-Devs/Laffey) is [Weeb-Devs](https://github.com/Weeb-Devs) 's first project. Was created by our first member aka owner, Takiyo. He really wants to make his first open source project ever. Because he wants more for coding experience. In this project, he was challenged to make project with less bugs. Hope you enjoy using Laffey!
