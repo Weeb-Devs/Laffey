@@ -11,9 +11,11 @@ module.exports = {
 
         if (!player.vaporwave) {
             await player.setVaporwave(true)
+            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
             message.channel.send(new handler().normalEmbed(`Vaporwave \`ENABLED\``))
         } else {
             await player.setVaporwave(false)
+            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
             message.channel.send(new handler().normalEmbed(`Vaporwave \`DISABLED\``))
         }
     }
