@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+require('./src/modules/console');
 console.log(chalk.yellow('----------------------------------------------------------------------------------------------'))
 console.log()
 console.log(chalk.red('Found a bug? Feel free to create new issue here. https://github.com/Weeb-Devs/Laffey/issues/new'))
