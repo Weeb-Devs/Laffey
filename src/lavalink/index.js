@@ -7,7 +7,7 @@ const {
     NODES,
     SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET
-} = require('../../config.json');
+} = new (require('../modules/laffeyUtils'))();
 
 class lavalink extends Manager {
     constructor(client) {

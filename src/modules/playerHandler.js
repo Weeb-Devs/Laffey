@@ -1,7 +1,7 @@
 const {TrackUtils} = require('erela.js');
 const autoResume = require('../schemas/autoResume');
 const chalk = require("chalk");
-const {AUTO_RESUME_DELAY} = require('../../config.json');
+const {AUTO_RESUME_DELAY} = new (require('../modules/laffeyUtils'))();
 
 module.exports = class LaffeyPlayerHandler {
     constructor(client) {
