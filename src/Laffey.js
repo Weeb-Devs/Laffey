@@ -1,5 +1,6 @@
-const { Client, Util, Collection } = require('discord.js');
-const { TOKEN, PREFIX, MONGODB_URI, OWNERS } = require('../config.json');
+const {Client, Util, Collection} = require('discord.js');
+const utils = require('./modules/laffeyUtils');
+const { TOKEN, PREFIX, MONGODB_URI, OWNERS } = new (require('./modules/laffeyUtils'))();
 const eventHandler = require('./modules/eventHandler');
 const playerHandler = require('./modules/playerHandler');
 const chalk = require('chalk');
@@ -65,9 +66,11 @@ class Laffey extends Client {
     }
 
     async login() {
-        if (!TOKEN) throw new RangeError('You must include TOKEN to login in config.json')
+        if (!TOKEN) throw new RangeError('You must include TOKEN to login either in config.json or env')
         await super.login(TOKEN)
-            .then(x => { return x })
+            .then(x => {
+                return x
+            })
             .catch(err => console.log(chalk.red(err)))
     }
 }

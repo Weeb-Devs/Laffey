@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { PREFIX, LOG_USAGE } = require('../../config.json');
+const { PREFIX, LOG_USAGE } = new (require('../modules/laffeyUtils'))();
 const chalk = require('chalk');
 
 module.exports = {

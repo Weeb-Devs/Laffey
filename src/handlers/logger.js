@@ -1,4 +1,4 @@
-const { DEBUG } = require('../../config.json');
+const { DEBUG } = new (require('../modules/laffeyUtils'))();
 const chalk = require('chalk');
 
 class logger {
