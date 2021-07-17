@@ -62,6 +62,7 @@ All required OS and other for lavalink server available [here](https://github.co
     - `*` is depend on your lavalink's configuration
 
 ## Configuration & Starting the bot:
+### With config.json
 1. First, change `config.json.example` file's name into `config.json`, and fill it
 ```json
 {
@@ -91,6 +92,41 @@ All required OS and other for lavalink server available [here](https://github.co
 2. Go to your console, and type `cd "path to laffey's file"` and install all dependencies by typing `npm i`
 3. You're ready to go, use `node .` or `npm start` to start the bot  
 <br>  
+### With .env
+1. Create a `.env` file in the root directory of your project.
+2. Copy the text below and paste it in .env file and change the value with required data. **You must use config.json for nodes. So it'll be like this**  
+    #### .env file
+    ```
+    TOKEN=TOKEN_HERE
+    PREFIX=?
+    OWNERS=123456789,987654321
+    MONGODB_URI=mongodb+srv://blabla
+    SPOTIFY_CLIENT_ID=123456
+    SPOTIFY_CLIENT_SECRET=ABCDEFG
+    KSOFT_API_KEY=1234
+    AUTO_RESUME_DELAY=2000
+    DEBUG=true
+    LOG_USAGE=false
+    ```
+    #### config.json file
+    ```json
+    {
+      "NODES": [
+        {
+          "HOST": "Your node's host",
+          "PASSWORD": "Your node's password",
+          "PORT": 80,
+          "IDENTIFIER": "This node's identifier, it's up to you",
+          "RETRY_AMOUNT": 3,
+          "RETRY_DELAY": 1000,
+          "SECURE": false
+        }
+      ]
+    }
+    ```
+3. Go to your console, and type `cd "path to laffey's file"` and install all dependencies by typing `npm i`
+4. You're ready to go, use `node .` or `npm start` to start the bot  
+   <br>  
   **Note:**
   
     - `DEBUG` is to see more data when your bot starting and other warning
