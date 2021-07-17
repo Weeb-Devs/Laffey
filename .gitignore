@@ -4,3 +4,4 @@
 .github
 .idea
 .package-lock.json
+.env
