@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+require('dotenv').config()
 require('./src/modules/console');
 console.log(chalk.yellow('----------------------------------------------------------------------------------------------'))
 console.log()
