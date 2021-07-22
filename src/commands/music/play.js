@@ -32,7 +32,7 @@ module.exports = {
         let res = await player.search(search, message.author)
         if (res.loadType === 'LOAD_FAILED') {
             if (!player.queue.current) player.destroy();
-            return message.channel.send(new handler().normalEmbed(`Error getting music. Please try again in a few minutes \n` + `\`\`\`${res.exception.message}\`\`\``))
+            return message.channel.send(new handler().normalEmbed(`Error getting music. Please try again in a few minutes \n` + `\`\`\`${res.exception.message ? res.exception.message : 'No error was provided'}\`\`\``))
         }
         switch (res.loadType) {
             case 'NO_MATCHES': {
