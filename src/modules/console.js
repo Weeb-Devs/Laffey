@@ -3,13 +3,13 @@ const log = console.log;
 const error = console.error;
 
 console.log = function () {
-    const args = Array.from(arguments);
-    args.unshift(chalk.yellowBright(`${require('moment')().format("dddd MMMM DD YYYY HH:MM:SS") + ": "}`));
+    let args = Array.from(arguments);
+    args = args.map(x => chalk.yellowBright(`${require('moment')().format("dddd MMMM DD YYYY HH:MM:SS") + ": "}${x}`))
     log.apply(console, args);
 }
 
 console.error = function () {
-    const args = Array.from(arguments);
-    args.unshift(chalk.yellowBright(`${require('moment')().format("dddd MMMM DD YYYY HH:MM:SS") + ": "}`));
+    let args = Array.from(arguments);
+    args = args.map(x => chalk.yellowBright(`${require('moment')().format("dddd MMMM DD YYYY HH:MM:SS") + ": "}${x}`))
     error.apply(console, args);
 }
