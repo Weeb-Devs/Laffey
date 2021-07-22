@@ -40,7 +40,13 @@ class lavalink extends Manager {
         this.on('nodeReconnect', (node) => {
             console.log(chalk.yellowBright(`[LAVALINK] => [STATUS] ${node.options.identifier} is now reconnecting...`))
         })
+        this.on('playerMove', ((player, oldChannel, newChannel) => {
+            player.set('moved', true)
+            player.setVoiceChannel(newChannel)
+            return client.playerHandler.savePlayer(player)
+        }))
         this.on('socketClosed', (player, payload) => {
+            if (player.get('moved')) return player.set('moved', false)
             if (payload.reason === 'Disconnected.' && payload.byRemote && payload.code === 4014) return player.destroy()
             if (!payload.byRemote) {
                 setTimeout(() => {
@@ -67,7 +73,8 @@ class lavalink extends Manager {
             });
             if (player.get('nowplaying')) {
                 clearInterval(player.get('nowplaying'));
-                player.get('nowplayingMSG').delete().catch(() => {})
+                player.get('nowplayingMSG').delete().catch(() => {
+                })
             }
             return client.playerHandler.delete(player.guild)
         })
@@ -92,7 +99,8 @@ class lavalink extends Manager {
             });
             if (player.get('nowplaying')) {
                 clearInterval(player.get('nowplaying'));
-                player.get('nowplayingMSG').delete().catch(() => {})
+                player.get('nowplayingMSG').delete().catch(() => {
+                })
             }
         })
         this.on('trackStuck', (player, track, payload) => {
@@ -107,7 +115,8 @@ class lavalink extends Manager {
             channel.send({embed: playEmbed}).then(msg => player.set('stuck', msg))
             if (player.get('nowplaying')) {
                 clearInterval(player.get('nowplaying'));
-                player.get('nowplayingMSG').delete().catch(() => {})
+                player.get('nowplayingMSG').delete().catch(() => {
+                })
             }
         })
         this.on('trackError', (player, track, payload) => {
@@ -159,9 +168,11 @@ class lavalink extends Manager {
                 .setColor(guild.me.displayHexColor !== '#000000' ? guild.me.displayHexColor : '#00C7FF')
             if (player.get('nowplaying')) {
                 clearInterval(player.get('nowplaying'));
-                player.get('nowplayingMSG').delete().catch(() => {})
+                player.get('nowplayingMSG').delete().catch(() => {
+                })
             }
-            channel.send({embed: noQueueEmbed}).catch((_) => {})
+            channel.send({embed: noQueueEmbed}).catch((_) => {
+            })
             setTimeout(() => {
                 const e = client.player.players.get(player.guild)
                 if (e && !e.queue.current) {
@@ -170,7 +181,8 @@ class lavalink extends Manager {
                         .setAuthor("End")
                         .setDescription(`Leaving due to inactivity`)
                         .setColor(guild.me.displayHexColor !== '#000000' ? guild.me.displayHexColor : '#00C7FF')
-                    channel.send({embed: leftEmbed}).catch((_) => {})
+                    channel.send({embed: leftEmbed}).catch((_) => {
+                    })
                 }
             }, 60000);
         })
