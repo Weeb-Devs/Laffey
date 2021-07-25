@@ -32,7 +32,7 @@
     "setimmediate": "^1.0.5",
     "string-progressbar": "^1.0.3",
     "tweetnacl": "^1.0.3",
-    "ws": "^7.4.4"
+    "ws": "^7.4.6"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
