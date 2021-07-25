@@ -55,7 +55,7 @@ All required OS and other for lavalink server available [here](https://github.co
 - http (you can use radio for it)`*`
 - spotify
 - deezer
-<br>  
+  
   **Note:**  
     - `*` is depend on your lavalink's configuration
 
