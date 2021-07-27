@@ -1,11 +1,13 @@
-const { Client, MessageEmbed, Util, Collection } = require('discord.js');
-const { TOKEN, PREFIX, MONGODB_URI, OWNERS, LOG_USAGE } = require('../config.json');
+const {Client, Util, Collection} = require('discord.js');
+const utils = require('./modules/laffeyUtils');
+const { TOKEN, PREFIX, MONGODB_URI, OWNERS } = new (require('./modules/laffeyUtils'))();
+const eventHandler = require('./modules/eventHandler');
+const playerHandler = require('./modules/playerHandler');
 const chalk = require('chalk');
 const commandHandler = require('./handlers/command.js');
 const loggerHandler = require('./handlers/logger.js');
 const mongoose = require('mongoose');
 const cache = require('./cache/manager');
-const lavalink = require('./lavalink/index');
 
 
 class Laffey extends Client {
@@ -37,116 +39,13 @@ class Laffey extends Client {
         this.commands = new Collection();
         this.voiceTimeout = new Collection();
         this.logger = new loggerHandler();
+        this.playerHandler = new playerHandler(this);
         this.owners = OWNERS;
         this.defaultPrefix = PREFIX;
 
         // Collect needed data to client //
+        new eventHandler(this).start();
         commandHandler(this)
-
-
-        // Events start here //
-
-        this.on('ready', async () => {
-            this.player = new lavalink(this)
-            this.player.init(this.user.id)
-            this.user.setActivity(`${PREFIX}help | Currently in ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.2`)
-            setInterval(() => {
-                let statusList = [
-                    `${PREFIX}help | ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'} | 0.1.2`,
-                    `${PREFIX}help | ${this.users.cache.size} user${this.users.cache.size <= 1 ? '' : 's'} | 0.1.2`,
-                    `${PREFIX}help | ${this.player?.players.size} player${this.player?.players.size <= 1 ? '' : 's'} | 0.1.2`,
-                ]
-                let choosenStatus = statusList[Math.round(Math.random() * statusList.length)]
-                this.user.setActivity(choosenStatus, { type: 3 })
-            }, 40 * 1000);
-            console.log(chalk.green(`[CLIENT] => [READY] ${this.user.tag} is now ready!`))
-            await Util.delayFor(800)
-            this.on('raw', (d) => this.player.updateVoiceState(d))
-        })
-
-        this.on('voiceStateUpdate', async (oldC, newC) => {
-            if (oldC.id == this.user.id) return;
-            const target = await this.users.fetch(oldC.id)
-            if(target.bot) return;
-            if (this.player.players.get(newC.guild.id) && oldC.channelID && !newC.channelID) {
-                if(this.player.players.get(newC.guild.id).get('24h').status == true) return console.log('enabled');
-                if (this.channels.cache.get(this.player.players.get(newC.guild.id).voiceChannel).members.filter(x => !x.user.bot).size == 0) {
-                    if (this.voiceTimeout.get(newC.guild.id)) clearTimeout(this.voiceTimeout.get(newC.guild.id))
-                    const timeout = setTimeout(() => {
-                        if (this.player.players.get(newC.guild.id) && this.channels.cache.get(this.player.players.get(newC.guild.id).voiceChannel).members.filter(x => !x.user.bot).size == 0) {
-                            const leftEmbed = new MessageEmbed()
-                                .setDescription('Destroying player and leaving voice channel due to inactivity')
-                                .setColor(this.guilds.cache.get(newC.guild.id).me.displayHexColor != '#000000' ? this.guilds.cache.get(newC.guild.id).me.displayHexColor : '#00C7FF')
-                            this.channels.cache.get(this.player.players.get(newC.guild.id).textChannel)?.send(leftEmbed)
-                            this.player.players.get(newC.guild.id).destroy()
-                        }
-                        clearTimeout(this.voiceTimeout.get(newC.guild.id))
-                    }, 120000);
-                    this.voiceTimeout.set(newC.guild.id, { timeout })
-                }
-            }
-        })
-
-        this.on('guildCreate', (guild) => {
-            this.logger.debug('GUILD', `${guild.name} joined with ${guild.memberCount} users`)
-        })
-
-        this.on('guildDelete', (guild) => {
-            this.logger.debug('GUILD', `${guild.name} left`)
-        })
-
-        this.on('message', async (message) => {
-            if (!message.guild) return;
-            if (message.author.bot) return;
-            const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            let command, args, prefix;
-            let intro = new MessageEmbed()
-                .setAuthor('Laffey', 'https://i.imgur.com/oAmrqHD.png')
-                .setDescription(`My prefix in \`${message.guild.name}\` is ${this.prefixes.get(message.guild.id) ? this.prefixes.get(message.guild.id).prefix : PREFIX}`)
-                .setColor('#f50ae5')
-            if (message.content == `<@!${this.user.id}>` || message.content == `<@${this.user.id}>`) {
-                if (!message.channel.permissionsFor(this.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
-                return message.channel.send(intro)
-            }
-
-            if (!message.content) return;
-
-            if (this.prefixes.get(message.guild.id)?.prefix) {
-                prefix = this.prefixes.get(message.guild.id).prefix
-                const prefixRegex = new RegExp(`^(<@!?${this.user.id}>|${escapeRegex(prefix)})\\s*`);
-                if (!prefixRegex.test(message.content)) return;
-                const [, matchedPrefix] = message.content.match(prefixRegex);
-
-                args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
-                const commandName = args.shift().toLowerCase();
-                command = this.commands.get(commandName) || this.commands.find(x => x.aliases && x.aliases.includes(commandName));
-
-            } else {
-                prefix = PREFIX
-                const prefixRegex = new RegExp(`^(<@!?${this.user.id}>|${escapeRegex(prefix)})\\s*`);
-                if (!prefixRegex.test(message.content)) return;
-                const [, matchedPrefix] = message.content.match(prefixRegex);
-
-                args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
-                const commandName = args.shift().toLowerCase();
-                command = this.commands.get(commandName) || this.commands.find(x => x.aliases && x.aliases.includes(commandName));
-            }
-            if (!command) return;
-            if (!message.channel.permissionsFor(this.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch((_) => { })
-
-            try {
-                if (LOG_USAGE) {
-                    console.log(chalk.magenta(`[LOG] => [COMMANDS] ${message.author.tag} (${message.author.id}) : ${message.content}`))
-                }
-                await command.execute(message, args, this)
-            } catch (err) {
-                const errorEmbed = new MessageEmbed()
-                    .setDescription(`I'm sorry, there was an error while executing **${command.name}**\n\`\`\`${err}\`\`\``)
-                    .setColor(this.guilds.cache.get(message.guild.id).me.displayHexColor != '#000000' ? this.guilds.cache.get(message.guild.id).me.displayHexColor : '#00C7FF')
-                message.channel.send(errorEmbed)
-                this.logger.error(err)
-            }
-        })
     }
 
     async loginMongo() {
@@ -167,9 +66,11 @@ class Laffey extends Client {
     }
 
     async login() {
-        if (!TOKEN) throw new RangeError('You must include TOKEN to login in config.json')
+        if (!TOKEN) throw new RangeError('You must include TOKEN to login either in config.json or env')
         await super.login(TOKEN)
-            .then(x => { return x })
+            .then(x => {
+                return x
+            })
             .catch(err => console.log(chalk.red(err)))
     }
 }
