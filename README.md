@@ -90,11 +90,12 @@ All required OS and other for lavalink server available [here](https://github.co
 }
 ```
 2. Go to your console, and type `cd "path to laffey's file"` and install all dependencies by typing `npm i`
-3. You're ready to go, use `node .` or `npm start` to start the bot  
-<br>  
-### With .env
-1. Create a `.env` file in the root directory of your project.
-2. Copy the text below and paste it in .env file and change the value with required data. **You must use config.json for nodes. So it'll be like this**  
+3. You're ready to go, use `node .` or `npm start` to start the bot   
+
+  
+### With .env <br/>
+1. Create a `.env` file in the root directory of your project.<br/>
+2. Copy the text below and paste it in .env file and change the value with required data. **You must use config.json for nodes. So it'll be like this**<br/>
     #### .env file
     ```
     TOKEN=TOKEN_HERE
@@ -107,7 +108,7 @@ All required OS and other for lavalink server available [here](https://github.co
     AUTO_RESUME_DELAY=2000
     DEBUG=true
     LOG_USAGE=false
-    ```
+    ```  
     #### config.json file
     ```json
     {
