@@ -11,9 +11,11 @@ module.exports = {
 
         if (!player._8d) {
             await player.set8D(true)
+            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
             message.channel.send(new handler().normalEmbed(`8d \`ENABLED\``))
         } else {
             await player.set8D(false)
+            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
             message.channel.send(new handler().normalEmbed(`8d \`DISABLED\``))
         }
     }

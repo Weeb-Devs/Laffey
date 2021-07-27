@@ -1,5 +1,5 @@
 const handler = require('../../handlers/message');
-const { KSOFT_API_KEY } = require('../../../config.json');
+const { KSOFT_API_KEY } = new (require('../../modules/laffeyUtils'))();
 const { MessageEmbed } = require('discord.js');
 const palette = require('image-palette');
 const pixels = require('image-pixels');

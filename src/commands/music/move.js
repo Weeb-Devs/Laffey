@@ -11,7 +11,8 @@ module.exports = {
         if (!args[0]) return message.channel.send(new handler().noArgument(client, this.name, ['move < current song place > [ target place ]']))
         if(isNaN(args[0]) || (args[1] && isNaN(args[1]))) return message.channel.send(new handler().normalEmbed('that\'s not a number'))
         player.move(parseInt(args[0]), parseInt(args[1]))
-            .then(x => {
+            .then(async x => {
+                await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
                 message.react('✅').catch((_) => { })
             })
             .catch(err => {

@@ -12,10 +12,12 @@ module.exports = {
 
         if (!player.nightcore) {
             await player.setNightcore(true)
-            message.channel.send(new handler().normalEmbed(`Nightcore \`ENABLED\``))
+            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
+            return message.channel.send(new handler().normalEmbed(`Nightcore \`ENABLED\``))
         } else {
             await player.setNightcore(false)
-            message.channel.send(new handler().normalEmbed(`Nightcore \`DISABLED\``))
+            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
+            return message.channel.send(new handler().normalEmbed(`Nightcore \`DISABLED\``))
         }
     }
 }
