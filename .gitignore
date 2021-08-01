@@ -3,5 +3,5 @@
 /config.json
 .github
 .idea
-.package-lock.json
+/package-lock.json
 .env
