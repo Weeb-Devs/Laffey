@@ -27,7 +27,7 @@ You need dev lavalink version to use our filters. You can get it by clicking [He
 All required OS and other for lavalink server available [here](https://github.com/freyacodes/Lavalink#requirements)
 
 ### Server for the bot to run
-- nodejs v14.x.x or higher `because we're using ? method`
+- nodejs v14.x.x or higher `because we're using optional chaining method`
 - discordjs v12.x.x or higher
 
 ### Data
