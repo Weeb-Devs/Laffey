@@ -15,7 +15,8 @@
 ✓ and of course, adorable shipgirl  
 
 ## Current version:
-- 0.1.3 (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.3) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.3.md) 
+- 0.1.4 (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.4) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.4.md)
+- 0.1.3 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.3) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.3.md) 
 - 0.1.2 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.2) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.2.md) 
 - 0.1.1 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.1) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.1.md) 
 - 0.1.0 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.0) | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.0.md) 
@@ -195,7 +196,11 @@ All required OS and other for lavalink server available [here](https://github.co
    - shuffle `Shuffle queue`  
           -aliases: -    
           -example: `?shuffle`  
-    
+  
+   - search `search song`  
+          -aliases: -    
+          -example: `?search never gonna give you up`
+
    - clear `Clear the queue`  
           -aliases: -    
           -example: `?clear`  
