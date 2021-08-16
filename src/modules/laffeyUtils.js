@@ -38,10 +38,10 @@ module.exports = class laffeyUtils {
     }
 
     get DEBUG() {
-        return process.env.DEBUG == undefined ? process.env.DEBUG : config.DEBUG
+        return process.env.DEBUG == undefined ? config.DEBUG : process.env.DEBUG
     }
 
     get LOG_USAGE() {
-        return process.env.LOG_USAGE == undefined ? process.env.LOG_USAGE : config.LOG_USAGE
+        return process.env.LOG_USAGE == undefined ? config.LOG_USAGE : process.env.LOG_USAGE
     }
 }
