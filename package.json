@@ -33,7 +33,7 @@
     "prism-media": "^1.2.9",
     "setimmediate": "^1.0.5",
     "shortid": "^2.2.16",
-    "string-progressbar": "^1.0.3",
+    "string-progressbar": "^1.0.4",
     "tweetnacl": "^1.0.3",
     "ws": "^7.4.4"
   },
