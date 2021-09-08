@@ -20,8 +20,10 @@
     "erela.js-spotify": "^1.2.0",
     "event-target-shim": "^5.0.1",
     "follow-redirects": "^1.13.3",
+    "genius-lyrics": "^4.2.9",
     "image-palette": "^2.1.0",
     "image-pixels": "^2.2.2",
+    "lyrics-finder": "^21.7.0",
     "mime-db": "^1.46.0",
     "mime-types": "^2.1.29",
     "moment": "^2.29.1",
@@ -44,7 +46,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Weeb-Devs/Laffey.git"
