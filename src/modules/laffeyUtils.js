@@ -29,8 +29,16 @@ module.exports = class laffeyUtils {
         return process.env.KSOFT_API_KEY ? process.env.KSOFT_API_KEY : config.KSOFT_API_KEY
     }
 
+    get GENIUS_API_KEY() {
+        return process.env.GENIUS_API_KEY ? process.env.GENIUS_API_KEY : config.GENIUS_API_KEY
+    }
+
+    get LYRICS_ENGINE() {
+        return process.env.LYRICS_ENGINE ? process.env.LYRICS_ENGINE : config.LYRICS_ENGINE
+    }
+
     get NODES() {
-        return config.NODES
+        return process.env.NODES ? JSON.parse(process.env.NODES) : config.NODES
     }
 
     get AUTO_RESUME_DELAY() {
