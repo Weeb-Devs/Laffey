@@ -9,12 +9,12 @@ module.exports = {
         const player = new lavalink(client)
         client.player = player
         player.init(client.user.id)
-        client.user.setActivity(`${client.defaultPrefix}help | Currently in ${client.guilds.cache.size} guild${client.guilds.cache.size <= 1 ? '' : 's'} | 0.1.2`)
+        client.user.setActivity(`${client.defaultPrefix}help | Currently in ${client.guilds.cache.size} guild${client.guilds.cache.size <= 1 ? '' : 's'} | 0.1.5`)
         setInterval(() => {
             let statusList = [
                 `${client.defaultPrefix}help | ${client.guilds.cache.size} guild${client.guilds.cache.size <= 1 ? '' : 's'} | 0.1.2`,
                 `${client.defaultPrefix}help | ${client.users.cache.size} user${client.users.cache.size <= 1 ? '' : 's'} | 0.1.2`,
-                `${client.defaultPrefix}help | ${client.player?.players.size} player${client.player?.players.size <= 1 ? '' : 's'} | 0.1.2`,
+                `${client.defaultPrefix}help | ${client.player?.players.size} player${client.player?.players.size <= 1 ? '' : 's'} | 0.1.2`
             ]
             let choosenStatus = statusList[Math.round(Math.random() * statusList.length)]
             client.user.setActivity(choosenStatus, { type: 3 })

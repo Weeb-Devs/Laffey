@@ -6,6 +6,7 @@
   "SPOTIFY_CLIENT_ID": "",
   "SPOTIFY_CLIENT_SECRET": "",
   "KSOFT_API_KEY": "",
+  "GENIUS_API_KEY": "",
   "NODES": [
     {
       "HOST": "",
@@ -18,6 +19,7 @@
     }
   ],
   "AUTO_RESUME_DELAY": 1500,
+  "LYRICS_ENGINE": "ksoft",
   "DEBUG": true,
   "LOG_USAGE": false
 }
