@@ -1,8 +1,9 @@
 const {Client, Util, Collection} = require('discord.js');
 const utils = require('./modules/laffeyUtils');
-const { TOKEN, PREFIX, MONGODB_URI, OWNERS } = new (require('./modules/laffeyUtils'))();
+const {TOKEN, PREFIX, MONGODB_URI, OWNERS, LYRICS_ENGINE} = new (require('./modules/laffeyUtils'))();
 const eventHandler = require('./modules/eventHandler');
 const playerHandler = require('./modules/playerHandler');
+const lyricsHandler = require('./modules/lyricsHandler');
 const chalk = require('chalk');
 const commandHandler = require('./handlers/command.js');
 const loggerHandler = require('./handlers/logger.js');
@@ -40,6 +41,7 @@ class Laffey extends Client {
         this.voiceTimeout = new Collection();
         this.logger = new loggerHandler();
         this.playerHandler = new playerHandler(this);
+        this.lyrics = new lyricsHandler(this, LYRICS_ENGINE);
         this.owners = OWNERS;
         this.defaultPrefix = PREFIX;
 
