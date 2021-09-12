@@ -1,14 +1,14 @@
 const { MessageEmbed } = require('discord.js');
 const { PREFIX, LOG_USAGE } = new (require('../modules/laffeyUtils'))();
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const chalk = require('chalk');
 
 module.exports = {
     name: 'message',
     once: false,
     async execute(message, client) {
-        if (!message.guild) return;
-        if (message.author.bot) return;
-        const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        if (!message.guild || message.author.bot) return;
+        
         let command, args, prefix;
         let intro = new MessageEmbed()
             .setAuthor('Laffey', 'https://i.imgur.com/oAmrqHD.png')
