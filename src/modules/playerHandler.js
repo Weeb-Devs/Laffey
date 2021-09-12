@@ -2,6 +2,7 @@ const {TrackUtils} = require('erela.js');
 const autoResume = require('../schemas/autoResume');
 const chalk = require("chalk");
 const {AUTO_RESUME_DELAY} = new (require('../modules/laffeyUtils'))();
+const { generate } = require('shortid');
 
 module.exports = class LaffeyPlayerHandler {
     constructor(client) {
@@ -115,7 +116,7 @@ module.exports = class LaffeyPlayerHandler {
             pitch: player.pitch,
             _8d: player._8d,
             _24h: player.get('24h').status,
-            playerID: require('shortid').generate()
+            playerID: generate()
         }
     }
 
