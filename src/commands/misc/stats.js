@@ -70,7 +70,7 @@ module.exports = {
                     `Channels        :: ${client.channels.cache.size} channel${client.channels.cache.size > 1 ? 's' : ''}\n` +
                     `Players         :: ${client.player.players.size} player${client.player.players.size > 1 ? 's' : ''}\n` +
                     `RSS/Heap Total  :: ${Math.round(process.memoryUsage().rss / 1024 / 1024)} mb/${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)} mb\n` +
-                    `Uptime          :: ${require('pretty-ms')(client.uptime)}\n` +
+                    `Uptime          :: ${prettyMs(client.uptime)}\n` +
                     `\n` + `\`\`\``)
             message.channel.send(mainEmbed)
         }
