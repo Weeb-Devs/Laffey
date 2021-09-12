@@ -4,7 +4,7 @@ require('./src/modules/console');
 console.log(chalk.yellow('----------------------------------------------------------------------------------------------'))
 console.log()
 console.log(chalk.red('Found a bug? Feel free to create new issue here. https://github.com/Weeb-Devs/Laffey/issues/new'))
-console.log(chalk.yellow('Version: 0.1.5'))
+console.log(chalk.yellow('Version: 1.0.0'))
 console.log()
 console.log(chalk.yellow('----------------------------------------------------------------------------------------------'))
 console.log()
