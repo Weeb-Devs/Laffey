@@ -132,16 +132,16 @@ module.exports = Structure.extend('Player', player => {
             this.play(this.queue[0])
             if (this.queueRepeat) {
                 const track = TrackUtils.build({
-                    track: current.track ? current.track : null,
+                    track: current.track || null,
                     info: {
-                        title: current.title ? current.title : null,
-                        identifier: current.identifier ? current.identifier : null,
-                        author: current.author ? current.author : null,
-                        length: current.duration ? current.duration : 1,
+                        title: current.title || null,
+                        identifier: current.identifier || null,
+                        author: current.author || null,
+                        length: current.duration || 1,
                         isSeekable: current.isSeekable,
                         isStream: current.isStream,
-                        uri: current.uri ? current.uri : null,
-                        thumbnail: current.thumbnail ? current.thumbnail : null,
+                        uri: current.uri || null,
+                        thumbnail: current.thumbnail || null,
                     }
                 }, current.requester)
                 this.queue.add(track);
@@ -159,16 +159,16 @@ module.exports = Structure.extend('Player', player => {
             this.play(this.queue[parseInt(`${target}`) - 1])
             if (this.queueRepeat) {
                 const track = TrackUtils.build({
-                    track: current.track ? current.track : null,
+                    track: current.track || null,
                     info: {
-                        title: current.title ? current.title : null,
-                        identifier: current.identifier ? current.identifier : null,
-                        author: current.author ? current.author : null,
-                        length: current.duration ? current.duration : 1,
+                        title: current.title || null,
+                        identifier: current.identifier || null,
+                        author: current.author || null,
+                        length: current.duration || 1,
                         isSeekable: current.isSeekable,
                         isStream: current.isStream,
-                        uri: current.uri ? current.uri : null,
-                        thumbnail: current.thumbnail ? current.thumbnail : null,
+                        uri: current.uri || null,
+                        thumbnail: current.thumbnail || null,
                     }
                 }, current.requester)
                 this.queue.add(track)

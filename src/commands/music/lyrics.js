@@ -13,16 +13,16 @@ module.exports = {
     aliases: ['ly'],
     async execute(message, args, client) {
         try {
-            if (!ksoft) return message.channel.send(new handler().normalEmbed('Please ask developer to add ksoft API Key'))
+            if (!ksoft) return message.channel.send(handler.normalEmbed('Please ask developer to add ksoft API Key'))
             const player = client.player.players.get(message.guild.id);
-            if (!args[0] && !player) return message.channel.send(new handler().normalEmbed('Specify a title'))
+            if (!args[0] && !player) return message.channel.send(handler.normalEmbed('Specify a title'))
             let songTitle = args.join(' ') ? args.join(' ') : player?.queue?.current?.title;
-            if (!songTitle) return message.channel.send(new handler().normalEmbed('No music currently playing. Specify a title'))
+            if (!songTitle) return message.channel.send(handler.normalEmbed('No music currently playing. Specify a title'))
 
-            const wait = await message.channel.send(new handler().normalEmbed('Searching...'))
+            const wait = await message.channel.send(handler.normalEmbed('Searching...'))
             let err;
             const lyrics = await client.lyrics.search(songTitle).catch(() => err = true);
-            if (err) return message.channel.send(new handler().normalEmbed('No lyrics was found')).then(() => wait.deleted ? null : wait.delete())
+            if (err) return message.channel.send(handler.normalEmbed('No lyrics was found')).then(() => wait.deleted ? null : wait.delete())
             const chunked = this.chunkString(lyrics.lyrics, 1600)
             let colors = []
             if (lyrics.lyrics.artwork) {

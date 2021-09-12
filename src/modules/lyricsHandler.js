@@ -51,7 +51,6 @@ module.exports = class laffeyLyrics {
 
             case "google": {
                 this.clients.google = lyricsFinder;
-                break;
             }
         }
     }
@@ -66,7 +65,7 @@ module.exports = class laffeyLyrics {
                     lyrics: x.lyrics,
                     artist: x.artist ? x.artist.name : '',
                     title: x.name,
-                    artwork: x.artwork ? x.artwork : null
+                    artwork: x.artwork || null
                 })
             }).catch(reject)
         })
@@ -85,7 +84,7 @@ module.exports = class laffeyLyrics {
                         lyrics,
                         artist: x.artist ? x.artist.name : '',
                         title: x.title,
-                        artwork: x.image ? x.image : null
+                        artwork: x.image || null
                     })
                 }).catch(reject)
             } catch (e) {

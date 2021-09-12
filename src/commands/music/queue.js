@@ -9,8 +9,8 @@ module.exports = {
     async execute(message, args, client) {
         try {
             const player = client.player.players.get(message.guild.id);
-            if (!player) return message.channel.send(new handler().normalEmbed('There\'s no active player'));
-            if (!player.queue.current) return message.channel.send(new handler().normalEmbed('There\'s nothing playing'));
+            if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'));
+            if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s nothing playing'));
             try {
                 let currentPage = 0;
                 const embeds = this.build(message, player.queue);
