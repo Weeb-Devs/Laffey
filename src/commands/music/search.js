@@ -109,8 +109,6 @@ module.exports = {
                     await message.channel.send(new handler().normalEmbed(`Queued ${res.tracks[0].title} [${!res.tracks[0].isStream ? `${new Date(res.tracks[0].duration).toISOString().slice(11, 19)}` : '◉ LIVE'}]`))
                     await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
                 }
-
-                break;
             }
 
         }

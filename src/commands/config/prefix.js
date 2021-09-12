@@ -32,7 +32,6 @@ module.exports = {
                 get(message.guild.id).then(x => {
                     return message.channel.send(new handler().normalEmbed(`My current prefix on **${message.guild.name}** is ${x.error ? client.defaultPrefix : x.prefix}\n\n\`${x.error ? client.defaultPrefix : x.prefix}prefix set\` to set a new prefix`))
                 })
-                break
             }
         }
     }
