@@ -1,7 +1,7 @@
 const { MessageEmbed: mEmbed } = require('discord.js');
 
-class message {
-    noArgument(client, name, needed) {
+module.exports = {
+    noArgument: (client, name, needed) => {
         if (!needed || needed.length == 0) throw new RangeError('Needed arguments must be in an Array');
 
         const embed = new mEmbed()
@@ -10,9 +10,9 @@ class message {
             .setTitle('Missing arguments')
             .setDescription('**Usage:**\n\`' + needed.join('\n') + '`')
         return embed;
-    }
-
-    normalEmbed(content) {
+    },
+    
+    normalEmbed: (content) => {
         if (!content) throw new RangeError('Content must be a valid string/number')
 
         const embed = new mEmbed()
@@ -20,6 +20,4 @@ class message {
             .setDescription(content)
         return embed;
     }
-}
-
-module.exports = message;
+};

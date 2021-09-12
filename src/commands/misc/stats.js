@@ -1,5 +1,7 @@
 const { MessageEmbed, Message } = require('discord.js');
 const paginator = require('../../modules/paginator');
+const { uptime, totalmem, freemem, cpus } = require('os');
+const prettyMs = require('pretty-ms');
 
 module.exports = {
     name: 'stats',
@@ -18,30 +20,32 @@ module.exports = {
                     `Emojis          :: ${client.emojis.cache.size} emoji${client.emojis.cache.size > 1 ? 's' : ''}\n` +
                     `Roles           :: ${client.guilds.cache.reduce((acc, guild) => acc + guild.roles.cache.size, 0)} role${(client.guilds.cache.reduce((acc, guild) => acc + guild.roles.cache.size, 0)) > 1 ? 's' : ''}\n` +
                     `Players         :: ${client.player.players.size} player${client.player.players.size > 1 ? 's' : ''}\n` +
-                    `Uptime          :: ${require('pretty-ms')(client.uptime)}\n` +
-                    `Server Uptime   :: ${require('pretty-ms')(require('os').uptime() * 1000)}\n` +
+                    `Uptime          :: ${prettyMs(client.uptime)}\n` +
+                    `Server Uptime   :: ${prettyMs(uptime() * 1000)}\n` +
                     `\n` + `\`\`\``)
 
+            const memusage = process.memoryUsage();
             const pageTwo = new MessageEmbed()
                 .setAuthor('Stats', client.user.displayAvatarURL())
                 .setColor('#f5f5f5')
                 .setDescription(`\`\`\`nim` + '\n' +
-                    `Total Memory  :: ${Math.round(require('os').totalmem() / 1024 / 1024)} mb\n` +
-                    `Free Memory   :: ${Math.round(require('os').freemem() / 1024 / 1024)} mb\n` +
-                    `RSS           :: ${Math.round(process.memoryUsage().rss / 1024 / 1024)} mb\n` +
-                    `Heap Total    :: ${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)} mb\n` +
-                    `Heap Used     :: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)} mb\n` +
-                    `External      :: ${Math.round(process.memoryUsage().external / 1024 / 1024)} mb\n` +
-                    `Array Buffer  :: ${Math.round(process.memoryUsage().rss / 1024 / 1024)} mb\n` +
+                    `Total Memory  :: ${Math.round(totalmem() / 1024 / 1024)} mb\n` +
+                    `Free Memory   :: ${Math.round(freemem() / 1024 / 1024)} mb\n` +
+                    `RSS           :: ${Math.round(memusage.rss / 1024 / 1024)} mb\n` +
+                    `Heap Total    :: ${Math.round(memusage.heapTotal / 1024 / 1024)} mb\n` +
+                    `Heap Used     :: ${Math.round(memusage.heapUsed / 1024 / 1024)} mb\n` +
+                    `External      :: ${Math.round(memusage.external / 1024 / 1024)} mb\n` +
+                    `Array Buffer  :: ${Math.round(memusage.rss / 1024 / 1024)} mb\n` +
                     `\n` + `\`\`\``)
 
+            const cs = cpus();
             const pageThree = new MessageEmbed()
                 .setAuthor('Stats', client.user.displayAvatarURL())
                 .setColor('#f5f5f5')
                 .setDescription(`\`\`\`nim` + '\n' +
-                    `CPU Model     :: ${require('os').cpus()[0].model}\n` +
-                    `Cores         :: ${require('os').cpus().length}\n` +
-                    `Speed         :: ${require('os').cpus()[0].speed}Mhz\n` +
+                    `CPU Model     :: ${cs[0].model}\n` +
+                    `Cores         :: ${cs.length}\n` +
+                    `Speed         :: ${cs[0].speed}Mhz\n` +
                     `Bot's Usage   :: ${await this.getCpuUsage()}%\n` +
                     `System        :: ${await this.getSystemCpuUsage()}%\n` +
                     `Idle          :: ${await this.getIdleCpuUsage()}%\n` +
@@ -66,39 +70,42 @@ module.exports = {
                     `Channels        :: ${client.channels.cache.size} channel${client.channels.cache.size > 1 ? 's' : ''}\n` +
                     `Players         :: ${client.player.players.size} player${client.player.players.size > 1 ? 's' : ''}\n` +
                     `RSS/Heap Total  :: ${Math.round(process.memoryUsage().rss / 1024 / 1024)} mb/${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)} mb\n` +
-                    `Uptime          :: ${require('pretty-ms')(client.uptime)}\n` +
+                    `Uptime          :: ${prettyMs(client.uptime)}\n` +
                     `\n` + `\`\`\``)
             message.channel.send(mainEmbed)
         }
     },
     async getCpuUsage() {
-        const percentage = require("os").cpus().map((cpu, counter) => {
+        const cs = cpus();
+        const percentage = cs.map((cpu, counter) => {
             let total = 0;
             for (let type in cpu.times) {
                 total += cpu.times[type];
             }
             return Object.entries(cpu.times).map(t => Math.round(100 * t[1] / total))
-        }).reduce((x, y) => x + y[0], 0) / require('os').cpus().length
+        }).reduce((x, y) => x + y[0], 0) / cs.length
         return percentage;
     },
     async getSystemCpuUsage() {
-        const percentage = require("os").cpus().map((cpu, counter) => {
+        const cs = cpus();
+        const percentage = cs.map((cpu, counter) => {
             let total = 0;
             for (let type in cpu.times) {
                 total += cpu.times[type];
             }
             return Object.entries(cpu.times).map(t => Math.round(100 * t[1] / total))
-        }).reduce((x, y) => x + y[2], 0) / require('os').cpus().length
+        }).reduce((x, y) => x + y[2], 0) / cs.length
         return percentage;
     },
     async getIdleCpuUsage() {
-        const percentage = require("os").cpus().map((cpu, counter) => {
+        const cs = cpus();
+        const percentage = cs.map((cpu, counter) => {
             let total = 0;
             for (let type in cpu.times) {
                 total += cpu.times[type];
             }
             return Object.entries(cpu.times).map(t => Math.round(100 * t[1] / total))
-        }).reduce((x, y) => x + y[3], 0) / require('os').cpus().length
+        }).reduce((x, y) => x + y[3], 0) / cs.length
         return percentage;
     }
 }

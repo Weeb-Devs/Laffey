@@ -190,24 +190,22 @@ class lavalink extends Manager {
 }
 
 function collect(node) {
-    let nodes = []
-    node.forEach(x => {
+    return node.map(x => {
         if (!x.HOST) throw new RangeError('Host must be provided')
         if (typeof x.PORT != 'number') throw new RangeError('Port must be a number')
         if (typeof x.RETRY_AMOUNT != 'number') throw new RangeError('Retry amount must be a number')
         if (typeof x.RETRY_DELAY != 'number') throw new RangeError('Retry delay must be a number')
         if (typeof x.SECURE != 'boolean') throw new RangeError('Secure must be a boolean')
-        nodes.push({
+        return {
             host: x.HOST,
             password: x.PASSWORD ? x.PASSWORD : 'youshallnotpass',
-            port: x.PORT ? x.PORT : 8080,
-            identifier: x.IDENTIFIER ? x.IDENTIFIER : x.HOST,
+            port: x.PORT || 8080,
+            identifier: x.IDENTIFIER || x.HOST,
             retryAmount: x.RETRY_AMOUNT,
             retryDelay: x.RETRY_DELAY,
             secure: x.SECURE
-        })
-    })
-    return nodes;
+        };
+    });
 }
 
 

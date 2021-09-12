@@ -61,7 +61,6 @@ class Paginator {
                 case EMOJIS.last:
                     message.edit(this.pages[this.pages.length - 1]);
                     this.page = this.pages.length - 1;
-                    break;
             }
 
             try {

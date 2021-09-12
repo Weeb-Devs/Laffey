@@ -45,7 +45,7 @@ module.exports = {
                         error = true
                     }
                 }
-                if (error) return message.channel.send(new handler().normalEmbed(`No category or command was found!`))
+                if (error) return message.channel.send(handler.normalEmbed(`No category or command was found!`))
                 if (category) {
                     helpEmbed.addField(`${args[0]?.toLowerCase()} [${commandFile.length}]`, '```' + commandFile.join(', ').replace(/.js/gi, '') + '```')
                     message.channel.send(helpEmbed)
@@ -58,7 +58,7 @@ module.exports = {
                 }
             }
         } catch (err) {
-            message.channel.send(new handler().normalEmbed(`Error! ${err}`))
+            message.channel.send(handler.normalEmbed(`Error! ${err}`))
         }
     }
 }

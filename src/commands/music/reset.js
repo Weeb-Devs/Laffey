@@ -6,7 +6,7 @@ module.exports = {
     usage: 'reset',
     async execute(message, args, client) {
         const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(new handler().normalEmbed('There\'s no active player'))
+        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
         player.clearEffects()
         message.react('👌').catch((_) => {})
     }
