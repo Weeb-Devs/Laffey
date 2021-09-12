@@ -51,7 +51,6 @@ module.exports = {
                 player.play(res.tracks[0])
                 await message.channel.send(new handler().normalEmbed(`Force played ${res.tracks[0].title} [${!res.tracks[0].isStream ? `${new Date(res.tracks[0].duration).toISOString().slice(11, 19)}` : '◉ LIVE'}]`))
                 if (currentSong) player.queue.unshift(currentSong)
-                break;
             }
         }
     }

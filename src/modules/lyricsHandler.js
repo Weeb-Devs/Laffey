@@ -51,7 +51,6 @@ module.exports = class laffeyLyrics {
 
             case "google": {
                 this.clients.google = lyricsFinder;
-                break;
             }
         }
     }
