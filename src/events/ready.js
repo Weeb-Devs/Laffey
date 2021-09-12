@@ -18,7 +18,7 @@ module.exports = {
             ]
             let choosenStatus = statusList[Math.round(Math.random() * statusList.length)]
             client.user.setActivity(choosenStatus, { type: 3 })
-        }, 40 * 1000);
+        }, 40000);
         console.log(chalk.green(`[CLIENT] => [READY] ${client.user.tag} is now ready!`))
         await Util.delayFor(800)
         client.on('raw', (d) => player.updateVoiceState(d))
