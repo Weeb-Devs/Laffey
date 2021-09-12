@@ -67,21 +67,21 @@ module.exports = class LaffeyPlayerHandler {
         return data.track && data.identifier ? TrackUtils.build({
                 track: data.track,
                 info: {
-                    title: data.title ? data.title : null,
+                    title: data.title || null,
                     identifier: data.identifier,
-                    author: data.author ? data.author : null,
-                    length: data.duration ? data.duration : null,
+                    author: data.author || null,
+                    length: data.duration || null,
                     isSeekable: !!data.isStream,
                     isStream: !!data.isStream,
-                    uri: data.uri ? data.uri : null,
-                    thumbnail: data.thumbnail ? data.thumbnail : null,
+                    uri: data.uri || null,
+                    thumbnail: data.thumbnail || null,
                 }
             }, data.requester ? await this.client.users.fetch(data.requester) : null)
             :
             TrackUtils.buildUnresolved({
-                title: data.title ? data.title : '',
-                author: data.author ? data.author : '',
-                duration: data.duration ? data.duration : 0
+                title: data.title || '',
+                author: data.author || '',
+                duration: data.duration || 0
             }, data.requester ? await this.client.users.fetch(data.requester) : null)
     }
 
