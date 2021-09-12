@@ -18,7 +18,9 @@
 
 ## Current version:
 
-- 0.1.5 (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.5)
+- 1.0.0 **M** (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/1.0.0)
+  | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/1.0.0.md)
+- 0.1.5 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.5)
   | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.5.md)
 - 0.1.4 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.4)
   | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.4.md)
