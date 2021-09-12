@@ -1,4 +1,5 @@
 const { MessageEmbed, splitMessage } = require('discord.js');
+const { inspect } = require("util");
 const paginator = require('../../modules/paginator');
 
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
             const code = args.join(" ")
             let evaled = eval(code);
             let type = evaled
-            if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+            if (typeof evaled !== "string") evaled = inspect(evaled);
             evaled = this.clean(evaled)
             evaled = splitMessage(evaled, {
                 maxLength: 1520,
