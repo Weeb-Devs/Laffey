@@ -9,8 +9,8 @@ module.exports = {
     aliases: ['np'],
     async execute(message, args, client) {
         let player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(new handler().normalEmbed('There\'s no active player'))
-        if (!player.queue.current) return message.channel.send(new handler().normalEmbed('There\'s no music playing'))
+        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
+        if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s no music playing'))
         if (player.get('nowplaying')) {
             clearInterval(player.get('nowplaying'));
             player.get('nowplayingMSG').delete().catch(() => {
