@@ -199,8 +199,8 @@ function collect(node) {
         return {
             host: x.HOST,
             password: x.PASSWORD ? x.PASSWORD : 'youshallnotpass',
-            port: x.PORT ? x.PORT : 8080,
-            identifier: x.IDENTIFIER ? x.IDENTIFIER : x.HOST,
+            port: x.PORT || 8080,
+            identifier: x.IDENTIFIER || x.HOST,
             retryAmount: x.RETRY_AMOUNT,
             retryDelay: x.RETRY_DELAY,
             secure: x.SECURE
