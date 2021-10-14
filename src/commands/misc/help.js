@@ -51,7 +51,7 @@ module.exports = {
                     message.channel.send(helpEmbed)
                 } else {
                     helpEmbed.addField(`Name`, `${commandFile.name ? commandFile.name : "unknown"}`, true)
-                    helpEmbed.addField(`Aliases`, `${(commandFile.aliases && commandFile.aliases.length != 0) ? commandFile.aliases.join(', ') : "-"}`, true)
+                    helpEmbed.addField(`Aliases`, `${(commandFile.aliases && commandFile.aliases.length !== 0) ? commandFile.aliases.join(', ') : "-"}`, true)
                     helpEmbed.addField(`Usage`, `${client.prefixes.get(message.guild.id) ? client.prefixes.get(message.guild.id).prefix : client.defaultPrefix}${commandFile.usage ? commandFile.usage : "-"}`, true)
                     helpEmbed.addField(`Description`, `${commandFile.description ? commandFile.description : "-"}`)
                     message.channel.send(helpEmbed)

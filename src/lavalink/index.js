@@ -192,10 +192,10 @@ class lavalink extends Manager {
 function collect(node) {
     return node.map(x => {
         if (!x.HOST) throw new RangeError('Host must be provided')
-        if (typeof x.PORT != 'number') throw new RangeError('Port must be a number')
-        if (typeof x.RETRY_AMOUNT != 'number') throw new RangeError('Retry amount must be a number')
-        if (typeof x.RETRY_DELAY != 'number') throw new RangeError('Retry delay must be a number')
-        if (typeof x.SECURE != 'boolean') throw new RangeError('Secure must be a boolean')
+        if (typeof x.PORT !== 'number') throw new RangeError('Port must be a number')
+        if (typeof x.RETRY_AMOUNT !== 'number') throw new RangeError('Retry amount must be a number')
+        if (typeof x.RETRY_DELAY !== 'number') throw new RangeError('Retry delay must be a number')
+        if (typeof x.SECURE !== 'boolean') throw new RangeError('Secure must be a boolean')
         return {
             host: x.HOST,
             password: x.PASSWORD ? x.PASSWORD : 'youshallnotpass',
