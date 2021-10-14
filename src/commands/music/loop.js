@@ -12,7 +12,7 @@ module.exports = {
         player.toggleLoop()
             .then(async x => {
                 await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-                return message.channel.send(handler.normalEmbed(`Now looping ${x.status}`))
+                return message.channel.send(handler.normalEmbed(`Successfully, Changed the looping status to \`${x.status}\``))
             })
             .catch(err => {
                 message.channel.send(handler.normalEmbed(err))
