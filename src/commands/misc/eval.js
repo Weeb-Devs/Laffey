@@ -8,7 +8,7 @@ module.exports = {
     usage: 'eval < code >',
     async execute(message, args, client) {
         let authorize;
-        if (client.owners.length == 0) { authorize = true } else {
+        if (client.owners.length === 0) { authorize = true } else {
             if (client.owners.includes(message.author.id)) { authorize = true }
         }
 

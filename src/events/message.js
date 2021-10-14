@@ -14,7 +14,7 @@ module.exports = {
             .setAuthor('Laffey', 'https://i.imgur.com/oAmrqHD.png')
             .setDescription(`My prefix in \`${message.guild.name}\` is ${client.prefixes.get(message.guild.id) ? client.prefixes.get(message.guild.id).prefix : PREFIX}`)
             .setColor('#f50ae5')
-        if (message.content == `<@!${client.user.id}>` || message.content == `<@${client.user.id}>`) {
+        if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
             if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
             return message.channel.send(intro)
         }

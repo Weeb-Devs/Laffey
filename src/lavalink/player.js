@@ -127,7 +127,7 @@ module.exports = Structure.extend('Player', player => {
         }
 
         async skip() {
-            if (this.queue.length == 0) throw new Error('Queue is empty to skip')
+            if (this.queue.length === 0) throw new Error('Queue is empty to skip')
             const current = this.queue.current
             this.play(this.queue[0])
             if (this.queueRepeat) {
@@ -153,7 +153,7 @@ module.exports = Structure.extend('Player', player => {
 
         async skipto(target) {
             if (typeof target != 'number') throw new RangeError('<Player>#skipto() must be a number.')
-            if (this.queue.length == 0) throw new Error('Queue is empty to skip')
+            if (this.queue.length === 0) throw new Error('Queue is empty to skip')
             if (target > this.queue.size) throw new Error('There\'s only ' + this.queue.size + ' songs in queue.')
             const current = this.queue.current;
             this.play(this.queue[parseInt(`${target}`) - 1])

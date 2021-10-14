@@ -8,7 +8,7 @@ module.exports = {
     description: 'Get bot\'s stats',
     usage: 'stats',
     async execute(message, args, client) {
-        if (args[0]?.toLowerCase() == 'adv') {
+        if (args[0]?.toLowerCase() === 'adv') {
             let page = new paginator([], { filter: (reaction, user) => user.id === message.author.id, timeout: 3600000 })
             const pageOne = new MessageEmbed()
                 .setAuthor('Stats', client.user.displayAvatarURL())
