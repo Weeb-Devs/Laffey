@@ -52,7 +52,7 @@ module.exports = {
         } catch (err) {
             const errorEmbed = new MessageEmbed()
                 .setDescription(`I'm sorry, there was an error while executing **${command.name}**\n\`\`\`${err}\`\`\``)
-                .setColor(client.guilds.cache.get(message.guild.id).me.displayHexColor != '#000000' ? client.guilds.cache.get(message.guild.id).me.displayHexColor : '#00C7FF')
+                .setColor(client.guilds.cache.get(message.guild.id).me.displayHexColor !== '#000000' ? client.guilds.cache.get(message.guild.id).me.displayHexColor : '#00C7FF')
             message.channel.send(errorEmbed)
             client.logger.error(err)
         }

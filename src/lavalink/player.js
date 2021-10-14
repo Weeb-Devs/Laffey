@@ -29,7 +29,7 @@ module.exports = Structure.extend('Player', player => {
         }
 
         setNightcore(nc) {
-            if (typeof nc != "boolean") throw new RangeError('<Player>#setNighcore() must be an boolean (true or false).');
+            if (typeof nc !== "boolean") throw new RangeError('<Player>#setNighcore() must be an boolean (true or false).');
 
             if (nc) {
                 this.bassboost = false;
@@ -46,7 +46,7 @@ module.exports = Structure.extend('Player', player => {
         }
 
         setVaporwave(vaporwave) {
-            if (typeof vaporwave != "boolean") throw new RangeError('<Player>#setVaporwave() must be an (true or false).');
+            if (typeof vaporwave !== "boolean") throw new RangeError('<Player>#setVaporwave() must be an (true or false).');
 
             if (vaporwave) {
                 this.nightcore = false;
@@ -63,7 +63,7 @@ module.exports = Structure.extend('Player', player => {
         }
 
         setDistortion(distortion) {
-            if (typeof distortion != "boolean") throw new RangeError('<Player>#setDistortion() must be an boolean.');
+            if (typeof distortion !== "boolean") throw new RangeError('<Player>#setDistortion() must be an boolean.');
 
             if (distortion) {
                 this.nightcore = false;
@@ -94,7 +94,8 @@ module.exports = Structure.extend('Player', player => {
         }
 
         set8D(sd) {
-            if (typeof sd != 'boolean') throw new RangeError('<Player>#set8D() must be an boolean (true or false).')
+            if (typeof sd !== 'boolean') throw new RangeError('<Player>#set8D() must be an boolean (true or false).')
+
             if (sd) {
                 this.nightcore = false;
                 this.vaporwave = false;
@@ -152,7 +153,7 @@ module.exports = Structure.extend('Player', player => {
         }
 
         async skipto(target) {
-            if (typeof target != 'number') throw new RangeError('<Player>#skipto() must be an integer/number.')
+            if (typeof target !== 'number') throw new RangeError('<Player>#skipto() must be an integer/number.')
             if (this.queue.length === 0) throw new Error('There\'s no song(s) in the queue to skip.')
             if (target > this.queue.size) throw new Error('There\'s only ' + this.queue.size + ' songs in queue.')
             const current = this.queue.current;
@@ -186,14 +187,14 @@ module.exports = Structure.extend('Player', player => {
         }
 
         async move(first, second) {
-            if (typeof first != 'number') throw new RangeError('<Player>#move() first must be an integer/number.')
+            if (typeof first !== 'number') throw new RangeError('<Player>#move() first must be an integer/number.')
 
             if (first && !second) {
                 if ((parseInt(`${first}`) - 1) > this.queue.size) throw new Error('There\'s only ' + this.queue.size + ' songs in queue.')
                 this.array_move(this.queue, parseInt(`${first}`) - 1, 0)
                 return this;
             } else {
-                if (typeof second != 'number') throw new RangeError('<Player>#move() second must be an integer/number.')
+                if (typeof second !== 'number') throw new RangeError('<Player>#move() second must be an integer/number.')
                 if ((parseInt(`${first}`) - 1) > this.queue.size) throw new Error('There\'s only ' + this.queue.size + ' songs in queue.')
                 if ((parseInt(`${second}`) - 1) > this.queue.size) throw new Error('There\'s only ' + this.queue.size + ' songs in queue.')
                 this.array_move(this.queue, parseInt(`${first}`) - 1, parseInt(`${second}`) - 1)

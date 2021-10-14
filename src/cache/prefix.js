@@ -6,7 +6,7 @@ class prefix {
     }
     async cache() {
         const data = await schema.find();
-        if (data.length != 0) {
+        if (data.length !== 0) {
             return data;
         } else throw new Error('No prefix')
     }
