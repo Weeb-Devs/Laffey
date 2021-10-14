@@ -11,11 +11,11 @@ class logger {
     }
 
     eventDebug(name, content) {
-        DEBUG ? console.log((`[DEBUG] => [${name ? name : 'Unknown'}] ${content}`)) : ''
+        DEBUG ? console.log((`[EVENT DEBUG] => [${name ? name : 'Unknown'}] ${content}`)) : ''
     }
 
     log(name, content) {
-        console.log(chalk.green(`[DEBUG] => [${name}] ${content}`))
+        console.log(chalk.green(`[LOGS] => [${name}] ${content}`))
     }
 }
 
