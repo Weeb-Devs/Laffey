@@ -13,7 +13,7 @@ module.exports = {
         player.move(parseInt(args[0]), parseInt(args[1]))
             .then(async x => {
                 await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-                message.react('✅').catch((_) => { })
+                message.react('✅').catch(() => { })
             })
             .catch(err => {
                 message.channel.send(handler.normalEmbed(err))

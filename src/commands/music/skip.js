@@ -11,7 +11,7 @@ module.exports = {
         if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s no music playing'))
         player.skip()
             .then(x => {
-                message.react('⏭').catch((_) => { })
+                message.react('⏭').catch(() => { })
             })
             .catch(err => {
                 message.channel.send(handler.normalEmbed(err))

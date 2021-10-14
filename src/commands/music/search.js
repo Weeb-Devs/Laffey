@@ -82,14 +82,14 @@ module.exports = {
                     collected = await message.channel.awaitMessages(filter, {max: 1, time: 15000, errors: ['time']});
                 } catch (e) {
                     if (!player.queue.current) player.destroy();
-                    if (!re.deleted) re.delete().catch((_) => {
+                    if (!re.deleted) re.delete().catch(() => {
                     })
                     return message.channel.send(handler.normalEmbed(`Time out`))
                 }
                 const first = collected.first().content;
                 if (first.toLowerCase() === 'cancel') {
                     if (!player.queue.current) player.destroy();
-                    if (!re.deleted) re.delete().catch((_) => {
+                    if (!re.deleted) re.delete().catch(() => {
                     })
                     return message.channel.send(handler.normalEmbed(`Cancelled`))
                 }
@@ -99,10 +99,10 @@ module.exports = {
 
                 const track = res.tracks[index];
                 await player.queue.add(track);
-                if (!re.deleted) re.delete().catch((_) => {
+                if (!re.deleted) re.delete().catch(() => {
                 })
                 if (!player.playing && !player.paused) {
-                    if (!re.deleted) re.delete().catch((_) => {
+                    if (!re.deleted) re.delete().catch(() => {
                     })
                     player.play()
                 } else {

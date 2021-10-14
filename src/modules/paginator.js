@@ -36,7 +36,7 @@ class Paginator {
         if (!this.pages.length) return;
         const message = await channel.send(this.pages[0]);
         for (const emoji of Object.values(EMOJIS)) {
-            if (message.deleted) return message.reactions.removeAll().catch((_) => { })
+            if (message.deleted) return message.reactions.removeAll().catch(() => { })
             await message.react(emoji);
         }
         const collector = message.createReactionCollector(this.filter, { time: this.timeout });
@@ -51,7 +51,7 @@ class Paginator {
                     if (this.pages[this.page - 1]) message.edit(this.pages[--this.page]);
                     break;
                 case EMOJIS.stop:
-                    message.reactions.removeAll().catch((_) => { })
+                    message.reactions.removeAll().catch(() => { })
                     collector.stop();
                     message.delete({ timeout: 500 });
                     break;
@@ -65,7 +65,7 @@ class Paginator {
 
             try {
                 if (!message.deleted) {
-                    reaction.users.remove(user.id).catch((_) => { })
+                    reaction.users.remove(user.id).catch(() => { })
                 }
             } catch (err) {
                 console.log('blabla')
@@ -77,7 +77,7 @@ class Paginator {
             try {
                 if (!message.deleted) {
                     if (this.endPage) message.edit(this.endPage);
-                    message.reactions.removeAll().catch((_) => { })
+                    message.reactions.removeAll().catch(() => { })
                 }
             } catch (err) {
                 console.log('blabla')

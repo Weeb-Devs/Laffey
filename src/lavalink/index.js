@@ -171,7 +171,7 @@ class lavalink extends Manager {
                 player.get('nowplayingMSG').delete().catch(() => {
                 })
             }
-            channel.send({embed: noQueueEmbed}).catch((_) => {
+            channel.send({embed: noQueueEmbed}).catch(() => {
             })
             setTimeout(() => {
                 const e = client.player.players.get(player.guild)
@@ -181,7 +181,7 @@ class lavalink extends Manager {
                         .setAuthor("End")
                         .setDescription(`Leaving due to inactivity`)
                         .setColor(guild.me.displayHexColor !== '#000000' ? guild.me.displayHexColor : '#00C7FF')
-                    channel.send({embed: leftEmbed}).catch((_) => {
+                    channel.send({embed: leftEmbed}).catch(() => {
                     })
                 }
             }, 60000);
