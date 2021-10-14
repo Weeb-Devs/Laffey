@@ -13,7 +13,7 @@ module.exports = {
         if(isNaN(args[0])) return message.channel.send(handler.normalEmbed('That\'s not a number'))
         player.skipto(parseInt(args[0]))
             .then(x => {
-                message.react('⏩').catch((_) => { })
+                message.react('⏩').catch(() => { })
             })
             .catch(err => {
                 message.channel.send(handler.normalEmbed(err))

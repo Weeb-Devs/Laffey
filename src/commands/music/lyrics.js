@@ -49,11 +49,11 @@ module.exports = {
             } else {
                 let currentPage = 0
                 const msg = await message.channel.send(embeds[currentPage])
-                await msg.react("◀").catch((_) => {
+                await msg.react("◀").catch(() => {
                 });
-                await msg.react("🇽").catch((_) => {
+                await msg.react("🇽").catch(() => {
                 });
-                await msg.react("▶").catch((_) => {
+                await msg.react("▶").catch(() => {
                 });
                 const filter = (reaction, user) =>
                     ["◀", "🇽", "▶"].includes(reaction.emoji.name) && message.author.id === user.id;
@@ -74,7 +74,7 @@ module.exports = {
                             collector.stop();
                             msg.delete()
                         }
-                        await reaction.users.remove(message.author.id).catch((_) => {
+                        await reaction.users.remove(message.author.id).catch(() => {
                         })
                     } catch (err) {
                         console.error(err);

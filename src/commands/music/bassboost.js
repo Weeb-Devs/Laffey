@@ -15,7 +15,7 @@ module.exports = {
         } else if (args[0].toLowerCase() === 'reset') {
             player.setBassboost(false)
             await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-            message.react('✅').catch((_) => { })
+            message.react('✅').catch(() => { })
         } else {
             if (isNaN(args[0])) return message.channel.send(handler.normalEmbed(`That isn't a number`))
             if (args[0] > 2000 || args[0] < 0) return message.channel.send(handler.normalEmbed(`Invalid range. **1-1000**`))

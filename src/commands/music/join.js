@@ -18,7 +18,7 @@ module.exports = {
             });
             if (!channel.joinable) return message.channel.send(handler.normalEmbed('That channel isn\'t joinable'))
             player.connect()
-            message.react('✋').catch((_) => { })
+            message.react('✋').catch(() => { })
         } else return message.channel.send(handler.normalEmbed('\'m in another channel'))
     }
 }

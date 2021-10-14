@@ -12,6 +12,6 @@ module.exports = {
         if (!channel) return message.channel.send(handler.normalEmbed('You\'re not in a voice channel'))
         if (channel.id != player.voiceChannel) return message.channel.send(handler.normalEmbed('You\'re not in my voice channel'))
         player.destroy()
-        message.react('👋').catch((_) => { })
+        message.react('👋').catch(() => { })
     }
 }
