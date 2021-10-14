@@ -7,7 +7,7 @@ module.exports = {
     async execute(message, args, client) {
         const player = client.player.players.get(message.guild.id);
         if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (player.queue.size == 0) return message.channel.send(handler.normalEmbed('There\'s no song inside queue'))
+        if (player.queue.size === 0) return message.channel.send(handler.normalEmbed('There\'s no song inside queue'))
         if (!args[0]) return message.channel.send(handler.noArgument(client, this.name, ['remove < song\'s position >']))
         if (isNaN(args[0])) return message.channel.send(handler.noArgument(client, this.name, ['remove < song\'s position >']))
         if (args[0] > player.queue.size) return message.channel.send(handler.normalEmbed(`The queue only have ${player.queue.size} song${player.queue.size > 1 ? 's' : ''} `))

@@ -7,7 +7,7 @@ module.exports = {
     async execute(message, args, client) {
         const player = client.player.players.get(message.guild.id);
         if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (player.get('24h').status == false) {
+        if (player.get('24h').status === false) {
             player.set('24h', { status: true })
             await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
             message.channel.send(handler.normalEmbed(`24h \`ENABLED\``))

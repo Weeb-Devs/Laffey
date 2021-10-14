@@ -2,7 +2,7 @@ const { MessageEmbed: mEmbed } = require('discord.js');
 
 module.exports = {
     noArgument: (client, name, needed) => {
-        if (!needed || needed.length == 0) throw new RangeError('Needed arguments must be in an Array');
+        if (!needed || needed.length === 0) throw new RangeError('Needed arguments must be in an Array');
 
         const embed = new mEmbed()
             .setAuthor(name, client.user.displayAvatarURL())

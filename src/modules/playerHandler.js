@@ -11,7 +11,7 @@ module.exports = class LaffeyPlayerHandler {
     }
 
     async autoResume() {
-        if (this.client.database == undefined) return setTimeout(() => this.autoResume(), 1000)
+        if (this.client.database === undefined) return setTimeout(() => this.autoResume(), 1000)
         if (!this.client.database) return;
         console.log(chalk.yellow(`[LAVALINK] => [AUTO RESUME] Collecting player data`))
         const queues = await autoResume.find()
