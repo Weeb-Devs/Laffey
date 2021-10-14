@@ -10,6 +10,6 @@ module.exports = {
         const { status } = player.get('24h');
         player.set('24h', { status: !status })
         await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-        message.channel.send(handler.normalEmbed(`24h \`${status ? 'DISABLED' : 'ENABLED'}\``))
+        message.channel.send(handler.normalEmbed(`24h \`${status ? 'ENABLED' : 'DISABLED'}\``))
     }
 }
