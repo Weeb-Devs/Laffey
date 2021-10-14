@@ -11,6 +11,6 @@ module.exports = {
         if (player.queue.size === 0) return message.channel.send(handler.normalEmbed('Not enough song to shuffle'))
         player.queue.clear()
         await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-        message.react('✅').catch((_) => { })
+        message.react('✅').catch(() => { })
     }
 }

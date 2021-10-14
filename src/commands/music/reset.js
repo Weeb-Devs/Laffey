@@ -8,6 +8,6 @@ module.exports = {
         const player = client.player.players.get(message.guild.id);
         if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
         player.clearEffects()
-        message.react('👌').catch((_) => {})
+        message.react('👌').catch(() => {})
     }
 }

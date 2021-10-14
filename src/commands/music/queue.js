@@ -16,15 +16,15 @@ module.exports = {
                 const embeds = this.build(message, player.queue);
                 const queueEmbed = await message.channel.send(`${embeds[currentPage]}\n\nPage ${currentPage + 1}/${embeds.length} | Queue size: ${player.queue.size}`, { code: 'nim' });
                 if (embeds.length <= 2) {
-                    await queueEmbed.react("◀").catch((_) => { });
-                    await queueEmbed.react("🇽").catch((_) => { });
-                    await queueEmbed.react("▶").catch((_) => { });
+                    await queueEmbed.react("◀").catch(() => { });
+                    await queueEmbed.react("🇽").catch(() => { });
+                    await queueEmbed.react("▶").catch(() => { });
                 } else {
-                    await queueEmbed.react('⏪').catch((_) => { });
-                    await queueEmbed.react("◀").catch((_) => { });
-                    await queueEmbed.react("🇽").catch((_) => { });
-                    await queueEmbed.react("▶").catch((_) => { });
-                    await queueEmbed.react('⏩').catch((_) => { });
+                    await queueEmbed.react('⏪').catch(() => { });
+                    await queueEmbed.react("◀").catch(() => { });
+                    await queueEmbed.react("🇽").catch(() => { });
+                    await queueEmbed.react("▶").catch(() => { });
+                    await queueEmbed.react('⏩').catch(() => { });
                 }
 
                 const filter = (reaction, user) =>
