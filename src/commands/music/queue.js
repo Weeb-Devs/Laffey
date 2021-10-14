@@ -78,7 +78,7 @@ module.exports = {
         try {
             const embeds = [];
             let k = 10;
-            if (queue.length != 0) {
+            if (queue.length !== 0) {
                 for (let i = 0; i < queue.length; i += 10) {
                     const current = queue.slice(i, k);
                     let j = i;

@@ -87,7 +87,7 @@ module.exports = class LaffeyPlayerHandler {
 
     async savePlayer(player) {
         if (!this.client.database) return;
-        if (!player || typeof player.guild != 'string') throw new RangeError('Invalid player');
+        if (!player || typeof player.guild !== 'string') throw new RangeError('Invalid player');
         let guildID = player.guild
         const data = await autoResume.findOne({guildID: guildID})
 
