@@ -5,7 +5,7 @@ module.exports = {
     description: 'Get lavalink node\'s status',
     usage: 'node',
     async execute(message, args, client) {
-        const all = client.players.nodes.map(node => 
+        const all = client.player.nodes.map(node => 
             `Node ${(node.options.identifier)} Connected` +
             `\nPlayer: ${node.stats.players}` +
             `\nPlaying Players: ${node.stats.playingPlayers}` +
