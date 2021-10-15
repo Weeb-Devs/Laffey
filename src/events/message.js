@@ -9,7 +9,6 @@ module.exports = {
     async execute(message, client) {
         if (!message.guild || message.author.bot) return;
         
-        let command, args, prefix;
         let intro = new MessageEmbed()
             .setAuthor('Laffey', 'https://i.imgur.com/oAmrqHD.png')
             .setDescription(`My prefix in \`${message.guild.name}\` is ${client.prefixes.get(message.guild.id) ? client.prefixes.get(message.guild.id).prefix : PREFIX}`)
@@ -18,29 +17,14 @@ module.exports = {
             if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
             return message.channel.send(intro)
         }
+        
+        const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.prefixes.get(message.guild)?.prefix || PREFIX)})\\s*`);
+        if (!prefixRegex.test(message.content)) return;
+        const [, matchedPrefix] = message.content.match(prefixRegex);
+        const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
+        const commandName = args.shift().toLowerCase();
+        const command = client.commands.get(commandName) || client.commands.find(x => x.aliases?.includes(commandName));
 
-        if (!message.content) return;
-
-        if (client.prefixes.get(message.guild.id)?.prefix) {
-            prefix = client.prefixes.get(message.guild.id).prefix
-            const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
-            if (!prefixRegex.test(message.content)) return;
-            const [, matchedPrefix] = message.content.match(prefixRegex);
-
-            args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
-            const commandName = args.shift().toLowerCase();
-            command = client.commands.get(commandName) || client.commands.find(x => x.aliases && x.aliases.includes(commandName));
-
-        } else {
-            prefix = PREFIX
-            const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
-            if (!prefixRegex.test(message.content)) return;
-            const [, matchedPrefix] = message.content.match(prefixRegex);
-
-            args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
-            const commandName = args.shift().toLowerCase();
-            command = client.commands.get(commandName) || client.commands.find(x => x.aliases && x.aliases.includes(commandName));
-        }
         if (!command) return;
         if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
 
