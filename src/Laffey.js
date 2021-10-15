@@ -24,11 +24,10 @@ class Laffey extends Client {
             restTimeOffset: 0
         })
         this.loginMongo().then(async x => {
+            this.database = !!x;
             if (!x) {
-                this.database = false;
                 this.logger.error('MONGODB URI is either not provided or invalid. Extra feature (prefix) won\'t be available')
             } else {
-                this.database = true;
                 this.logger.log('DATABASE', 'Connected to database')
                 await Util.delayFor(1000)
                 cache(this)
