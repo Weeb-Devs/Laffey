@@ -11,7 +11,7 @@ function main(client) {
             notImportantCount++;
         }
     }
-    client.logger.debug('COMMANDS', `Loaded ${notImportant.length} commands`)
+    client.logger.debug('COMMANDS', `Loaded ${notImportantCount} commands`)
 }
 
 module.exports = main;
