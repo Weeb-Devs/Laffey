@@ -94,9 +94,8 @@ module.exports = class LaffeyPlayerHandler {
         if (!data) {
             const newData = new autoResume(this.buildStructure(player))
             return await newData.save()
-        } else {
-            return autoResume.findOneAndUpdate({guildID}, this.buildStructure(player));
         }
+        return autoResume.findOneAndUpdate({guildID}, this.buildStructure(player));
     }
 
     buildStructure(player) {
