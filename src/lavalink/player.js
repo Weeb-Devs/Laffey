@@ -88,7 +88,7 @@ module.exports = Structure.extend('Player', player => {
                 this.setNightcore(false)
                 this.setEQ(...Array.from({ length: 3 }, () => {
                     return { band: 1, gain: bassboost }; // this is so nodejs can differentiate which { is for arrow function and which one is for objects
-                });
+                }));
                 this.bassboost = bassboost;
             } else this.clearEffects();
             this.bassboost = bassboost;
