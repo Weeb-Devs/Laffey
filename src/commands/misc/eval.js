@@ -7,12 +7,8 @@ module.exports = {
     description: 'Evaluate code',
     usage: 'eval < code >',
     async execute(message, args, client) {
-        let authorize;
-        if (client.owners.length === 0) { authorize = true } else {
-            if (client.owners.includes(message.author.id)) { authorize = true }
-        }
-
-        if (!authorize) return message.channel.send('Unauthorized')
+        if (!client.owners.includes(message.author.id))
+            return message.channel.send('Unauthorized');
 
         try {
             const code = args.join(" ")
