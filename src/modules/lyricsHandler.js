@@ -18,7 +18,7 @@ module.exports = class laffeyLyrics {
     }
 
     async search(title) {
-        const x = await this[x](title);
+        const x = await this[this.mode](title);
         
         switch (this.mode) {
             case "ksoft": {
