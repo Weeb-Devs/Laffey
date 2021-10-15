@@ -18,18 +18,17 @@ module.exports = class laffeyLyrics {
     }
 
     async search(title) {
+        const x = await this[x](title);
+        
         switch (this.mode) {
             case "ksoft": {
-                const x = await this.ksoft(title);
                 return {...x, source: "KSoft.Si"};
             }
 
             case "genius": {
-                const x = await this.genius(title);
                 return {...x, source: "Genius"};
             }
             case "google": {
-                const x = await this.google(title);
                 return {...x, source: "Google"};
             }
         }
@@ -63,7 +62,7 @@ module.exports = class laffeyLyrics {
                 if (!x.lyrics) return reject("No lyrics was found")
                 resolve({
                     lyrics: x.lyrics,
-                    artist: x.artist ? x.artist.name : '',
+                    artist: x.artist?.name || '',
                     title: x.name,
                     artwork: x.artwork || null
                 })
@@ -82,7 +81,7 @@ module.exports = class laffeyLyrics {
                     const lyrics = await firstSong.lyrics().catch(reject);
                     resolve({
                         lyrics,
-                        artist: x.artist ? x.artist.name : '',
+                        artist: x.artist?.name : '',
                         title: x.title,
                         artwork: x.image || null
                     })
