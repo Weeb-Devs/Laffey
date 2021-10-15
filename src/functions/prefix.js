@@ -3,11 +3,9 @@ const prefix = require('../schemas/prefix');
 async function get(guildID) {
     const data = await prefix.findOne({ guildID })
 
-    if (data) {
+    if (data)
         return { msg: 'success', error: false, prefix: data.prefix }
-    } else {
-        return { msg: 'error', error: true, prefix: null }
-    }
+    return { msg: 'error', error: true, prefix: null }
 }
 
 async function set(client, guildID, prefix) {
@@ -29,11 +27,9 @@ async function reset(client, guildID) {
     const data = await prefix.findOne({ guildID })
     client.prefixes.delete(guildID)
     
-    if (data) {
-        return { msg: 'success', error: false }
-    } else {
-        return { msg: 'error', error: true }
-    }
+    if (data)
+        return { msg: 'success', error: false };
+    return { msg: 'error', error: true };
 }
 
 module.exports = { get, set, reset }
