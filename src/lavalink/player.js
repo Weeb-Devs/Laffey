@@ -86,7 +86,9 @@ module.exports = Structure.extend('Player', player => {
                 this.vaporwave = false;
                 this.setVaporwave(false)
                 this.setNightcore(false)
-                this.setEQ(...new Array(3).fill(null).map((_, i) => ({ band: 1, gain: bassboost })));
+                this.setEQ(...Array.from({ length: 3 }, () => {
+                    return { band: 1, gain: bassboost }; // this is so nodejs can differentiate which { is for arrow function and which one is for objects
+                });
                 this.bassboost = bassboost;
             } else this.clearEffects();
             this.bassboost = bassboost;
@@ -105,7 +107,7 @@ module.exports = Structure.extend('Player', player => {
                     guildId: this.guild,
                     rotation: {
                         rotationHz: 0.2,
-                    },
+                    }
                 })
                 this._8d = sd
             } else this.clearEffects()
@@ -146,7 +148,6 @@ module.exports = Structure.extend('Player', player => {
                 }, current.requester)
                 this.queue.add(track);
                 this.queue.shift();
-                return this;
             } else this.queue.shift();
             return this;
         }
@@ -176,13 +177,12 @@ module.exports = Structure.extend('Player', player => {
                     this.queue.push(this.queue.shift());
                 }
                 this.queue.shift()
-                return this;
             } else {
-                for (var i = 0; i < parseInt(`${target}`); i++) {
-                    (this.queue.shift())
+                for (let i = 0; i < parseInt(`${target}`); i++) {
+                    this.queue.shift()
                 }
-                return this;
             }
+            return this;
         }
 
         async move(first, second) {
