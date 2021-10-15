@@ -45,30 +45,30 @@ All required OS and other for lavalink server available [here](https://github.co
 
 ### Server for the bot to run
 
-- nodejs v14.x.x or higher `because we're using optional chaining method`
-- discordjs v12.x.x or higher
+- nodejs v14 or newer `because we're using optional chaining method`
+- discordjs v12
 
 ### Data
 
 - Discord bot's
-  token `You should know why you need this or you won't go to this repo` [Get or create bot here](https://discord.com/developers/applications)
-  | [How to get token](https://github.com/Weeb-Devs/Laffey/blob/main/readme/CREATE_FIRST_BOT.md)
+  token `You should know why you need this` [Get or create bot here](https://discord.com/developers/applications)
+  | [How to get your bot's token](https://github.com/Weeb-Devs/Laffey/blob/main/readme/CREATE_FIRST_BOT.md)
 - Mongodb
-  URI `for prefix and auto resume feature. It won't work if you enter invalid or no URI` [MongoDB](https://account.mongodb.com/account/login)
-- Your ID `for eval command. It's dangerous if eval accessible to everyone`
+  URI `for prefix and auto resume feature. It won't work if you enter an invalid URI` [MongoDB](https://account.mongodb.com/account/login)
+- Your ID `for eval command. please note that it's dangerous if eval is accessible to everyone`
 - Spotify client ID `for spotify support` [Click here to get](https://developer.spotify.com/dashboard/login)
 - Spotify client Secret `for spotify support` [Click here to get](https://developer.spotify.com/dashboard/login)
 - Ksoft API
-  Key `not required, depend on your choosen lyrics engine` [Click here to get](https://api.ksoft.si/?ref=ksoft.si#get-started)
-- Genius API Key `not required, depend on your choosen lyrics engine` [Click here to get](http://genius.com/api-clients)
+  Key `not required, depends on your chosen lyrics engine` [Click here to get](https://api.ksoft.si/?ref=ksoft.si#get-started)
+- Genius API Key `not required, depends on your chosen lyrics engine` [Click here to get](http://genius.com/api-clients)
 - Lavalink server
     - Host `url to your lavalink server`
-    - Password `your lavalink's password. Default is youshallnotpass`
-    - Port `port for your lavalink server. Default is 80`
-    - Identifier `Name for your node. Default to its url`
-    - Retry amount `retry amount when the node encounted error. Default is 3`
-    - Retry delay `delay for each retry. Default is 1000 (1s)`
-    - Secure `wether your node use ssl connection. Default is false`
+    - Password `your lavalink's password. Defaults to youshallnotpass`
+    - Port `port for your lavalink server. Defaults to 80`
+    - Identifier `Name for your node. Defaults to it's url`
+    - Retry amount `retry amount when the node encountered an error. Defaults to 3`
+    - Retry delay `delay for each retry. Defaults to 1000 ms`
+    - Secure `wether your node uses an ssl connection. Defaults to false`
 
 ## Available music sources:
 
@@ -82,13 +82,13 @@ All required OS and other for lavalink server available [here](https://github.co
 - deezer`*`
 
   **Note:**
-    - `*` is depend on your lavalink's configuration
+    - `*` depends on your lavalink's configuration
 
 ## Configuration & Starting the bot:
 
 ### With config.json
 
-1. First, change `config.json.example` file's name into `config.json`, and fill it
+1. First, change `config.json.example`'s name into `config.json`, and fill it with the following;
 
 ```json
 {
@@ -102,13 +102,13 @@ All required OS and other for lavalink server available [here](https://github.co
   "SPOTIFY_CLIENT_SECRET": "For spotify support",
   "KSOFT_API_KEY": "For the lyrics. It depend on your choice",
   "GENIUS_API_KEY": "For the lyrics. It depend on your choice",
-  "LYRICS_ENGINE": "There are 3 options. ksoft ; genius ; google . Google don't need any API",
+  "LYRICS_ENGINE": "There are 3 options. ksoft ; genius ; google . Google doesn't need any API",
   "NODES": [
     {
       "HOST": "Your node's host",
       "PASSWORD": "Your node's password",
       "PORT": 80,
-      "IDENTIFIER": "This node's identifier, it's up to you",
+      "IDENTIFIER": "This is node's identifier, it's all up to you",
       "RETRY_AMOUNT": 3,
       "RETRY_DELAY": 1000,
       "SECURE": false
@@ -144,7 +144,7 @@ All required OS and other for lavalink server available [here](https://github.co
     DEBUG=true
     LOG_USAGE=false
     ```  
-   #### config.json file (you don't need this if you already provide NODES in .env)
+   #### config.json file (you don't need this if you already provided NODES in .env)
     ```json
     {
       "NODES": [
@@ -165,8 +165,8 @@ All required OS and other for lavalink server available [here](https://github.co
    <br>  
    **Note:**
 
-    - `DEBUG` is to see more data when your bot starting and other warning
-    - `LOG_USAGE` is to log all command usage by user. Default to false because it'll be annoying
+    - `DEBUG` is to see more info when your bot is starting or when a warning was thrown
+    - `LOG_USAGE` is to log all command usage by user. Defaults to false because it'll be annoying
     - `AUTO_RESUME_DELAY` is how many ms do you want to add a delay between guild on auto resume
       <br>
       <br>
@@ -181,11 +181,11 @@ All required OS and other for lavalink server available [here](https://github.co
 ## Commands
 
 - music
-    - play `play music from 7 music sources`   
+    - play `plays a music from 7 different music sources`   
       -aliases: p  
       -example: `?play https://www.youtube.com/playlist?list=PL0jh16Vp3NzVjEjKbZ3pV4f15Jze5EANV`
 
-    - forceplay `same like play, but this will force the player to play specific song`   
+    - forceplay `same like play, but this will force the player to play a specific song`   
       -aliases: fp  
       -example: `?forceplay https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 
@@ -201,7 +201,7 @@ All required OS and other for lavalink server available [here](https://github.co
       -aliases: v  
       -example: `?volume 1000`
 
-    - nowplaying `see current playing song`  
+    - nowplaying `see the song currently playing`  
       -aliases: np    
       -example: `?nowplaying`
 
@@ -217,7 +217,7 @@ All required OS and other for lavalink server available [here](https://github.co
       -aliases: s    
       -example: `?skip`
 
-    - skipto `skip to specific song`  
+    - skipto `skip to a specific song`  
       -aliases: st, jump, jumpto    
       -example: `?skipto 3`
 
@@ -245,7 +245,7 @@ All required OS and other for lavalink server available [here](https://github.co
       -aliases: bb    
       -example: `?bassboost [reset | 1 - 2000]`
 
-    - 24h `whether the bot to leave vc when there's no user or not`  
+    - 24h `whether the bot should leave vc when there's no user or not`  
       -aliases: -    
       -example: `?24h`
 
@@ -281,7 +281,7 @@ All required OS and other for lavalink server available [here](https://github.co
       -aliases: -    
       -example: `?remove 3`
 
-    - previous `Play song that played previously`  
+    - previous `Play previously played song`  
       -aliases: pr    
       -example: `?previous`
 
@@ -333,6 +333,5 @@ All required OS and other for lavalink server available [here](https://github.co
 
 Created at: Friday, 2 April 2021  
 Published at: Sunday, 11 April 2021  
-[Laffey](https://github.com/Weeb-Devs/Laffey) is [Weeb-Devs](https://github.com/Weeb-Devs) 's first project. Was created
-by our first member aka owner, Takiyo. He really wants to make his first open source project ever. Because he wants more
-for coding experience. In this project, he was challenged to make project with less bugs. Hope you enjoy using Laffey!
+[Laffey](https://github.com/Weeb-Devs/Laffey) is [Weeb-Devs](https://github.com/Weeb-Devs) 's first project. It was created
+by our first member aka owner, Takiyo. He really wants to make his first open source project ever. Because he wants more coding experience. In this project, he was challenged to make a project with less bugs. Hope you enjoy using Laffey!
