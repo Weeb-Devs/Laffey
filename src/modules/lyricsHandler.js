@@ -81,7 +81,7 @@ module.exports = class laffeyLyrics {
                     const lyrics = await firstSong.lyrics().catch(reject);
                     resolve({
                         lyrics,
-                        artist: x.artist?.name : '',
+                        artist: x.artist?.name || '',
                         title: x.title,
                         artwork: x.image || null
                     })
