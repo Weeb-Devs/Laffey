@@ -18,7 +18,7 @@ module.exports = {
             return message.channel.send(intro)
         }
         
-        const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.prefixes.get(message.guild)?.prefix || PREFIX)})\\s*`);
+        const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.prefixes.get(message.guild.id)?.prefix || PREFIX)})\\s*`);
         if (!prefixRegex.test(message.content)) return;
         const [, matchedPrefix] = message.content.match(prefixRegex);
         const args = message.content.slice(matchedPrefix.length).trim().split(/\s+/);
