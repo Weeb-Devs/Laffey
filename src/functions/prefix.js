@@ -18,7 +18,7 @@ async function set(client, guildID, Prefix) {
     } else {
         const newPrefix = new prefix({ guildID, prefix: Prefix })
         newPrefix.save()
-        client.prefixes.set(guildID, { prefix, guildID })
+        client.prefixes.set(guildID, { prefix: Prefix, guildID })
         return { msg: 'success', error: false, Prefix }
     }
 }
