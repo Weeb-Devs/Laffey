@@ -8,18 +8,18 @@ async function get(guildID) {
     return { msg: 'error', error: true, prefix: null }
 }
 
-async function set(client, guildID, prefix) {
+async function set(client, guildID, Prefix) {
     const data = await prefix.findOne({ guildID })
 
     if (data) {
-        await prefix.findOneAndUpdate({ guildID }, { guildID, prefix })
-        client.prefixes.set(guildId, { prefix, guildID })
-        return { msg: 'success', error: false, prefix }
+        await prefix.findOneAndUpdate({ guildID }, { guildID, prefix: Prefix })
+        client.prefixes.set(guildID, { prefix: Prefix, guildID })
+        return { msg: 'success', error: false, Prefix }
     } else {
-        const newPrefix = new prefix({ guildID, prefix })
+        const newPrefix = new prefix({ guildID, prefix: Prefix })
         newPrefix.save()
         client.prefixes.set(guildID, { prefix, guildID })
-        return { msg: 'success', error: false, prefix }
+        return { msg: 'success', error: false, Prefix }
     }
 }
 
