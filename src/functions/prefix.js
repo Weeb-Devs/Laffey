@@ -24,11 +24,11 @@ async function set(client, guildID, Prefix) {
 }
 
 async function reset(client, guildID) {
-    const data = await prefix.findOne({ guildID })
+    const data = await prefix.findOne({ guildID });
+    if(data) await prefix.findOneAndRemove({ guildID });
     client.prefixes.delete(guildID)
     
-    if (data)
-        return { msg: 'success', error: false };
+    if (data) return { msg: 'success', error: false };
     return { msg: 'error', error: true };
 }
 
