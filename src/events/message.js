@@ -14,8 +14,8 @@ module.exports = {
             .setDescription(`My prefix in \`${message.guild.name}\` is ${client.prefixes.get(message.guild.id) ? client.prefixes.get(message.guild.id).prefix : PREFIX}`)
             .setColor('#f50ae5')
         if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
-            if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
-            return message.channel.send(intro)
+        if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES') || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) return message.member.send('Hey, i need `SEND_MESSAGES`,`EMBED_LINKS` permission to do interaction with user.').catch(() => { })
+          return message.channel.send(intro)
         }
         
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.prefixes.get(message.guild.id)?.prefix || PREFIX)})\\s*`);
@@ -26,7 +26,7 @@ module.exports = {
         const command = client.commands.get(commandName) || client.commands.find(x => x.aliases?.includes(commandName));
 
         if (!command) return;
-        if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
+        if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES') || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) return message.member.send('Hey, i need `SEND_MESSAGES`,`EMBED_LINKS` permission to do interaction with user.').catch(() => { })
 
         try {
             if (LOG_USAGE) {
