@@ -15,7 +15,12 @@ module.exports = {
             .setColor('#f50ae5')
         if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
             if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
-            return message.channel.send(intro)
+                    if(!message.channel.permissionsFor(message.guild.me).has("EMBED_LINKS")){
+            const x = await message.channel.send({content: `I don't have \`EMBED LINKS\` permssion`})
+            setTimeout(() => x.delete().catch(e=>console.log("Could not delete, this prevents a bug")), 5000)
+            return;
+        }
+          return message.channel.send(intro)
         }
         
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.prefixes.get(message.guild.id)?.prefix || PREFIX)})\\s*`);
@@ -27,7 +32,12 @@ module.exports = {
 
         if (!command) return;
         if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
-
+            if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
+                    if(!message.channel.permissionsFor(message.guild.me).has("EMBED_LINKS")){
+            const x = await message.channel.send({content: `I don't have \`EMBED LINKS\` permssion`})
+            setTimeout(() => x.delete().catch(e=>console.log("Could not delete, this prevents a bug")), 5000)
+            return;
+        }
         try {
             if (LOG_USAGE) {
                 console.log(chalk.magenta(`[LOG] => [COMMANDS] ${message.author.tag} (${message.author.id}) : ${message.content}`))
