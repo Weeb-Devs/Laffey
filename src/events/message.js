@@ -14,12 +14,7 @@ module.exports = {
             .setDescription(`My prefix in \`${message.guild.name}\` is ${client.prefixes.get(message.guild.id) ? client.prefixes.get(message.guild.id).prefix : PREFIX}`)
             .setColor('#f50ae5')
         if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
-            if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
-                    if(!message.channel.permissionsFor(message.guild.me).has("EMBED_LINKS")){
-            const x = await message.channel.send({content: `I don't have \`EMBED LINKS\` permssion`})
-            setTimeout(() => x.delete().catch(e=>console.log("Could not delete, this prevents a bug")), 5000)
-            return;
-        }
+        if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES') || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) return message.member.send('Hey, i need `SEND_MESSAGES`,`EMBED_LINKS` permission to do interaction with user.').catch(() => { })
           return message.channel.send(intro)
         }
         
@@ -31,13 +26,8 @@ module.exports = {
         const command = client.commands.get(commandName) || client.commands.find(x => x.aliases?.includes(commandName));
 
         if (!command) return;
-        if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
-            if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return message.member.send('Hey, i need `SEND_MESSAGES` permission to do interaction with user.').catch(() => { })
-                    if(!message.channel.permissionsFor(message.guild.me).has("EMBED_LINKS")){
-            const x = await message.channel.send({content: `I don't have \`EMBED LINKS\` permssion`})
-            setTimeout(() => x.delete().catch(e=>console.log("Could not delete, this prevents a bug")), 5000)
-            return;
-        }
+        if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES') || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) return message.member.send('Hey, i need `SEND_MESSAGES`,`EMBED_LINKS` permission to do interaction with user.').catch(() => { })
+
         try {
             if (LOG_USAGE) {
                 console.log(chalk.magenta(`[LOG] => [COMMANDS] ${message.author.tag} (${message.author.id}) : ${message.content}`))
