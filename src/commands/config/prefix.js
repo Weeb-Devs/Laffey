@@ -8,6 +8,7 @@ module.exports = {
     usage: 'prefix [ new prefix ]',
     async execute(message, args, client) {
         if (!client.database) return message.channel.send(handler.normalEmbed('Please ask developer to give a valid MongoDB URI.'))
+        if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send(handler.normalEmbed('You need `ADMINISTRATOR` permission to use this command.'))
         const opt = args[0]
         const newPrefix = args[1]
 
