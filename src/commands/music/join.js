@@ -8,7 +8,8 @@ module.exports = {
         let player = client.player.players.get(message.guild.id);
         const { channel } = message.member.voice;
         if (!channel) return message.channel.send(handler.normalEmbed('You\'re not in a voice channel'))
-
+        if(!channel.permissionsFor(client.user).has(["CONNECT", "SPEAK"])) return message.channel.send(handler.normalEmbed('I don\'t have CONNECT and SPEAK permission on your voice channel'))
+        
         if (!player || (player && !player.voiceChannel)) {
             player = client.player.create({
                 guild: message.guild.id,
