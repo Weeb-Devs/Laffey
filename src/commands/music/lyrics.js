@@ -1,10 +1,7 @@
 const handler = require('../../handlers/message');
-const {KSOFT_API_KEY} = new (require('../../modules/laffeyUtils'))();
 const {MessageEmbed} = require('discord.js');
 const palette = require('image-palette');
 const pixels = require('image-pixels');
-const {KSoftClient} = require('@ksoft/api');
-const ksoft = KSOFT_API_KEY ? new KSoftClient(KSOFT_API_KEY) : null;
 
 module.exports = {
     name: 'lyrics',
@@ -13,7 +10,6 @@ module.exports = {
     aliases: ['ly'],
     async execute(message, args, client) {
         try {
-            if (!ksoft) return message.channel.send(handler.normalEmbed('Please ask developer to add ksoft API Key'))
             const player = client.player.players.get(message.guild.id);
             if (!args[0] && !player) return message.channel.send(handler.normalEmbed('Specify a title'))
             let songTitle = args.join(' ') ? args.join(' ') : player?.queue?.current?.title;
