@@ -1,5 +1,5 @@
 const { MessageEmbed, Message } = require('discord.js');
-const paginator = require('../../modules/paginator');
+const paginator = require('../../modules/Pagination');
 const { uptime, totalmem, freemem, cpus } = require('os');
 const prettyMs = require('pretty-ms');
 

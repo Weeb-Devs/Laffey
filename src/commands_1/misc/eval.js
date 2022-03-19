@@ -1,6 +1,6 @@
 const { MessageEmbed, splitMessage } = require('discord.js');
 const { inspect } = require("util");
-const paginator = require('../../modules/paginator');
+const paginator = require('../../modules/Pagination');
 
 module.exports = {
     name: 'eval',
