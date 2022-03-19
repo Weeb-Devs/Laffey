@@ -19,7 +19,7 @@ module.exports = {
             .addField('Roundtrip', `${this.getEmoji(new Date() - message.createdTimestamp)} ${new Date() - message.createdTimestamp}ms`)
             .addField('Websocket', `${this.getEmoji(client.ws.ping)} ${client.ws.ping}ms`)
             .setColor('#0077be')
-        g.edit(embed)
+        g.edit("",embed)
     },
     getEmoji(amount) {
         let emoji;
