@@ -1,6 +1,5 @@
-const {Client, Util, Collection} = require('discord.js');
-const utils = require('./modules/laffeyUtils');
-const {TOKEN, PREFIX, MONGODB_URI, OWNERS, LYRICS_ENGINE} = new (require('./modules/laffeyUtils'))();
+const {Client, Collection} = require('discord.js');
+const {TOKEN, MONGODB_URI, OWNERS, LYRICS_ENGINE} = new (require('./modules/laffeyUtils'))();
 const eventHandler = require('./modules/eventHandler');
 const playerHandler = require('./modules/playerHandler');
 const lyricsHandler = require('./modules/lyricsHandler');
@@ -9,44 +8,35 @@ const commandHandler = require('./handlers/command.js');
 const loggerHandler = require('./handlers/logger.js');
 const mongoose = require('mongoose');
 const cache = require('./cache/manager');
+const ClientOptions = require("./ClientOptions");
 
 
 class Laffey extends Client {
     constructor() {
-        super({
-            disableMentions: 'everyone',
-            messageCacheMaxSize: 200,
-            ws: {
-                properties: {
-                    $browser: 'iOS'
-                }
-            },
-            restTimeOffset: 0
-        })
+        super(ClientOptions);
+
         this.loginMongo().then(async x => {
             this.database = !!x;
             if (!x) {
                 this.logger.error('MONGODB URI is either not provided or invalid. Extra feature (prefix) won\'t be available')
             } else {
                 this.logger.log('DATABASE', 'Connected to database')
-                await Util.delayFor(1000)
+                await new Promise(r => setTimeout(r, 1000));
                 cache(this)
             }
         })
 
         // Start making base data on client //
-        this.prefixes = new Map();
         this.commands = new Collection();
         this.voiceTimeout = new Collection();
         this.logger = new loggerHandler();
         this.playerHandler = new playerHandler(this);
         this.lyrics = new lyricsHandler(this, LYRICS_ENGINE);
         this.owners = OWNERS;
-        this.defaultPrefix = PREFIX;
 
         // Collect needed data to client //
         new eventHandler(this).start();
-        commandHandler(this)
+        commandHandler.bind(this)();
     }
 
     async loginMongo() {
