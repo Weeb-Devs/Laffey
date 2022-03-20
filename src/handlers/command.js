@@ -7,7 +7,7 @@ function main() {
     for (const x of readdirSync(join(__dirname, "..", "commands"))) {
         for (let command of readdirSync(join(__dirname, "..", "commands", x))) {
             command = require(`../commands/${x}/${command}`)
-            this.commands.set(command.name, command)
+            this.commands.set(command.name, ({category: x, ...command}))
             notImportantCount++;
         }
     }
