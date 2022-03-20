@@ -11,7 +11,7 @@ module.exports = {
         if (!player.queue.current) return ctx.reply({embeds: [this.baseEmbed(`There\'s no music playing`)]});
 
         player.setVaporwave(!player.vaporwave);
-        ctx.reply({embeds: [this.baseEmbed(`${player._8d ? "enabled" : "disabled"}\` vaporwave filter.`)]});
+        ctx.reply({embeds: [this.baseEmbed(`${player.vaporwave ? "enabled" : "disabled"}\` vaporwave filter.`)]});
         return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }

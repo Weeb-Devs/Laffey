@@ -11,7 +11,7 @@ module.exports = {
         if (!player.queue.current) return ctx.reply({embeds: [this.baseEmbed(`There\'s no music playing`)]});
 
         player.setNightcore(!player.nightcore);
-        ctx.reply({embeds: [this.baseEmbed(`${!player._8d ? "enabled" : "disabled"}\` nightcore filter.`)]});
+        ctx.reply({embeds: [this.baseEmbed(`${!player.nightcore ? "enabled" : "disabled"}\` nightcore filter.`)]});
         return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }
