@@ -30,5 +30,13 @@ module.exports = {
         }
 
         return chunks
+    },
+    chunkArray(arr = [], size = 10) {
+        let chunks = []
+        for (let i = 0; i < arr.length; i += size) {
+            const chunk = arr.slice(i, i + size);
+            chunks.push(chunk);
+        }
+        return chunks;
     }
 };
