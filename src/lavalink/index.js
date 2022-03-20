@@ -5,11 +5,7 @@ const chalk = require('chalk');
 const {Collection} = require('discord.js');
 const {EmbedBuilder} = require('@discordjs/builders');
 
-const {
-    NODES,
-    SPOTIFY_CLIENT_ID,
-    SPOTIFY_CLIENT_SECRET
-} = new (require('../modules/laffeyUtils'))();
+const {NODES} = new (require('../modules/laffeyUtils'))();
 
 class lavalink extends Manager {
     constructor(client) {
