@@ -7,7 +7,6 @@ const chalk = require('chalk');
 const commandHandler = require('./handlers/command.js');
 const loggerHandler = require('./handlers/logger.js');
 const mongoose = require('mongoose');
-const cache = require('./cache/manager');
 const ClientOptions = require("./ClientOptions");
 
 
@@ -22,7 +21,6 @@ class Laffey extends Client {
             } else {
                 this.logger.log('DATABASE', 'Connected to database')
                 await new Promise(r => setTimeout(r, 1000));
-                cache(this)
             }
         })
 
