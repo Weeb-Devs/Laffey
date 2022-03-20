@@ -17,14 +17,6 @@ module.exports = class laffeyUtils {
         return process.env.MONGODB_URI || config.MONGODB_URI
     }
 
-    get SPOTIFY_CLIENT_ID() {
-        return process.env.SPOTIFY_CLIENT_ID || config.SPOTIFY_CLIENT_ID
-    }
-
-    get SPOTIFY_CLIENT_SECRET() {
-        return process.env.SPOTIFY_CLIENT_SECRET || config.SPOTIFY_CLIENT_SECRET
-    }
-
     get KSOFT_API_KEY() {
         return process.env.KSOFT_API_KEY || config.KSOFT_API_KEY
     }
