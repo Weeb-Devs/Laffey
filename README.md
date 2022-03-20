@@ -13,12 +13,14 @@
 ✓ Stable  
 ✓ Suport 8 music sources  
 ✓ Feature-rich  
-✓ per guild prefix configuration  
+✓ Full slash commands  
 ✓ and of course, adorable shipgirl
 
 ## Current version:
 
-- 1.0.0 **M** (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/1.0.0)
+- 2.0.0-sd (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/2.0.0)
+  | No change log _yet_
+- 1.0.0 **M** [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/1.0.0)
   | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/1.0.0.md)
 - 0.1.5 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.5)
   | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.5.md)
@@ -45,8 +47,8 @@ All required OS and other for lavalink server available [here](https://github.co
 
 ### Server for the bot to run
 
-- nodejs v14 or newer `because we're using optional chaining method`
-- discordjs v12
+- nodejs v16 or newer `because we're using optional chaining method`
+- discordjs v14
 
 ### Data
 
@@ -56,8 +58,6 @@ All required OS and other for lavalink server available [here](https://github.co
 - Mongodb
   URI `for prefix and auto resume feature. It won't work if you enter an invalid URI` [MongoDB](https://account.mongodb.com/account/login)
 - Your ID `for eval command. please note that it's dangerous if eval is accessible to everyone`
-- Spotify client ID `for spotify support` [Click here to get](https://developer.spotify.com/dashboard/login)
-- Spotify client Secret `for spotify support` [Click here to get](https://developer.spotify.com/dashboard/login)
 - Ksoft API
   Key `not required, depends on your chosen lyrics engine` [Click here to get](https://api.ksoft.si/?ref=ksoft.si#get-started)
 - Genius API Key `not required, depends on your chosen lyrics engine` [Click here to get](http://genius.com/api-clients)
@@ -98,8 +98,6 @@ All required OS and other for lavalink server available [here](https://github.co
     "Your id, can be more than 1"
   ],
   "MONGODB_URI": "For database",
-  "SPOTIFY_CLIENT_ID": "For spotify support",
-  "SPOTIFY_CLIENT_SECRET": "For spotify support",
   "KSOFT_API_KEY": "For the lyrics. It depend on your choice",
   "GENIUS_API_KEY": "For the lyrics. It depend on your choice",
   "LYRICS_ENGINE": "There are 3 options. ksoft ; genius ; google . Google doesn't need any API",
@@ -134,8 +132,6 @@ All required OS and other for lavalink server available [here](https://github.co
     PREFIX=?
     OWNERS=123456789,987654321
     MONGODB_URI=mongodb+srv://blabla
-    SPOTIFY_CLIENT_ID=123456
-    SPOTIFY_CLIENT_SECRET=ABCDEFG
     KSOFT_API_KEY=1234
     GENIUS_API_KEY=1234
     LYRICS_ENGINE=google
@@ -182,152 +178,102 @@ All required OS and other for lavalink server available [here](https://github.co
 
 - music
     - play `plays a music from 7 different music sources`   
-      -aliases: p  
-      -example: `?play https://www.youtube.com/playlist?list=PL0jh16Vp3NzVjEjKbZ3pV4f15Jze5EANV`
+      -example: `/play https://www.youtube.com/playlist?list=PL0jh16Vp3NzVjEjKbZ3pV4f15Jze5EANV`
 
     - forceplay `same like play, but this will force the player to play a specific song`   
-      -aliases: fp  
-      -example: `?forceplay https://www.youtube.com/watch?v=dQw4w9WgXcQ`
+      -example: `/forceplay https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 
     - loop `toggle track/queue loop`   
-      -aliases: l  
-      -example: `?loop`
+      -example: `/loop`
 
     - lyrics `Get specific/current playing song's lyrics`   
-      -aliases: ly  
-      -example: `?lyrics [ song's title ]`
+      -example: `/lyrics [ song's title ]`
 
     - volume `Set player's volume. 0-1000`   
-      -aliases: v  
-      -example: `?volume 1000`
+      -example: `/volume 1000`
 
     - nowplaying `see the song currently playing`  
-      -aliases: np    
-      -example: `?nowplaying`
+      -example: `/nowplaying`
 
     - move `Move song`  
-      -aliases: -    
-      -example: `?move 2` | `?move 4 3`
+      -example: `/move 2` | `/move 4 3`
 
     - queue `check all songs inside queue`  
-      -aliases: q    
-      -example: `?queue`
+      -example: `/queue`
 
     - skip `skip the song`  
-      -aliases: s    
-      -example: `?skip`
+      -example: `/skip`
 
     - skipto `skip to a specific song`  
-      -aliases: st, jump, jumpto    
-      -example: `?skipto 3`
+      -example: `/skipto 3`
 
     - join `Join a voice channel`  
-      -aliases: -    
-      -example: `?join`
+      -example: `/join`
 
     - leave `Leave a voice channel`  
-      -aliases: stop    
-      -example: `?leave`
+      -example: `/leave`
 
     - shuffle `Shuffle queue`  
-      -aliases: -    
-      -example: `?shuffle`
+      -example: `/shuffle`
 
     - search `search song`  
-      -aliases: -    
-      -example: `?search never gonna give you up`
+      -example: `/search never gonna give you up`
 
     - clear `Clear the queue`  
-      -aliases: -    
-      -example: `?clear`
+      -example: `/clear`
 
     - bassboost `Set bassboost filter for the player`  
-      -aliases: bb    
-      -example: `?bassboost [reset | 1 - 2000]`
+      -example: `/bassboost 1 - 200`
 
     - 24h `whether the bot should leave vc when there's no user or not`  
-      -aliases: -    
-      -example: `?24h`
+      -example: `/24h`
 
     - vaporwave `Set vaporwave filter for the player`  
-      -aliases: -    
-      -example: `?vaporwave`
+      -example: `/vaporwave`
 
     - nightcore `Set nightcore filter for the player`  
-      -aliases: nc    
-      -example: `?nightcore`
+      -example: `/nightcore`
 
     - 8d `Set 8d filter for the player`  
-      -aliases: -    
-      -example: `?8d`
+      -example: `/8d`
 
     - speed `Set speed for the player`  
-      -aliases: -    
-      -example: `?speed [reset | 0-5]`
+      -example: `/speed 0-5`
 
     - pitch `Set pitch for the player`  
-      -aliases: -    
-      -example: `?pitch [reset | 0-5]`
+      -example: `/pitch 0-5`
 
     - reset `Reset the filters`  
-      -aliases: -    
-      -example: `?reset`
+      -example: `/reset`
 
     - filters `Get all filters status`  
-      -aliases: -    
-      -example: `?filters`
+      -example: `/filters`
 
     - remove `Remove song from queue`  
-      -aliases: -    
-      -example: `?remove 3`
+      -example: `/remove 3`
 
     - previous `Play previously played song`  
-      -aliases: pr    
-      -example: `?previous`
+      -example: `/previous`
 
     - resume `Resume the player`  
-      -aliases: r    
-      -example: `?resume`
+      -example: `/resume`
 
     - pause `Pause the player`  
-      -aliases: -    
-      -example: `?pause`
-
-
-- config
-    - prefix `get, set, or reset prefix on guild`  
-      -aliases: -    
-      -example: `?prefix set !` | `?prefix reset` | `?prefix get`
+      -example: `/pause`
 
 
 - misc
     - ping `get bot's ping`  
-      -aliases: -    
-      -example: `?ping`
+      -example: `/ping`
 
     - help `Show list of available commands`  
-      -aliases: h    
-      -example: `?help play`
+      -example: `/help`
 
     - eval `to evaluate code`  
-      -aliases: -    
-      -example: `?eval message.channel.send('hello')`
-
-    - about `Give information about this project`  
-      -aliases: -    
-      -example: `?about`
-
-    - stats `Give bot's stats`  
-      -aliases: -    
-      -example: `?stats adv`
-
-    - node `Give lavalink's stats`  
-      -aliases: -    
-      -example: `?node`
+      -example: `/eval ctx.channel.send('hello')`
 
     - invite `Invite your bot to another guild`  
-      -aliases: -    
-      -example: `?invite`
+      -example: `/invite`
 
 ## Description & About
 
