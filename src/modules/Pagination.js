@@ -19,7 +19,7 @@ module.exports = class LaffeyPagination {
 
     async start() {
         try {
-            const row = new ActionRowBuilder().addComponents(this.buttons.left(true), this.buttons.trash(), this.buttons.right());
+            const row = new ActionRowBuilder().addComponents(this.buttons.left(true), this.buttons.trash(), this.buttons.right(!this.embeds.length - 1));
             const message = await this.ctx.editReply({embeds: [this.embeds[this.page]], components: [row]});
             const collector = message.createMessageComponentCollector({
                 componentType: 2,
