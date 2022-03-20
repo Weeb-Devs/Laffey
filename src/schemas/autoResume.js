@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const PrefixSchema = new mongoose.Schema({
+const autoResumeSchema = new mongoose.Schema({
     guildID: String,
     voiceChannel: String,
     textChannel: String,
@@ -19,4 +19,4 @@ const PrefixSchema = new mongoose.Schema({
     playerID: String
 })
 
-module.exports = mongoose.model('autoResume', PrefixSchema);
+module.exports = mongoose.model('autoResume', autoResumeSchema);

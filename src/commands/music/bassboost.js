@@ -1,27 +1,24 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'bassboost',
-    description: 'Set bassboost for player',
-    aliases: ['bb'],
-    usage: 'bassboost [0-100]',
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s no music playing'))
+    description: 'Set bassboost filter',
+    args: [{
+        "name": "amount",
+        "description": "The amount of bass boost. 0-200",
+        "type": 4,
+        "required": true
+    }],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.current) return ctx.reply({embeds: [this.baseEmbed(`There\'s no music playing`)]});
 
-        if (!args[0]) {
-            return message.channel.send(handler.normalEmbed(`**${player.bassboost ? `${player.bassboost * 100}%` : 'off'}**`))
-        } else if (args[0].toLowerCase() === 'reset') {
-            player.setBassboost(false)
-            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-            message.react('✅').catch(() => { })
-        } else {
-            if (isNaN(args[0])) return message.channel.send(handler.normalEmbed(`That isn't a number`))
-            if (args[0] > 2000 || args[0] < 0) return message.channel.send(handler.normalEmbed(`Invalid range. **1-1000**`))
-            player.setBassboost(parseInt(args[0]) / 100)
-            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-            return message.channel.send(handler.normalEmbed(`**${player.bassboost * 100}%**`))
-        }
+        const amount = ctx.options.getInteger("amount");
+        player.setBassboost(amount ? parseInt(amount) / 100 : false);
+
+        ctx.reply({embeds: [this.baseEmbed(`Set bass boost to ${amount ? `${amount}%` : "disabled"}.`)]});
+        return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }

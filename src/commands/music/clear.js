@@ -1,16 +1,18 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'clear',
     description: 'Clear the queue',
-    usage: 'clear',
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s no music playing'))
-        if (player.queue.size === 0) return message.channel.send(handler.normalEmbed('Not enough song to shuffle'))
-        player.queue.clear()
-        await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-        message.react('✅').catch(() => { })
+    args: [],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.size) return ctx.reply({embeds: [this.baseEmbed(`There\'s no queue left`)]});
+
+        player.queue.clear();
+
+        ctx.reply({embeds: [this.baseEmbed(`Cleared the queue.`)]});
+        return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }

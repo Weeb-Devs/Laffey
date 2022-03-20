@@ -1,20 +1,18 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'skip',
-    description: 'Skip current song',
-    usage: 'skip',
-    aliases: ['s'],
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s no music playing'))
-        player.skip()
-            .then(x => {
-                message.react('⏭').catch(() => { })
-            })
-            .catch(err => {
-                message.channel.send(handler.normalEmbed(err))
-            })
+    description: 'Skip the current song',
+    args: [],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.length) return ctx.reply({embeds: [this.baseEmbed(`There\'s no queue left`)]});
+
+        const {e, m} = await player.skip().catch(_ => ({e: true, m: _}));
+        if (e) return ctx.reply({embeds: [this.baseEmbed(`${m}`)]});
+
+        return ctx.reply({embeds: [this.baseEmbed(`Skipped the queue.`)]});
     }
 }

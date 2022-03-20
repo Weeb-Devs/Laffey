@@ -1,23 +1,17 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'nightcore',
     description: 'Set nightcore for player',
-    aliases: ['nc'],
-    usage: 'nightcore',
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s no music playing'))
+    args: [],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.current) return ctx.reply({embeds: [this.baseEmbed(`There\'s no music playing`)]});
 
-        if (!player.nightcore) {
-            await player.setNightcore(true)
-            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-            return message.channel.send(handler.normalEmbed(`Nightcore \`ENABLED\``))
-        } else {
-            await player.setNightcore(false)
-            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-            return message.channel.send(handler.normalEmbed(`Nightcore \`DISABLED\``))
-        }
+        player.setNightcore(!player.nightcore);
+        ctx.reply({embeds: [this.baseEmbed(`${!player.nightcore ? "enabled" : "disabled"}\` nightcore filter.`)]});
+        return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }

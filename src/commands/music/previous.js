@@ -1,17 +1,19 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'previous',
-    aliases: ['pr'],
     description: 'Play previous song',
-    usage: 'previous',
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (!player.queue.previous) return message.channel.send(handler.normalEmbed('There\'s no music was played previously'))
+    args: [],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.previous) return ctx.reply({embeds: [this.baseEmbed(`There\'s no music playing`)]});
+
         const currentSong = player.queue.current;
-        player.play(player.queue.previous)
-        message.react('👌')
-        if (currentSong) player.queue.unshift(currentSong)
+        player.play(player.queue.previous);
+        if (currentSong) player.queue.unshift(currentSong);
+
+        return ctx.reply({embeds: [this.baseEmbed(`Played the previous song.`)]});
     }
 }

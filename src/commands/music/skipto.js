@@ -1,22 +1,25 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'skipto',
-    description: 'Skip to selected song',
-    usage: 'skipto < song >',
-    aliases: ['st', 'jump', 'jumpto'],
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s no music playing'))
-        if (!args[0]) return message.channel.send(handler.noArgument(client, this.name, ['skipto < song >']))
-        if(isNaN(args[0])) return message.channel.send(handler.normalEmbed('That\'s not a number'))
-        player.skipto(parseInt(args[0]))
-            .then(x => {
-                message.react('⏩').catch(() => { })
-            })
-            .catch(err => {
-                message.channel.send(handler.normalEmbed(err))
-            })
+    description: 'Skipto specific song',
+    args: [{
+        "name": "position",
+        "description": "Song's position to play",
+        "type": 4,
+        "required": true
+    }],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.length) return ctx.reply({embeds: [this.baseEmbed(`There\'s no queue left`)]});
+
+        let position = ctx.options.getInteger("position");
+
+        const {e, m} = await player.skipto(position).catch(_ => ({e: true, m: _}));
+        if (e) return ctx.reply({embeds: [this.baseEmbed(`${m}`)]});
+
+        return ctx.reply({embeds: [this.baseEmbed(`Skipped.`)]});
     }
 }

@@ -1,116 +1,76 @@
-const handler = require('../../handlers/message');
-const {MessageEmbed} = require('discord.js');
+const {ActionRowBuilder, SelectMenuBuilder} = require("@discordjs/builders");
 
 module.exports = {
     name: 'search',
     description: 'Search a song',
-    usage: 'search [ title ]',
-    async execute(message, args, client) {
-        let player = client.player.players.get(message.guild.id);
-        const {channel} = message.member.voice;
-        if (!channel) return message.channel.send(handler.normalEmbed('You\'re not in a voice channel'))
-        const permissions = message.member.voice.channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.channel.send(handler.normalEmbed('I don\'t have \`CONNECT\` permission'))
-        if (!permissions.has('SPEAK')) return message.channel.send(handler.normalEmbed('I don\'t have \`SPEAK\` permission'))
+    args: [{
+        "name": "query",
+        "description": "URL or query to search",
+        "type": 3,
+        "required": true
+    }],
+    async execute(ctx, client) {
+        let player = client.player.players.get(ctx.guildId),
+            query = ctx.options.getString("query");
+        const {channel} = ctx.member.voice;
 
-        if (player && (channel.id !== player?.voiceChannel)) return message.channel.send(handler.normalEmbed('You\'re not in my voice channel'))
-        if (!args[0]) return message.channel.send(handler.noArgument(client, this.name, ['search < title >']))
-        if (!player) {
-            player = client.player.create({
-                guild: message.guild.id,
-                voiceChannel: channel.id,
-                textChannel: message.channel.id,
-                selfDeafen: true
-            });
-            if (!channel.joinable) return message.channel.send(handler.normalEmbed('That channel isn\'t joinable'))
-            player.connect()
-        }
-        player = client.player.players.get(message.guild.id);
-        let search = args.join(' ');
-        if (player.get('rateLimitStatus').status === true) return message.channel.send(handler.normalEmbed(`Our node (${client.player.players.get(message.guild.id).node?.options?.identifier}) is currently being rate limited. Please try again later`))
-        let res = await player.search(search, message.author)
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There's no player.`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+
+        if (player.get('rateLimitStatus').status === true) return ctx.reply({embeds: [this.baseEmbed(`Our node is currently rate limited. Please try again later.`)]});
+        await ctx.deferReply();
+
+        let res = await player.search(query, ctx.user)
         if (res.loadType === 'LOAD_FAILED') {
             if (!player.queue.current) player.destroy();
-            return message.channel.send(handler.normalEmbed(`Error getting music. Please try again in a few minutes \n` + `\`\`\`${res.exception.message ? res.exception.message : 'No error was provided'}\`\`\``))
+            return ctx.editReply({embeds: [this.baseEmbed(`Error getting music. Please try again in a few minutes \n` + `\`\`\`${res.exception.message ? res.exception.message : 'No error was provided'}\`\`\``)]});
         }
         switch (res.loadType) {
             case 'NO_MATCHES': {
                 if (!player.queue.current) player.destroy()
-                await message.channel.send(handler.normalEmbed(`No music was found`))
-                break;
+                return ctx.editReply({embeds: [this.baseEmbed(`No music was found.`)]});
             }
 
             case 'TRACK_LOADED': {
                 await player.queue.add(res.tracks[0]);
 
                 if (!player.playing && !player.paused) player.play()
-                else {
-                    await message.channel.send(handler.normalEmbed(`Queued ${res.tracks[0].title} [${!res.tracks[0].isStream ? `${new Date(res.tracks[0].duration).toISOString().slice(11, 19)}` : '◉ LIVE'}]`))
-                    await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-                }
-                break;
+                await client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
+                return ctx.editReply({embeds: [this.baseEmbed(`Queued ${res.tracks[0].title} [${!res.tracks[0].isStream ? `${new Date(res.tracks[0].duration).toISOString().slice(11, 19)}` : '◉ LIVE'}]`)]});
             }
 
             case 'PLAYLIST_LOADED': {
                 await player.queue.add(res.tracks);
                 if (!player.playing && !player.paused) player.play()
-                else {
-                    await message.channel.send(handler.normalEmbed(`Queued ${res.tracks.length} songs from \`${res.playlist.name}\` [${new Date(res.playlist.duration).toISOString().slice(11, 19)}]`))
-                    await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-                }
-                break;
+                await client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
+                return ctx.editReply({embeds: [this.baseEmbed(`Queued ${res.tracks.length} songs from \`${res.playlist.name}\` [${new Date(res.playlist.duration).toISOString().slice(11, 19)}]`)]});
             }
+
 
             case 'SEARCH_RESULT': {
-                let max = 5, collected,
-                    filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
-                if (res.tracks.length < max) max = res.tracks.length;
+                let randomNumber = `${Math.round(Math.random() * 1000)}`
+                let row = new ActionRowBuilder().addComponents(new SelectMenuBuilder().setCustomId(randomNumber));
+                let tracks = res.tracks;
 
-                const results = res.tracks
-                    .slice(0, max)
-                    .map((track, index) => `${++index} - \`${track.title}\``)
-                    .join('\n');
+                for (let d of res.tracks.map((x, i) => ({
+                    label: `${i + 1} - ${x.title.length > 50 ? x.title.substr(0, 47) : x.title}`,
+                    value: `${i}`
+                }))) row.components[0].addOptions(d);
 
-                let embed3 = new MessageEmbed()
-                    .setColor(message.guild.me.roles.highest.color)
-                    .setTimestamp()
-                    .addField(`!!`, 'Select within 15s')
-                    .setDescription(results)
-                const re = await message.channel.send(embed3);
+                let message = await ctx.editReply({content: `Select track below`, components: [row]});
 
-                try {
-                    collected = await message.channel.awaitMessages(filter, {max: 1, time: 15000, errors: ['time']});
-                } catch (e) {
-                    if (!player.queue.current) player.destroy();
-                    if (!re.deleted) re.delete().catch(() => {
-                    })
-                    return message.channel.send(handler.normalEmbed(`Time out`))
-                }
-                const first = collected.first().content;
-                if (first.toLowerCase() === 'cancel') {
-                    if (!player.queue.current) player.destroy();
-                    if (!re.deleted) re.delete().catch(() => {
-                    })
-                    return message.channel.send(handler.normalEmbed(`Cancelled`))
-                }
+                let response = await message.awaitMessageComponent({
+                    filter: (i) => i.deferUpdate().catch(_ => void 0) && i.customId === randomNumber && i.user.id === ctx.user.id,
+                    time: 15 * 1000
+                }).catch(_ => true);
 
-                const index = Number(first) - 1;
-                if (index < 0 || index > max - 1) return message.channel.send(handler.normalEmbed(`Your choice isn't in the option`))
-
-                const track = res.tracks[index];
-                await player.queue.add(track);
-                if (!re.deleted) re.delete().catch(() => {
-                })
-                if (!player.playing && !player.paused) {
-                    if (!re.deleted) re.delete().catch(() => {
-                    })
-                    player.play()
-                } else {
-                    await message.channel.send(handler.normalEmbed(`Queued ${res.tracks[0].title} [${!res.tracks[0].isStream ? `${new Date(res.tracks[0].duration).toISOString().slice(11, 19)}` : '◉ LIVE'}]`))
-                    await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-                }
+                if (typeof response === "boolean") return message.edit({content: `No response...`, components: []});
+                let track = tracks[response.values[0]]
+                player.queue.add(track);
+                if (!player.playing && !player.paused) player.play();
+                return ctx.editReply({embeds: [this.baseEmbed(`Force played ${track.title} [${!track.isStream ? `${new Date(track.duration).toISOString().slice(11, 19)}` : '◉ LIVE'}]`)]});
             }
-
         }
     }
 }
