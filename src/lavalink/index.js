@@ -79,7 +79,7 @@ class lavalink extends Manager {
             if (player.get('message')) player.get('message').delete().catch(_ => void 0);
             if (player.get('nowplaying')) {
                 clearInterval(player.get('nowplaying'));
-                player.get('nowplayingMSG').delete().catch(_ => void 0);
+                player.get('nowplayingMSG')?.delete().catch(_ => void 0);
             }
             return client.playerHandler.delete(player.guild)
         })
@@ -106,7 +106,7 @@ class lavalink extends Manager {
 
             if (player.get('nowplaying')) {
                 clearInterval(player.get('nowplaying'));
-                player.get('nowplayingMSG').delete().catch(_ => void 0);
+                player.get('nowplayingMSG')?.delete().catch(_ => void 0);
             }
         })
         this.on('trackStuck', (player, track, payload) => {
@@ -120,7 +120,7 @@ class lavalink extends Manager {
             channel.send({embeds: [playEmbed]}).then(msg => player.set('stuck', msg))
             if (player.get('nowplaying')) {
                 clearInterval(player.get('nowplaying'));
-                player.get('nowplayingMSG').delete().catch(_ => void 0);
+                player.get('nowplayingMSG')?.delete().catch(_ => void 0);
             }
         })
         this.on('trackError', (player, track, payload) => {
@@ -152,7 +152,7 @@ class lavalink extends Manager {
                 channel.send({embeds: [errorEmbed]}).then(msg => player.set('error', msg)).catch(_ => void 0);
                 if (player.get('nowplaying')) {
                     clearInterval(player.get('nowplaying'));
-                    player.get('nowplayingMSG').delete().catch(_ => void 0);
+                    player.get('nowplayingMSG')?.delete().catch(_ => void 0);
                 }
             }
             client.rateLimit.delete(player.guild)
@@ -166,7 +166,7 @@ class lavalink extends Manager {
                 .setColor(0x00C7FF)
             if (player.get('nowplaying')) {
                 clearInterval(player.get('nowplaying'));
-                player.get('nowplayingMSG').delete().catch(_ => void 0);
+                player.get('nowplayingMSG')?.delete().catch(_ => void 0);
             }
             channel.send({embeds: [noQueueEmbed]}).catch(_ => void 0);
             setTimeout(() => {
