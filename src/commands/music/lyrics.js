@@ -22,7 +22,7 @@ module.exports = {
         await ctx.deferReply();
 
         const lyrics = await client.lyrics.search(songTitle).catch(_ => true);
-        if (typeof lyrics === "boolean") return ctx.reply({embeds: [this.baseEmbed(`No lyrics was found`)]});
+        if (typeof lyrics === "boolean") return ctx.editReply({embeds: [this.baseEmbed(`No lyrics was found`)]});
 
         let colors = [];
         if (lyrics.artwork) colors = palette(await pixels(lyrics.artwork).catch(_ => null)).colors;
