@@ -1,4 +1,4 @@
-const { Structure, TrackUtils } = require('erela.js');
+const {Structure, TrackUtils} = require('erela.js');
 
 module.exports = Structure.extend('Player', player => {
     class laffeyPlayer extends player {
@@ -86,8 +86,8 @@ module.exports = Structure.extend('Player', player => {
                 this.vaporwave = false;
                 this.setVaporwave(false)
                 this.setNightcore(false)
-                this.setEQ(...Array.from({ length: 3 }, () => {
-                    return { band: 1, gain: bassboost }; // this is so nodejs can differentiate which { is for arrow function and which one is for objects
+                this.setEQ(...Array.from({length: 3}, () => {
+                    return {band: 1, gain: bassboost}; // this is so nodejs can differentiate which { is for arrow function and which one is for objects
                 }));
                 this.bassboost = bassboost;
             } else this.clearEffects();
@@ -115,16 +115,16 @@ module.exports = Structure.extend('Player', player => {
             return this
         }
 
-        async toggleLoop() {
+        toggleLoop() {
             if (!this.queueRepeat && !this.trackRepeat) {
-                await this.setTrackRepeat(true)
-                return { player: this, status: 'track' }
+                this.setTrackRepeat(true)
+                return {player: this, status: 'track'}
             } else if (this.trackRepeat) {
-                await this.setQueueRepeat(true)
-                return { player: this, status: 'queue' }
+                this.setQueueRepeat(true)
+                return {player: this, status: 'queue'}
             } else if (this.queueRepeat) {
-                await this.setQueueRepeat(false)
-                return { player: this, status: 'none' }
+                this.setQueueRepeat(false)
+                return {player: this, status: 'none'}
             }
         }
 
@@ -261,5 +261,6 @@ module.exports = Structure.extend('Player', player => {
             return arr;
         }
     }
+
     return laffeyPlayer;
 })
