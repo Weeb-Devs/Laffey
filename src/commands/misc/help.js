@@ -12,8 +12,9 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setTitle("Help")
             .setDescription(Object.entries(categories).map(([category, command]) => {
-                return `**${category}**:\n${command.map((c, i) => `${i + 1} - ${c.name}\n \u00A0 \u00A0${c.description} \u00A0 \u00A0${c.args?.length ? c.args.map(x => `\n\`${x.name}\``).join(", ") : ""}`).join("\n")}`
-            }).join("\n\n"));
+                return `**${category}**:\n${command.map((c) => `\`${c.name}\``).join(", ")}`
+            }).join("\n\n"))
+            .setColor(0xff0000);
 
         return ctx.reply({embeds: [embed]});
     }
