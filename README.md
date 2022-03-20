@@ -34,7 +34,9 @@
   | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.1.md)
 - 0.1.0 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.0)
   | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.0.md)
-
+  
+## Registering your slash commands
+Read [this](https://github.com/Weeb-Devs/Laffey/blob/main/readme/REGISTER_SLASH.md) for more information
 ## Requirements:
 
 ### Lavalink server
