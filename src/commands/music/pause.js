@@ -1,16 +1,18 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
-    name: "pause",
-    description: "Pause the player",
-    usage: "pause",
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id)
-        if (!player) return message.channel.send(handler.normalEmbed(`There's nothing playing`))
-        const { channel } = message.member.voice
-        if (!channel) return message.channel.send(handler.normalEmbed(`You're not in a voice channel`))
-        if (player && (channel.id !== player?.voiceChannel)) return message.channel.send(handler.normalEmbed('You\'re not in my voice channel'))
-        player.pause(true)
-        message.react('✅').catch(() => { })
+    name: 'pause',
+    description: 'Pause the player',
+    args: [],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.current) return ctx.reply({embeds: [this.baseEmbed(`There\'s no music playing`)]});
+
+        if (player.paused) ctx.reply({embeds: [this.baseEmbed(`The player is already paused.`)]});
+
+        player.pause(true);
+        return ctx.reply({embeds: [this.baseEmbed(`Paused the player.`)]});
     }
-};
+}

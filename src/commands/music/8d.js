@@ -1,22 +1,17 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: '8d',
     description: 'Set 8d for player',
-    usage: '8d',
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (!player.queue.current) return message.channel.send(handler.normalEmbed('There\'s no music playing'))
+    args: [],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.current) return ctx.reply({embeds: [this.baseEmbed(`There\'s no music playing`)]});
 
-        if (!player._8d) {
-            await player.set8D(true)
-            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-            message.channel.send(handler.normalEmbed(`8d \`ENABLED\``))
-        } else {
-            await player.set8D(false)
-            await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-            message.channel.send(handler.normalEmbed(`8d \`DISABLED\``))
-        }
+        player.set8D(!player._8d);
+        ctx.reply({embeds: [this.baseEmbed(`${player._8d ? "enabled" : "disabled"}\` 8d filter.`)]});
+        return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }

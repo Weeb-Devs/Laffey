@@ -1,19 +1,27 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'remove',
     description: 'Remove song from queue',
-    usage: 'remove < song\'s position >',
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        if (player.queue.size === 0) return message.channel.send(handler.normalEmbed('There\'s no song inside queue'))
-        if (!args[0]) return message.channel.send(handler.noArgument(client, this.name, ['remove < song\'s position >']))
-        if (isNaN(args[0])) return message.channel.send(handler.noArgument(client, this.name, ['remove < song\'s position >']))
-        if (args[0] > player.queue.size) return message.channel.send(handler.normalEmbed(`The queue only have ${player.queue.size} song${player.queue.size > 1 ? 's' : ''} `))
-        const targetSong = player.queue[parseInt(args[0] - 1)]
-        player.queue.remove((parseInt(args[0])) - 1)
-        await client.playerHandler.savePlayer(client.player.players.get(message.guild.id))
-        return message.channel.send(handler.normalEmbed(`Removed [${targetSong?.title}](${targetSong?.uri}) from queue`))
+    args: [{
+        "name": "position",
+        "description": "The song's position",
+        "type": 4,
+        "required": true
+    }],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+        if (!player.queue.current) return ctx.reply({embeds: [this.baseEmbed(`There\'s no music playing`)]});
+
+        let position = ctx.options.getInteger("position");
+        if (position > player.queue.size) return ctx.reply({embeds: [this.baseEmbed(`The given position is too big.`)]});
+
+        const targetSong = player.queue[position - 1]
+        player.queue.remove((parseInt(position)) - 1)
+
+        ctx.reply({embeds: [this.baseEmbed(`Removed ${targetSong.title} from queue.`)]});
+        return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }

@@ -35,12 +35,12 @@ module.exports = class LaffeyPlayerHandler {
                     const track = await this.buildTrack(data.currentSong);
                     player.queue.add(track)
                     player.play()
-                    if (data.queue.length) for (let track of data.queue) player.queue.add(await this.buildTrack(track))
-                } else if (data.queue.length) {
+                    if (data.queue.length && data.queue[0]) for (let track of data.queue) player.queue.add(await this.buildTrack(track))
+                } else if (data.queue.length && data.queue[0]) {
                     const track = await this.buildTrack(data.queue.shift());
                     player.queue.add(track)
                     player.play()
-                    if (data.queue.length) for (let track of data.queue) player.queue.add(await this.buildTrack(track))
+                    if (data.queue.length && data.queue[0]) for (let track of data.queue) player.queue.add(await this.buildTrack(track))
                 } else player.destroy()
 
                 player.set('24h', {status: data._24h})

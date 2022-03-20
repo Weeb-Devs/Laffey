@@ -1,17 +1,17 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'leave',
-    aliases: ['stop'],
-    description: 'Leave voice channel',
-    usage: 'leave',
-    async execute(message, args, client) {
-        let player = client.player.players.get(message.guild.id);
-        const { channel } = message.member.voice;
-        if(!player) return message.channel.send(handler.normalEmbed('I\'m not in a voice channel'))
-        if (!channel) return message.channel.send(handler.normalEmbed('You\'re not in a voice channel'))
-        if (channel.id !== player.voiceChannel) return message.channel.send(handler.normalEmbed('You\'re not in my voice channel'))
-        player.destroy()
-        message.react('👋').catch(() => { })
+    description: 'Leave a voice channel',
+    args: [],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (channel.id !== player?.voiceChannel) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+
+        player.destroy();
+
+        ctx.reply({embeds: [this.baseEmbed(`Left the voice channel.`)]});
+        return client.playerHandler.delete(client.player.players.get(ctx.guildId));
     }
 }

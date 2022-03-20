@@ -1,13 +1,18 @@
-const handler = require('../../handlers/message');
-
 module.exports = {
     name: 'reset',
-    description: 'Reset all active filters',
-    usage: 'reset',
-    async execute(message, args, client) {
-        const player = client.player.players.get(message.guild.id);
-        if (!player) return message.channel.send(handler.normalEmbed('There\'s no active player'))
-        player.clearEffects()
-        message.react('👌').catch(() => {})
+    description: 'Reset filters',
+    args: [],
+    async execute(ctx, client) {
+        const player = client.player.players.get(ctx.guildId);
+        const {channel} = ctx.member.voice;
+        if (!player) return ctx.reply({embeds: [this.baseEmbed(`There\'s no active player`)]});
+        if (!channel) return ctx.reply({embeds: [this.baseEmbed(`You're not in a voice channel`)]});
+        if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`You're not in my voice channel.`)]});
+
+        player.clearEffects();
+
+        player.set8D(!player._8d);
+        ctx.reply({embeds: [this.baseEmbed(`Reset the filters.`)]});
+        return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }
