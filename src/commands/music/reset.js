@@ -11,7 +11,6 @@ module.exports = {
 
         player.clearEffects();
 
-        player.set8D(!player._8d);
         ctx.reply({embeds: [this.baseEmbed(`Reset the filters.`)]});
         return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
