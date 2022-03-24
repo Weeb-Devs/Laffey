@@ -49,7 +49,7 @@ All required OS and other for lavalink server available [here](https://github.co
 
 ### Server for the bot to run
 
-- nodejs v16 or newer `because we're using optional chaining method`
+- ⚠️nodejs v16.9.0 or newer⚠️
 - discordjs v14
 
 ### Data
