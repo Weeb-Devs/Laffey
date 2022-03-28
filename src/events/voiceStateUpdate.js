@@ -21,7 +21,7 @@ module.exports = {
                         client.player?.players.get(newC.guild.id).destroy()
                     }
                     clearTimeout(client.voiceTimeout.get(newC.guild.id))
-                }, 12000);
+                }, 120 * 1000);
                 client.voiceTimeout.set(newC.guild.id, { timeout })
             }
         }
