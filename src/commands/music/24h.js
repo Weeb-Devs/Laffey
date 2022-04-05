@@ -13,7 +13,7 @@ module.exports = {
         const {status} = player.get("24h");
         player.set("24h", {status: !status});
 
-        ctx.reply({embeds: [this.baseEmbed(`${!status ? "enabled" : "disabled"}\` 24h.`)]});
+        ctx.reply({embeds: [this.baseEmbed(`${!status ? "enabled" : "disabled"}\` 24h.``)]});
         return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }
