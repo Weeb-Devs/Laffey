@@ -1,6 +1,6 @@
 module.exports = {
     name: '247',
-    description: 'Toggles 24/7 playing',
+    description: 'Enable/Disable 24/7 playing',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);
