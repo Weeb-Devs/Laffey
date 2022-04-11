@@ -1,6 +1,6 @@
 module.exports = {
     name: 'clear',
-    description: 'Clear the queue',
+    description: 'Clear the current queue',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);
