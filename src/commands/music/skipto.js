@@ -1,6 +1,6 @@
 module.exports = {
     name: 'skipto',
-    description: 'Skipto specific song',
+    description: 'Skip into specific song',
     args: [{
         "name": "position",
         "description": "Song's position to play",
