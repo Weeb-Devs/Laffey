@@ -1,6 +1,6 @@
 module.exports = {
     name: 'bassboost',
-    description: 'Enable/Disable Bass Boost',
+    description: 'Enable/Disable Bass Boost filter',
     args: [{
         "name": "amount",
         "description": "The amount of bass boost. 0-100",
