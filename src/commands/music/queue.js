@@ -3,7 +3,7 @@ const Pagination = require("../../modules/Pagination");
 
 module.exports = {
     name: 'queue',
-    description: 'Se queue',
+    description: 'See the current queue',
     args: [],
     async execute(ctx, client) {
         let player = client.player.players.get(ctx.guildId);
