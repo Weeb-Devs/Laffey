@@ -1,6 +1,6 @@
 module.exports = {
     name: 'reset',
-    description: 'Reset filters',
+    description: 'Set The Filters To Default',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);
