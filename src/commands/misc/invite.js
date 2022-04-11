@@ -3,7 +3,7 @@ const {ButtonStyle} = require('discord.js');
 
 module.exports = {
     name: "invite",
-    description: "Invite me to another server",
+    description: "Get my invite link",
     args: [],
     async execute(ctx, client) {
         let link = `https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=36768832&scope=bot%20applications.commands`

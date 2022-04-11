@@ -1,6 +1,6 @@
 module.exports = {
     name: 'pause',
-    description: 'Pause the player',
+    description: 'Pause The Player',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);

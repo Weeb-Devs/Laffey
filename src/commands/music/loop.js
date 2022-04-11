@@ -1,6 +1,6 @@
 module.exports = {
     name: 'loop',
-    description: 'Loop the player',
+    description: 'Looping The Current Song/Queue',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);

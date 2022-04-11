@@ -1,6 +1,6 @@
 module.exports = {
     name: 'vaporwave',
-    description: 'Set vaporwave for player',
+    description: 'Enable/Disable Vaporwave Filters',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);

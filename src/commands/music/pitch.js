@@ -1,6 +1,6 @@
 module.exports = {
     name: 'pitch',
-    description: 'Set pitch filter',
+    description: 'Enable/Disable Pitch Filters',
     args: [{
         "name": "amount",
         "description": "The amount of pitch. 0-5",

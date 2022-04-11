@@ -1,6 +1,6 @@
 module.exports = {
     name: '8d',
-    description: 'Set 8d for player',
+    description: 'Enable/Disable 8d Filters',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);

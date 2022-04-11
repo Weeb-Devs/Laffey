@@ -1,6 +1,6 @@
 module.exports = {
     name: 'move',
-    description: 'Move song',
+    description: 'Move The Selected Song',
     args: [{
         "name": "from",
         "description": "The song's current location",

@@ -2,7 +2,7 @@ const {EmbedBuilder} = require("@discordjs/builders");
 
 module.exports = {
     name: "help",
-    description: "Get all commands",
+    description: "Returns all of my commands",
     args: [],
     async execute(ctx, client) {
         let categories = {};

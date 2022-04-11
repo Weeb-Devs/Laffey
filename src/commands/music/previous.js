@@ -1,6 +1,6 @@
 module.exports = {
     name: 'previous',
-    description: 'Play previous song',
+    description: 'Play The Previous Song',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);

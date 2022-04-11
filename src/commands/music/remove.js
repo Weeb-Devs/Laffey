@@ -1,6 +1,6 @@
 module.exports = {
     name: 'remove',
-    description: 'Remove song from queue',
+    description: 'Remove a song from the queue',
     args: [{
         "name": "position",
         "description": "The song's position",
