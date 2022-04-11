@@ -2,7 +2,7 @@ const {ActionRowBuilder, SelectMenuBuilder} = require("@discordjs/builders");
 
 module.exports = {
     name: 'search',
-    description: 'Search a song',
+    description: 'Search The Selected Song',
     args: [{
         "name": "query",
         "description": "URL or query to search",
