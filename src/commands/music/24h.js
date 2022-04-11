@@ -1,6 +1,6 @@
 module.exports = {
     name: '24h',
-    description: 'Enable/disable auto leave on disconnect',
+    description: 'Enable/Disable 24/7 playing',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);
@@ -13,7 +13,7 @@ module.exports = {
         const {status} = player.get("24h");
         player.set("24h", {status: !status});
 
-        ctx.reply({embeds: [this.baseEmbed(`${!status ? "enabled" : "disabled"}\` 24h.`)]});
+        ctx.reply({embeds: [this.baseEmbed(`${!status ? "enabled" : "disabled"}\ **24/7.**`)]});
         return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }
 }
