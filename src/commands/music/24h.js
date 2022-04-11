@@ -1,5 +1,5 @@
 module.exports = {
-    name: '247',
+    name: '24h',
     description: 'Enable/Disable 24/7 playing',
     args: [],
     async execute(ctx, client) {
