@@ -9,8 +9,8 @@
     "slash:register": "node src/modules/slashRegister.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Weeb-Devs",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Weeb-Devs/Laffey.git"
