@@ -73,8 +73,7 @@ module.exports = class LaffeyPlayerHandler {
                     length: data.duration || null,
                     isSeekable: !!data.isStream,
                     isStream: !!data.isStream,
-                    uri: data.uri || null,
-                    thumbnail: data.thumbnail || null,
+                    uri: data.uri || null
                 }
             }, data.requester ? await this.client.users.fetch(data.requester) : null)
             :
@@ -121,6 +120,6 @@ module.exports = class LaffeyPlayerHandler {
 
     async delete(guildID, id) {
         if (!this.client.database) return;
-        return id ? await autoResume.findOneAndRemove({playerID: id}) : await autoResume.findOneAndRemove({guildID});
+        return id ? await autoResume.findOneAndDelete({playerID: id}) : await autoResume.findOneAndDelete({guildID});
     }
 }

@@ -42,10 +42,7 @@ class Laffey extends Client {
         if (!MONGODB_URI) return available;
 
         await mongoose.connect(MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            autoIndex: true,
-            useFindAndModify: true
+            autoIndex: true
         }).then(() => {
             available = true
         }).catch(() => {
