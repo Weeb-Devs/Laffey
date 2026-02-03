@@ -1,6 +1,5 @@
-const {EmbedBuilder} = require('@discordjs/builders');
-const palette = require('image-palette');
-const pixels = require('image-pixels');
+const { EmbedBuilder } = require("@discordjs/builders");
+const { getPalette } = require("colorthief");
 const Pagination = require("../../modules/Pagination");
 
 module.exports = {
@@ -25,12 +24,12 @@ module.exports = {
         if (typeof lyrics === "boolean") return ctx.editReply({embeds: [this.baseEmbed(`No lyrics was found`)]});
 
         let colors = [];
-        if (lyrics.artwork) colors = palette(await pixels(lyrics.artwork).catch(_ => null)).colors;
+        if (lyrics.artwork) colors = await getPalette(lyrics.artwork, 10).catch(_ => null)
         const embeds = this.chunkSubstr(lyrics.lyrics, 3000).map((l, i) => new EmbedBuilder()
             .setTitle(`${lyrics.title || "Unknown"}`)
             .setDescription(`${lyrics.artist || ""}\n\n\n${l}`)
             .setThumbnail(lyrics.artwork || `https://i.imgur.com/E6IhRS4.png`)
-            .setColor(colors[i] || 0x23ff00)
+            .setColor(colors[i % colors.length] || 0x23ff00)
             .setFooter({text: `Powered by ${lyrics.source}`})
         )
 
