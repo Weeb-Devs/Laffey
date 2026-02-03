@@ -142,8 +142,7 @@ module.exports = Structure.extend('Player', player => {
                         length: current.duration || 1,
                         isSeekable: current.isSeekable,
                         isStream: current.isStream,
-                        uri: current.uri || null,
-                        thumbnail: current.thumbnail || null,
+                        uri: current.uri || null
                     }
                 }, current.requester)
                 this.queue.add(track);
@@ -168,8 +167,7 @@ module.exports = Structure.extend('Player', player => {
                         length: current.duration || 1,
                         isSeekable: current.isSeekable,
                         isStream: current.isStream,
-                        uri: current.uri || null,
-                        thumbnail: current.thumbnail || null,
+                        uri: current.uri || null
                     }
                 }, current.requester)
                 this.queue.add(track)
