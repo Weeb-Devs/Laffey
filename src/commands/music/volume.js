@@ -1,6 +1,6 @@
 module.exports = {
     name: 'volume',
-    description: 'Set volume',
+    description: 'Set The Current Song Volume',
     args: [{
         "name": "amount",
         "description": "The amount of volume. 0-200",

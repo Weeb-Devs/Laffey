@@ -4,7 +4,7 @@ const Pagination = require("../../modules/Pagination");
 
 module.exports = {
     name: 'lyrics',
-    description: 'Get lyrics',
+    description: 'Get lyrics From A Song Title',
     args: [{
         "name": "title",
         "description": "The song's title to search",

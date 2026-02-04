@@ -1,6 +1,6 @@
 module.exports = {
     name: 'forceplay',
-    description: 'Force play a song',
+    description: 'Playing A Song Without Queueing',
     args: [{
         "name": "query",
         "description": "URL or query to play",

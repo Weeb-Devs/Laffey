@@ -2,7 +2,7 @@ const {EmbedBuilder} = require('@discordjs/builders');
 
 module.exports = {
     name: "nodes",
-    description: "Get node status",
+    description: "Get current node stats",
     args: [],
     async execute(ctx, client) {
         const all = client.player.nodes.map(node => 

@@ -1,6 +1,6 @@
 module.exports = {
     name: 'speed',
-    description: 'Set speed filter',
+    description: 'Enable/Disable Speed Filters',
     args: [{
         "name": "amount",
         "description": "The amount of speed. 0-5",

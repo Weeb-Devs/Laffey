@@ -1,6 +1,6 @@
 module.exports = {
     name: 'nightcore',
-    description: 'Set nightcore for player',
+    description: 'Enable/Disable Nightcore Filters',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);

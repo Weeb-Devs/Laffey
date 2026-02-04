@@ -1,6 +1,6 @@
 module.exports = {
     name: 'play',
-    description: 'Play a song',
+    description: 'Play The Requested Song',
     args: [{
         "name": "query",
         "description": "URL or query to play",

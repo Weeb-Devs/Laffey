@@ -2,7 +2,7 @@ const {EmbedBuilder} = require("@discordjs/builders");
 
 module.exports = {
     name: 'filters',
-    description: 'Get all active filters',
+    description: 'Get Filters Information',
     args: [],
     async execute(ctx, client) {
         const player = client.player.players.get(ctx.guildId);

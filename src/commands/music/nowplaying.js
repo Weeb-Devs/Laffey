@@ -2,7 +2,7 @@ const {EmbedBuilder} = require("@discordjs/builders");
 const {splitBar} = require("string-progressbar");
 module.exports = {
     name: 'nowplaying',
-    description: 'Get now playing',
+    description: 'Get The Current Song Information',
     args: [],
     async execute(ctx, client) {
         let player = client.player.players.get(ctx.guildId);
