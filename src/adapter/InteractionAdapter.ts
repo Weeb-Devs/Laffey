@@ -1,0 +1,58 @@
+import {
+    type APIInteractionGuildMember,
+    type ApplicationCommand, ChatInputCommandInteraction, CommandInteraction,
+    Guild, GuildMember, type Message, type User, VoiceState
+} from "discord.js";
+import type {Laffey} from "../Laffey.js";
+import {CommandResponse} from "../commands/commandResponse.js";
+
+export class InteractionAdapter {
+    constructor(
+        public readonly client: Laffey,
+        public readonly interaction?: ChatInputCommandInteraction,
+        public readonly message?: Message) {
+    }
+
+    public get member(): GuildMember | APIInteractionGuildMember | null | undefined {
+        return this.interaction?.member || this.message?.member;
+    }
+
+    public get user(): User | undefined {
+        return this.interaction?.user || this.message?.author;
+    }
+
+    public get guildId(): string | undefined {
+        return this.interaction?.guildId || this.message?.guildId || undefined;
+    }
+
+    public get channelId(): string | undefined {
+        return this.interaction?.channelId || this.message?.channelId || undefined;
+    }
+
+    public get guild(): Guild | undefined {
+        return this.interaction?.guild || this.message?.guild || undefined;
+    }
+
+    public getString(query: string, n: number): string | undefined {
+        if (this.interaction) {
+            return this.interaction.options.getString(query) || undefined;
+        } else if (this.message) {
+            const args = this.message.content.trim().split(/\s+/);
+            return args[n + 1] || undefined;
+        }
+    }
+
+    public getInteger(query: string, n: number): number | undefined {
+        if (this.interaction) {
+            return this.interaction.options.getInteger(query) || undefined;
+        } else if (this.message) {
+            const args = this.message.content.trim().split(/\s+/);
+            const num = parseInt(args[n + 1] || 'a', 10);
+            return isNaN(num) ? undefined : num;
+        }
+    }
+
+    public async deferReply() {
+        if (this.interaction) return this.interaction.deferReply();
+    }
+}
