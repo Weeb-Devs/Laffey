@@ -37,6 +37,11 @@ export class InteractionAdapter {
         if (this.interaction) {
             return this.interaction.options.getString(query) || undefined;
         } else if (this.message) {
+            if (n < 0) {
+                const index = (n * -1);
+                const split = this.message.content.trim().split(/\s+/);
+                return split.filter((_, i) => i >= index).join(' ') || undefined;
+            }
             const args = this.message.content.trim().split(/\s+/);
             return args[n + 1] || undefined;
         }

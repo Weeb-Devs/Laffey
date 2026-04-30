@@ -1,13 +1,15 @@
-import {type APIEmbed, EmbedBuilder, type EmbedData} from "discord.js";
+import {EmbedBuilder} from "discord.js";
+import {KazagumoTrack} from "kazagumo";
 
 export enum CommandResponseType {
     normal,
     nowplaying,
-    paginated
+    paginated,
+    search
 }
 
 export class CommandResponse {
-    private constructor(public embeds: EmbedBuilder[] = [], public type: CommandResponseType = CommandResponseType.normal) {
+    private constructor(public embeds: EmbedBuilder[] = [], public type: CommandResponseType = CommandResponseType.normal, public data?: any) {
     }
 
     static error(text: string, error?: Error): CommandResponse {
@@ -33,4 +35,13 @@ export class CommandResponse {
                 .setDescription(text)
         ]);
     }
+
+    static search(data: SearchResponse) {
+        return new CommandResponse([], CommandResponseType.search, data);
+    }
+}
+
+export interface SearchResponse {
+    query: string;
+    tracks: KazagumoTrack[];
 }

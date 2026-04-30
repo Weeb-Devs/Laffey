@@ -60,9 +60,8 @@ export class CommandService {
         const interaction = new InteractionAdapter(this.client, undefined, ctx);
         try {
             const response = await command.execute(interaction);
-            if (response.type === CommandResponseType.paginated) {
+            if (response.type === CommandResponseType.search) return this.client.search.handle(ctx, interaction, response);
 
-            }
             const msg = await ctx.reply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds});
             if (msg) await this.postSend(msg, ctx, interaction, response);
         } catch (e) {
@@ -81,6 +80,8 @@ export class CommandService {
         const interaction = new InteractionAdapter(this.client, ctx);
         try {
             const response = await command.execute(interaction);
+            if (response.type === CommandResponseType.search) return this.client.search.handle(ctx, interaction, response);
+
             const msg = ctx.deferred ?
                 await ctx.editReply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds}) :
                 await ctx.reply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds});
