@@ -3,9 +3,9 @@ import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse} from "../commandResponse.js";
 import type {GuildMember} from "discord.js";
 
-export default class stop extends Command {
+export default class leave extends Command {
     constructor() {
-        super('stop', 'Stop the player');
+        super('leave', 'Leave the voice channel');
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
@@ -15,9 +15,8 @@ export default class stop extends Command {
         if (!channel) return CommandResponse.error('You\'re not in a voice channel');
         if (player && (channel.id !== player.voiceId)) return CommandResponse.error('You\'re not in the same voice channel as the bot');
 
-        player.queue.clear();
-        await player.shoukaku.stopTrack();
+        await player.destroy();
 
-        return CommandResponse.successText('Stopped the player');
+        return CommandResponse.successText('Left the voice channel');
     }
 }
