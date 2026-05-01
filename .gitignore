@@ -3,6 +3,6 @@
 /config.json
 .github
 .idea
-/package-lock.json
 .env
 /laffey.iml
+test/
