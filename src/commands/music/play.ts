@@ -17,7 +17,7 @@ export default class play extends Command {
         let player = ctx.client.player.players.get(ctx.guildId!);
         const {channel} = (ctx.member as GuildMember)!.voice;
 
-        let query = ctx.getString("query", 0);
+        let query = ctx.getString("query", -1);
         if (!query) {
             if (player?.paused) {
                 player.pause(false);
@@ -26,7 +26,6 @@ export default class play extends Command {
         }
         await ctx.deferReply();
 
-        console.log([ctx.guildId, channel?.id, ctx.channelId])
         if (!player) player = await ctx.client.player.createPlayer({
             guildId: ctx.guildId!,
             voiceId: channel!.id,

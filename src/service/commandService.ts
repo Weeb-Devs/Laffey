@@ -1,4 +1,11 @@
-import {type BaseInteraction, ChatInputCommandInteraction, InteractionResponse, Message, REST} from "discord.js";
+import {
+    type BaseInteraction,
+    ChatInputCommandInteraction,
+    InteractionResponse,
+    Message,
+    REST,
+    Routes
+} from "discord.js";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import type {Command} from "../commands/Command.js";
