@@ -47,6 +47,17 @@ export class InteractionAdapter {
         }
     }
 
+    public getBoolean(query: string, n: number): boolean | undefined {
+        if (this.interaction) {
+            return this.interaction.options.getBoolean(query) || undefined;
+        } else if (this.message) {
+            const args = this.message.content.trim().split(/\s+/);
+            const arg = args[n + 1] || undefined;
+            if (!arg) return undefined;
+            return ["true", "yes", "enable", "enabled", "on"].includes(arg);
+        }
+    }
+
     public getInteger(query: string, n: number): number | undefined {
         if (this.interaction) {
             return this.interaction.options.getInteger(query) || undefined;
@@ -54,6 +65,15 @@ export class InteractionAdapter {
             const args = this.message.content.trim().split(/\s+/);
             const num = parseInt(args[n + 1] || 'a', 10);
             return isNaN(num) ? undefined : num;
+        }
+    }
+
+    public getSubCommand(n: number = 0): string | undefined {
+        if (this.interaction) {
+            return this.interaction.options.getSubcommand();
+        } else if (this.message) {
+            const args = this.message.content.trim().split(/\s+/);
+            return args[n + 1] || undefined;
         }
     }
 
