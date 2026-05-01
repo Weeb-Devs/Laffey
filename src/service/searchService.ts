@@ -59,13 +59,10 @@ export class SearchService {
             await i.editReply({embeds: [embed], components: [actionRow.toJSON()]});
         });
 
-        collector.on('end', async () => {
+        collector.on('end', () => {
+            if (!msg) return;
             (actionRow.components[0] as StringSelectMenuBuilder).setDisabled(true);
-            if (ctx instanceof ChatInputCommandInteraction) {
-                msg = await ctx.editReply({embeds: [embed], components: [actionRow.toJSON()]});
-            } else if (ctx instanceof Message) {
-                msg = await ctx.reply({embeds: [embed], components: [actionRow.toJSON()]});
-            }
+            msg.edit({embeds: [embed], components: [actionRow.toJSON()]}).catch(() => void 0);
         })
     }
 
