@@ -64,7 +64,7 @@ export class InteractionAdapter {
         } else if (this.message) {
             const args = this.message.content.trim().split(/\s+/);
             const num = parseInt(args[n + 1] || 'a', 10);
-            return isNaN(num) ? undefined : num;
+            return (isNaN(num) || !args[n + 1]) ? undefined : num;
         }
     }
 
