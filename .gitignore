@@ -6,3 +6,4 @@
 .env
 /laffey.iml
 test/
+dist/
