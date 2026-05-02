@@ -14,18 +14,11 @@ export class Laffey extends Client {
 
     public async prepare() {
 
-        this.on("messageCreate", (ctx) => {
-            console.log(ctx.content)
-            this.commands.handleMessage(ctx);
-        });
+        this.on("messageCreate", this.commands.handleMessage.bind(this.commands));
 
-        this.on("interactionCreate", (ctx) => {
-            this.commands.handleInteraction(ctx);
-        });
+        this.on("interactionCreate", this.commands.handleInteraction.bind(this.commands));
 
-        this.on("clientReady", () => {
-            console.log(`${this.user!.username} is ready`);
-        });
+        this.on("clientReady", () => console.log(`${this.user!.username} is ready`));
 
         await this.player.prepare();
         await this.commands.loadCommands();
