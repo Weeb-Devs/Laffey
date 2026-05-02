@@ -1,11 +1,12 @@
 import {Kazagumo} from "kazagumo";
 import type {Laffey} from "../Laffey.js";
 import {Connectors} from "shoukaku";
-import {EmbedBuilder} from "@discordjs/builders";
-import {TextChannel} from "discord.js";
+import fs from "node:fs";
+import * as path from "node:path";
+import type {PlayerEvent} from "../events/player/playerEvent.js";
 
 export class PlayerService extends Kazagumo {
-    constructor(private client: Laffey) {
+    constructor(public readonly client: Laffey) {
         super({
             defaultSearchEngine: "youtube",
             send: (guildId, payload) => client.guilds.cache.get(guildId)?.shard.send(payload),
@@ -17,35 +18,26 @@ export class PlayerService extends Kazagumo {
     }
 
     public async prepare() {
-        this.listenEvents();
+        await this.listenEvents();
     }
 
-    public listenEvents() {
-        this.shoukaku.on("ready", (name) => console.log(`[LAVALINK] => [STATUS] Lavalink ${name}: Ready!`));
-        this.shoukaku.on('close', (name, code, reason) => console.warn(`Lavalink ${name}: Closed, code: ${code}, reason: ${reason}`));
-        this.shoukaku.on('error', (name, error) => console.error(`Lavalink ${name}: Error`, error));
-        this.shoukaku.on('disconnect', (name, count) => {
-            const players = [...this.shoukaku.players.values()].filter(p => p.node.name === name);
-            players.map(player => {
-                this.destroyPlayer(player.guildId);
-                player.destroy();
-            });
-            console.warn(`Lavalink ${name}: Disconnected (${count})`);
-        });
-        this.on('playerStart', async (player, track) => {
-            if (!player.textId) return;
-            const channel = this.client.channels.cache.get(player.textId);
-            if (!channel || !(channel instanceof TextChannel)) return;
-
-            const playEmbed = new EmbedBuilder()
-                .setAuthor({name: "Now Playing"})
-                .setDescription(`${track ? `[${track.title}](${track.uri}) [${track.requester}]` : 'Unknown'}`)
-                .setColor(0x00C7FF)
-            const msg = await channel.send({embeds: [playEmbed]}).catch(() => undefined);
-            player.data.set('message', msg);
-        });
-        this.on('playerEnd', (player) => {
-            if (player.data.get('message')) player.data.get('message').delete().catch(() => void 0);
-        })
+    public async listenEvents() {
+        const basePath = path.join("src", "events", "player");
+        const events = fs.readdirSync(basePath);
+        for (const event of events) {
+            if (event.startsWith("playerEvent")) continue;
+            const eventPath = path.join(process.cwd(), basePath, event);
+            const modUrl = `file://${eventPath}?t=${Date.now()}`;
+            const mod = await import(modUrl);
+            const ev = new mod.default(this) as PlayerEvent;
+            console.log(`[PLAYER] => [EVENTS] Loaded ${ev.name} ${ev.type} event`);
+            if (ev.once) {
+                if (ev.type === "shoukaku") this.shoukaku.once(ev.name as any, (...args: any[]) => ev.execute(...args));
+                else this.once(ev.name as any, (...args: any[]) => ev.execute(...args));
+            } else {
+                if (ev.type === "shoukaku") this.shoukaku.on(ev.name as any, (...args: any[]) => ev.execute(...args));
+                else this.on(ev.name as any, (...args: any[]) => ev.execute(...args));
+            }
+        }
     }
 }
