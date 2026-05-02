@@ -23,9 +23,7 @@ export class CommandService {
 
     public async loadCommands(): Promise<void> {
         const isDevTsRuntime = process.env.IS_DEV === "true";
-        const baseCommands = isDevTsRuntime
-            ? path.join("src", "commands")
-            : path.join("dist", "src", "commands");
+        const baseCommands = path.join("src", "commands");
 
         const ext = isDevTsRuntime ? ".ts" : ".js";
         const categories = fs.readdirSync(baseCommands);
