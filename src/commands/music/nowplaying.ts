@@ -3,7 +3,7 @@ import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse, CommandResponseType} from "../commandResponse.js";
 import {splitBar} from "string-progressbar";
 import {KazagumoPlayer} from "kazagumo";
-import {EmbedBuilder} from "discord.js";
+import {EmbedBuilder} from "../../builder/embedBuilder.js";
 
 export default class nowPlaying extends Command {
     constructor() {
@@ -25,7 +25,7 @@ export default class nowPlaying extends Command {
 
         const embed = (p: KazagumoPlayer, l: number | null, n: number | null) => {
             const current = p.queue.current;
-            if (!current) return new EmbedBuilder().setTitle('Nowplaying - none');
+            if (!current) return new EmbedBuilder('No music playing');
             return new EmbedBuilder()
                 .setTitle(`Nowplaying - ${current.title}`)
                 .setURL(current.uri || null)
@@ -33,8 +33,7 @@ export default class nowPlaying extends Command {
                 .setDescription(`[${current.isStream ? '◉ LIVE' : `${new Date(p.position).toISOString().slice(11, 19)}`}]` +
                     splitBar(l ? Number(l) : 1, n ? Number(n) : 2, 26, '=', 'X')[0] +
                     `[${current.isStream ? '◉ LIVE' : `${new Date(current.length!).toISOString().slice(11, 19)}`}]`)
-                .setFooter({text: `${new Date(l! - n!).toISOString().slice(11, 19) + ' left'}`})
-                .setColor(0x00C7FF);
+                .setFooter({text: `${new Date(l! - n!).toISOString().slice(11, 19) + ' left'}`});
         }
 
 

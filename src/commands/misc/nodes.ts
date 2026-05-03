@@ -1,7 +1,7 @@
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {Command} from "../Command.js";
 import {CommandResponse} from "../commandResponse.js";
-import {EmbedBuilder} from "discord.js";
+import {EmbedBuilder} from "../../builder/embedBuilder.js";
 
 export default class nodes extends Command {
     constructor() {
@@ -27,7 +27,6 @@ export default class nodes extends Command {
 
         return CommandResponse.success(new EmbedBuilder()
             .setTitle(`Nodes`)
-            .setDescription(`${all}`)
-            .setColor(0xFF0000))
+            .setDescription(`${all}`))
     }
 }

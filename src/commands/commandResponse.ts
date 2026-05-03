@@ -1,5 +1,5 @@
-import {EmbedBuilder} from "discord.js";
 import {KazagumoTrack} from "kazagumo";
+import {EmbedBuilder} from "../builder/embedBuilder.js";
 
 export enum CommandResponseType {
     normal,
@@ -14,9 +14,7 @@ export class CommandResponse {
 
     static error(text: string, error?: Error): CommandResponse {
         return new CommandResponse([
-            new EmbedBuilder()
-                .setColor("Red")
-                .setDescription(text)
+            new EmbedBuilder(text, "error")
         ]);
     }
 
@@ -30,9 +28,7 @@ export class CommandResponse {
 
     static successText(text: string): CommandResponse {
         return new CommandResponse([
-            new EmbedBuilder()
-                .setColor("Green")
-                .setDescription(text)
+            new EmbedBuilder(text, "success")
         ]);
     }
 

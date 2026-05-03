@@ -2,8 +2,9 @@ import {Command} from "../Command.js";
 import {SlashCommandBooleanOption, SlashCommandNumberOption, SlashCommandSubcommandBuilder} from "@discordjs/builders";
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse} from "../commandResponse.js";
-import {EmbedBuilder, type GuildMember} from "discord.js";
+import {type GuildMember} from "discord.js";
 import type {KazagumoPlayer} from "kazagumo";
+import {EmbedBuilder} from "../../builder/embedBuilder.js";
 
 export default class effect extends Command {
     private static valueOption = (option: SlashCommandNumberOption) =>

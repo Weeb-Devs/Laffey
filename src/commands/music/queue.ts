@@ -1,8 +1,8 @@
 import {Command} from "../Command.js";
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse, CommandResponseType} from "../commandResponse.js";
-import {EmbedBuilder} from "discord.js";
 import {Utils} from "../../utils/utils.js";
+import {EmbedBuilder} from "../../builder/embedBuilder.js";
 
 export default class queue extends Command {
     constructor() {
