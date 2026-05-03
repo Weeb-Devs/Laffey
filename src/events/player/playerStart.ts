@@ -10,6 +10,7 @@ export default class playerStart extends PlayerEvent {
     }
 
     async execute(player: KazagumoPlayer, track: KazagumoTrack) {
+        if (player.data.get('empty.timeout')) clearTimeout(player.data.get('empty.timeout'));
         if (!player.textId) return;
         const channel = this.player.client.channels.cache.get(player.textId);
         if (!channel || !(channel instanceof TextChannel)) return;
