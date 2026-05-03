@@ -1,5 +1,6 @@
 import {Laffey} from "./src/Laffey.js";
 import {GatewayIntentBits} from "discord.js";
+import {ConfigHandler} from "./src/utils/config.js";
 
 const laffey = new Laffey([
     GatewayIntentBits.Guilds,
@@ -9,5 +10,5 @@ const laffey = new Laffey([
 ])
 laffey.prepare().then(() => {
     console.log(`Done preparing`);
-    laffey.login(process.env.TOKEN);
+    laffey.login(ConfigHandler.token);
 });

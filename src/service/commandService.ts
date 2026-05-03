@@ -13,10 +13,11 @@ import {InteractionAdapter} from "../adapter/InteractionAdapter.js";
 import type {Laffey} from "../Laffey.js";
 import {CommandResponse, CommandResponseType} from "../commands/commandResponse.js";
 import {Pagination} from "../utils/pagination.js";
+import {ConfigHandler} from "../utils/config.js";
 
 export class CommandService {
     private commands: Map<string, Command> = new Map();
-    private rest = new REST({version: "10"}).setToken(process.env.TOKEN!);
+    private rest = new REST({version: "10"}).setToken(ConfigHandler.token ?? "");
 
     constructor(private readonly client: Laffey) {
     }
@@ -54,7 +55,7 @@ export class CommandService {
     }
 
     public async handleMessage(ctx: Message) {
-        const prefix = process.env.PREFIX;
+        const prefix = ConfigHandler.prefix;
         if (!prefix || prefix.length === 0 || !ctx.content.startsWith(prefix)) return;
         const args = ctx.content.slice(prefix.length).trim().split(/ +/);
         const commandName = args.shift()!.toLowerCase();
