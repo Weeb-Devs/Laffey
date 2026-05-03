@@ -2,6 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import type {EmbedColor} from "../builder/embedBuilder.js";
 import type {ColorResolvable, EmbedFooterData} from "discord.js";
+import {Logger} from "./logger.js";
 
 type ConfigObject = Record<string, unknown>;
 
@@ -16,7 +17,7 @@ const loadConfigFile = (): ConfigObject => {
     try {
         const raw = fs.readFileSync(configPath, "utf-8");
         const parsed = JSON.parse(raw);
-        if (isRecord(parsed)) console.log(`Loaded config.json`);
+        if (isRecord(parsed)) Logger.log(`Loaded config.json`, 'Config');
         return isRecord(parsed) ? parsed : {};
     } catch {
         return {};

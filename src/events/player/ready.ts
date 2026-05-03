@@ -1,5 +1,6 @@
 import {PlayerEvent} from "./playerEvent.js";
 import type {PlayerService} from "../../service/playerService.js";
+import {Logger} from "../../utils/logger.js";
 
 export default class PlayerReadyEvent extends PlayerEvent {
     constructor(player: PlayerService) {
@@ -7,6 +8,6 @@ export default class PlayerReadyEvent extends PlayerEvent {
     }
 
     execute(name: string) {
-        console.log(`[LAVALINK] => [STATUS] Lavalink ${name}: Ready!`);
+        Logger.log(`Lavalink ${name}: Ready!`, 'Kazagumo');
     }
 }

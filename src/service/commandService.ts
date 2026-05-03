@@ -14,6 +14,7 @@ import type {Laffey} from "../Laffey.js";
 import {CommandResponse, CommandResponseType} from "../commands/commandResponse.js";
 import {Pagination} from "../utils/pagination.js";
 import {ConfigHandler} from "../utils/config.js";
+import {Logger} from "../utils/logger.js";
 
 export class CommandService {
     private commands: Map<string, Command> = new Map();
@@ -29,10 +30,11 @@ export class CommandService {
         const ext = isDevTsRuntime ? ".ts" : ".js";
         const categories = fs.readdirSync(baseCommands);
 
+        let categoryCount = 0;
         for (const category of categories) {
             const categoryPath = path.join(baseCommands, category);
             if (!fs.statSync(categoryPath).isDirectory()) continue;
-
+            categoryCount++;
             const commands = fs.readdirSync(categoryPath).filter((x) => x.endsWith(ext));
 
             for (const file of commands) {
@@ -43,9 +45,10 @@ export class CommandService {
                 const cmd = new mod.default() as Command;
                 const builtCmd = cmd.build();
                 this.commands.set(builtCmd.name, cmd);
-                console.log(`Loaded ${category} => ${builtCmd.name}`);
+                Logger.debug(`Loaded ${category} => ${builtCmd.name}`, 'Command');
             }
         }
+        Logger.log(`Loaded ${categoryCount} categories, ${this.commands.entries().toArray().length} commands`, 'Command');
 
         // const response = await this.rest.put(
         //     Routes.applicationGuildCommands(process.env.CLIENT_ID!, '1224701527013457950'),
@@ -71,7 +74,7 @@ export class CommandService {
             const msg = await ctx.reply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds});
             if (msg) await this.postSend(msg, ctx, interaction, response);
         } catch (e) {
-            console.log(`Error occurred while executing command: ${commandName}`, e);
+            Logger.errorStack(`Error occurred while executing command: ${commandName}`, 'Command', e as Error);
             return ctx.reply("An error occurred while executing the command");
         }
     }
@@ -93,7 +96,7 @@ export class CommandService {
                 await ctx.reply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds});
             if (msg) await this.postSend(msg, ctx, interaction, response);
         } catch (e) {
-            console.log(`Error occurred while executing command: ${ctx.commandName}`, e);
+            Logger.errorStack(`Error occurred while executing command: ${ctx.commandName}`, 'Laffey', e as Error);
             return ctx.deferred ?
                 ctx.editReply("An error occurred while executing the command") :
                 ctx.reply("An error occurred while executing the command");
@@ -107,7 +110,7 @@ export class CommandService {
                 break;
             case CommandResponseType.paginated:
                 const pagination = new Pagination(msg, interaction, response.embeds);
-                await pagination.start().catch(() => console.log("Failed to start pagination"));
+                await pagination.start().catch(() => Logger.error("Failed to start pagination", "Command"));
         }
     }
 }

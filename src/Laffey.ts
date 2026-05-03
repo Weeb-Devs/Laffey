@@ -2,6 +2,7 @@ import {type BitFieldResolvable, Client, type GatewayIntentsString} from "discor
 import {CommandService} from "./service/commandService.js";
 import {PlayerService} from "./service/playerService.js";
 import {SearchService} from "./service/searchService.js";
+import {Logger} from "./utils/logger.js";
 
 export class Laffey extends Client {
     public readonly commands: CommandService = new CommandService(this);
@@ -18,7 +19,7 @@ export class Laffey extends Client {
 
         this.on("interactionCreate", this.commands.handleInteraction.bind(this.commands));
 
-        this.on("clientReady", () => console.log(`${this.user!.username} is ready`));
+        this.on("clientReady", () => Logger.log(`${this.user!.username} is ready`, 'Laffey'));
 
         await this.player.prepare();
         await this.commands.loadCommands();
