@@ -3,6 +3,7 @@ import * as path from "node:path";
 import type {EmbedColor} from "../builder/embedBuilder.js";
 import type {ColorResolvable, EmbedFooterData} from "discord.js";
 import {Logger} from "./logger.js";
+import type {NodeOption} from "shoukaku";
 
 type ConfigObject = Record<string, unknown>;
 
@@ -94,8 +95,8 @@ export class ConfigHandler {
         return data;
     }
 
-    public static get nodes(): unknown {
-        return ConfigHandler.getInstance().get<unknown>("nodes");
+    public static get nodes(): NodeOption[] {
+        return ConfigHandler.getInstance().get<NodeOption[]>("nodes") || [];
     }
 
     public static get statuses(): string[] {

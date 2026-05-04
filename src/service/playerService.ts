@@ -6,17 +6,14 @@ import * as path from "node:path";
 import type {PlayerEvent} from "../events/player/playerEvent.js";
 import {Logger} from "../utils/logger.js";
 import type {PlayerRateLimit} from "../events/player/playerException.js";
+import {ConfigHandler} from "../utils/config.js";
 
 export class PlayerService extends Kazagumo {
     constructor(public readonly client: Laffey) {
         super({
             defaultSearchEngine: "youtube",
             send: (guildId, payload) => client.guilds.cache.get(guildId)?.shard.send(payload),
-        }, new Connectors.DiscordJS(client), [{
-            name: "Testing",
-            url: "localhost:5050",
-            auth: "REMOVED"
-        }]);
+        }, new Connectors.DiscordJS(client), ConfigHandler.nodes);
     }
 
     public async prepare() {
