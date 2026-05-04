@@ -33,7 +33,6 @@
     "bufferutil": "^4.1.0",
     "chalk": "^4.1.2",
     "cli-interact": "^0.1.9",
-    "colorthief": "^2.6.0",
     "discord-api-types": "^0.38.38",
     "discord.js": "^14.25.1",
     "dotenv": "^17.2.3",
@@ -44,6 +43,7 @@
     "lyrics-finder": "^21.7.0",
     "moment": "^2.30.1",
     "mongoose": "^9.1.5",
+    "sharp": "^0.34.5",
     "shortid": "^2.2.17",
     "string-progressbar": "^1.0.4"
   }
