@@ -26,7 +26,7 @@ export class CommandResponse {
         return new CommandResponse([embed], type);
     }
 
-    static successPaginated(embeds: EmbedBuilder[], type?: CommandResponseType): CommandResponse {
+    static successPaginated(embeds: EmbedBuilder[], type: CommandResponseType = CommandResponseType.paginated): CommandResponse {
         return new CommandResponse(embeds, type);
     }
 
