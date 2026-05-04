@@ -1,11 +1,13 @@
 import {KazagumoTrack} from "kazagumo";
 import {EmbedBuilder} from "../builder/embedBuilder.js";
+import type {Song} from "genius-lyrics";
 
 export enum CommandResponseType {
     normal,
     nowplaying,
     paginated,
-    search
+    search,
+    lyrics
 }
 
 export class CommandResponse {
@@ -34,6 +36,10 @@ export class CommandResponse {
 
     static search(data: SearchResponse) {
         return new CommandResponse([], CommandResponseType.search, data);
+    }
+
+    static lyrics(data: Song[]) {
+        return new CommandResponse([], CommandResponseType.lyrics, data);
     }
 }
 

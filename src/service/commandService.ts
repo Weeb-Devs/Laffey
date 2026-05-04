@@ -1,11 +1,4 @@
-import {
-    type BaseInteraction,
-    ChatInputCommandInteraction,
-    InteractionResponse,
-    Message,
-    REST,
-    Routes
-} from "discord.js";
+import {type BaseInteraction, ChatInputCommandInteraction, InteractionResponse, Message, REST} from "discord.js";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import type {Command} from "../commands/Command.js";
@@ -15,6 +8,7 @@ import {CommandResponse, CommandResponseType} from "../commands/commandResponse.
 import {Pagination} from "../utils/pagination.js";
 import {ConfigHandler} from "../utils/config.js";
 import {Logger} from "../utils/logger.js";
+import {LyricsService} from "./lyricsService.js";
 
 export class CommandService {
     private commands: Map<string, Command> = new Map();
@@ -69,7 +63,7 @@ export class CommandService {
         const interaction = new InteractionAdapter(this.client, undefined, ctx);
         try {
             const response = await command.execute(interaction);
-            if (response.type === CommandResponseType.search) return this.client.search.handle(ctx, interaction, response);
+            if (!(await this.preSend(ctx, interaction, response))) return;
 
             const msg = await ctx.reply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds});
             if (msg) await this.postSend(msg, ctx, interaction, response);
@@ -89,7 +83,7 @@ export class CommandService {
         const interaction = new InteractionAdapter(this.client, ctx);
         try {
             const response = await command.execute(interaction);
-            if (response.type === CommandResponseType.search) return this.client.search.handle(ctx, interaction, response);
+            if (!(await this.preSend(ctx, interaction, response))) return;
 
             const msg = ctx.deferred ?
                 await ctx.editReply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds}) :
@@ -101,6 +95,18 @@ export class CommandService {
                 ctx.editReply("An error occurred while executing the command") :
                 ctx.reply("An error occurred while executing the command");
         }
+    }
+
+    private async preSend(ctx: ChatInputCommandInteraction | Message, interaction: InteractionAdapter, response: CommandResponse): Promise<boolean> {
+        switch (response.type) {
+            case CommandResponseType.search:
+                await this.client.search.handle(ctx, interaction, response);
+                return false;
+            case CommandResponseType.lyrics:
+                await LyricsService.getInstance().handle(ctx, interaction, response);
+                return false;
+        }
+        return true;
     }
 
     private async postSend(msg: Message | InteractionResponse, ctx: BaseInteraction | Message, interaction: InteractionAdapter, response: CommandResponse) {
