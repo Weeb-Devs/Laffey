@@ -15,6 +15,7 @@ export class Logger {
     }
 
     static debug(message: string, service: string) {
+        if (!ConfigHandler.isDev) return;
         console.log(chalk.bgYellow("DEBUG\t") + chalk.yellow(` [${new Date().toLocaleTimeString()}]`) + chalk.green(` [${service}]`) + chalk.white(` ${message}`));
     }
 }

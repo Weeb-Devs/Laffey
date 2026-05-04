@@ -40,11 +40,15 @@ export class ConfigHandler {
     }
 
     public static get token(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("token");
+        return ConfigHandler.getInstance().get<string>("client.token");
     }
 
     public static get prefix(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("prefix");
+        return ConfigHandler.getInstance().get<string>("client.prefix");
+    }
+
+    public static get isDev(): boolean {
+        return ConfigHandler.getInstance().get<boolean>("is_dev") ?? false;
     }
 
     public static get owners(): string[] {
@@ -76,6 +80,10 @@ export class ConfigHandler {
 
     public static get nodes(): unknown {
         return ConfigHandler.getInstance().get<unknown>("nodes");
+    }
+
+    public static get statuses(): string[] {
+        return ConfigHandler.getInstance().get<string[]>("client.statuses") ?? [];
     }
 
     public static get lyricsEngine(): string | undefined {
