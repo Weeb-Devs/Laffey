@@ -51,6 +51,10 @@ export class ConfigHandler {
         return ConfigHandler.getInstance().get<boolean>("is_dev") ?? false;
     }
 
+    public static get geniusApiKey(): string | undefined {
+        return ConfigHandler.getInstance().get<string>("genius.api_key");
+    }
+
     public static get owners(): string[] {
         const owners = ConfigHandler.getInstance().get<unknown>("owners");
         if (!owners) return [];

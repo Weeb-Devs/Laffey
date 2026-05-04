@@ -7,9 +7,10 @@ import type {CommandResponse} from "../commands/commandResponse.js";
 import {ActionRowBuilder} from "@discordjs/builders";
 import {Pagination} from "../utils/pagination.js";
 import {Sharp} from "../utils/sharp.js";
+import {ConfigHandler} from "../utils/config.js";
 
 export class LyricsService {
-    private client = new Client();
+    private client = new Client(ConfigHandler.geniusApiKey);
     private static instance: LyricsService;
 
     static getInstance(): LyricsService {
