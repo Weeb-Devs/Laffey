@@ -1,6 +1,7 @@
 import {KazagumoTrack} from "kazagumo";
 import {EmbedBuilder} from "../builder/embedBuilder.js";
 import type {Song} from "genius-lyrics";
+import {Logger} from "../utils/logger.js";
 
 export enum CommandResponseType {
     normal,
@@ -15,6 +16,7 @@ export class CommandResponse {
     }
 
     static error(text: string, error?: Error): CommandResponse {
+        if (error) Logger.errorStack('Command Error: ' + text, 'Command', error);
         return new CommandResponse([
             new EmbedBuilder(text, "error")
         ]);
