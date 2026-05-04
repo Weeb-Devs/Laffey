@@ -38,7 +38,7 @@ export default class play extends Command {
         });
         if (!player) return CommandResponse.error('Failed to create player');
 
-        const result = await player.search(query, {requester: ctx.member});
+        const result = await player.search(query, {requester: ctx.user});
         if (!result.tracks || !result.tracks.length || !result.type) {
             if (!player.queue.current && !player.queue.length) await player.destroy();
             return CommandResponse.error('No results found');
