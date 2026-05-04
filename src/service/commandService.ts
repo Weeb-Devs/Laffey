@@ -1,4 +1,11 @@
-import {type BaseInteraction, ChatInputCommandInteraction, InteractionResponse, Message, REST} from "discord.js";
+import {
+    type BaseInteraction,
+    ChatInputCommandInteraction,
+    InteractionResponse,
+    Message,
+    REST,
+    Routes
+} from "discord.js";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import type {Command} from "../commands/Command.js";
@@ -44,11 +51,19 @@ export class CommandService {
         }
         Logger.log(`Loaded ${categoryCount} categories, ${this.commands.entries().toArray().length} commands`, 'Command');
 
-        // const response = await this.rest.put(
-        //     Routes.applicationGuildCommands(process.env.CLIENT_ID!, '1224701527013457950'),
-        //     {body: this.commands.values().toArray().map(x => x.build())}
-        // );
-        // console.log(response);
+        if (ConfigHandler.registerSlashCommand) {
+            Logger.log("Registering slash commands...", "Command");
+            if (!ConfigHandler.clientId) {
+                Logger.error('Client ID is not set. Please set client.id=<CLIENT-ID> or add {"client": {"id": "<CLIENT-ID>", ...}, ...} to config.json', "Command");
+                process.exit(1);
+            }
+            const route = ConfigHandler.registerSlashCommandGuildId ?
+                Routes.applicationGuildCommands(ConfigHandler.clientId, ConfigHandler.registerSlashCommandGuildId) :
+                Routes.applicationCommands(ConfigHandler.clientId);
+            const response = await this.rest.put(route, {body: this.commands.values().toArray().map(x => x.build())});
+            if (!!response) Logger.log(`Registered ${this.commands.values().toArray().length} slash commands`, "Command");
+            else Logger.error("Failed to register slash commands", "Command");
+        }
     }
 
     public async handleMessage(ctx: Message) {

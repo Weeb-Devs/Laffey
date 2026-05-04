@@ -47,12 +47,24 @@ export class ConfigHandler {
         return ConfigHandler.getInstance().get<string>("client.prefix");
     }
 
+    public static get clientId(): string | undefined {
+        return ConfigHandler.getInstance().get<string>("client.id");
+    }
+
     public static get isDev(): boolean {
         return ConfigHandler.getInstance().get<boolean>("is_dev") ?? false;
     }
 
     public static get geniusApiKey(): string | undefined {
         return ConfigHandler.getInstance().get<string>("genius.api_key");
+    }
+
+    public static get registerSlashCommand(): boolean {
+        return ConfigHandler.getInstance().get<boolean>("slash.register") ?? false;
+    }
+
+    public static get registerSlashCommandGuildId(): string | undefined {
+        return ConfigHandler.getInstance().get<string>("slash.guild_id");
     }
 
     public static get owners(): string[] {
@@ -88,14 +100,6 @@ export class ConfigHandler {
 
     public static get statuses(): string[] {
         return ConfigHandler.getInstance().get<string[]>("client.statuses") ?? [];
-    }
-
-    public static get lyricsEngine(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("lyrics_engine");
-    }
-
-    public static get debug(): boolean | string | undefined {
-        return ConfigHandler.getInstance().get<unknown>("debug") as boolean | string | undefined;
     }
 
     private get<T>(pathKey: string): T | undefined {
