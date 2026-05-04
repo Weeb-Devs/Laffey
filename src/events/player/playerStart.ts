@@ -1,5 +1,5 @@
 import {PlayerEvent} from "./playerEvent.js";
-import type {PlayerService} from "../../service/playerService.js";
+import {PlayerService} from "../../service/playerService.js";
 import type {KazagumoPlayer, KazagumoTrack} from "kazagumo";
 import {TextChannel} from "discord.js";
 import {EmbedBuilder} from "../../builder/embedBuilder.js";
@@ -10,6 +10,8 @@ export default class playerStart extends PlayerEvent {
     }
 
     async execute(player: KazagumoPlayer, track: KazagumoTrack) {
+        if (PlayerService.isPlayerRateLimited(player)) return;
+
         if (player.data.get('empty.timeout')) clearTimeout(player.data.get('empty.timeout'));
         if (!player.textId) return;
         const channel = this.player.client.channels.cache.get(player.textId);

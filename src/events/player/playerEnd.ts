@@ -9,5 +9,6 @@ export default class playerEnd extends PlayerEvent {
 
     execute(player: KazagumoPlayer) {
         if (player.data.get('message')) player.data.get('message').delete().catch(() => void 0);
+        player.data.delete('message');
     }
 }

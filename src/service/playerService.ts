@@ -1,10 +1,11 @@
-import {Kazagumo} from "kazagumo";
+import {Kazagumo, type KazagumoPlayer} from "kazagumo";
 import type {Laffey} from "../Laffey.js";
 import {Connectors} from "shoukaku";
 import fs from "node:fs";
 import * as path from "node:path";
 import type {PlayerEvent} from "../events/player/playerEvent.js";
 import {Logger} from "../utils/logger.js";
+import type {PlayerRateLimit} from "../events/player/playerException.js";
 
 export class PlayerService extends Kazagumo {
     constructor(public readonly client: Laffey) {
@@ -41,5 +42,55 @@ export class PlayerService extends Kazagumo {
             }
         }
         Logger.log(`Loaded ${events.length} events`, 'Kazagumo');
+    }
+
+    public static isPlayerRateLimited(player: KazagumoPlayer): boolean {
+        const now = Date.now();
+        const rateLimit = player.data.get("ratelimit.data") as PlayerRateLimit | undefined;
+
+        if (!rateLimit?.blockedUntil) return false;
+
+        if (now >= rateLimit.blockedUntil) {
+            player.data.delete("ratelimit.data");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static registerPlayerTrigger(player: KazagumoPlayer): boolean {
+        const now = Date.now();
+        const rateLimit = player.data.get("ratelimit.data") as PlayerRateLimit | undefined;
+
+        if (rateLimit?.blockedUntil) {
+            if (now < rateLimit.blockedUntil) return true;
+            player.data.delete("ratelimit.data");
+        }
+
+        const fresh = player.data.get("ratelimit.data") as PlayerRateLimit | undefined;
+        if (!fresh) {
+            player.data.set("ratelimit.data", {windowStart: now, count: 1});
+            return false;
+        }
+
+        if (now - fresh.windowStart >= 1000) {
+            player.data.set("ratelimit.data", {windowStart: now, count: 1});
+            return false;
+        }
+
+        const newCount = fresh.count + 1;
+
+        if (newCount >= 5) {
+            player.data.set("ratelimit.data", {
+                windowStart: fresh.windowStart,
+                count: newCount,
+                blockedUntil: now + 5000
+            });
+            return true;
+        }
+
+        player.data.set("ratelimit.data", {windowStart: fresh.windowStart, count: newCount});
+
+        return false;
     }
 }
