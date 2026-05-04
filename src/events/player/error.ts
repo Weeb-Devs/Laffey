@@ -1,5 +1,6 @@
 import {PlayerEvent} from "./playerEvent.js";
 import type {PlayerService} from "../../service/playerService.js";
+import {Logger} from "../../utils/logger.js";
 
 export default class error extends PlayerEvent {
     constructor(player: PlayerService) {
@@ -7,6 +8,6 @@ export default class error extends PlayerEvent {
     }
 
     execute(name: string, error: Error) {
-        console.error(`Lavalink ${name}: Error`, error);
+        Logger.errorStack(`Lavalink ${name}: Error`, 'Kazagumo', error);
     }
 }

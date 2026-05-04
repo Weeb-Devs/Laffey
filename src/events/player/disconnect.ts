@@ -1,5 +1,6 @@
 import {PlayerEvent} from "./playerEvent.js";
 import type {PlayerService} from "../../service/playerService.js";
+import {Logger} from "../../utils/logger.js";
 
 export default class disconnect extends PlayerEvent {
     constructor(player: PlayerService) {
@@ -12,6 +13,6 @@ export default class disconnect extends PlayerEvent {
             this.player.destroyPlayer(player.guildId);
             player.destroy().catch(() => void 0);
         });
-        console.warn(`Lavalink ${name}: Disconnected (${count})`);
+        Logger.warn(`Lavalink ${name}: Disconnected (${count})`, 'Kazagumo');
     }
 }

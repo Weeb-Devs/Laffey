@@ -3,6 +3,7 @@ import {SlashCommandStringOption} from "@discordjs/builders";
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse} from "../commandResponse.js";
 import type {GuildMember} from "discord.js";
+import {Logger} from "../../utils/logger.js";
 
 export default class play extends Command {
     constructor() {
@@ -32,7 +33,7 @@ export default class play extends Command {
             textId: ctx.channelId!,
             deaf: true
         }).catch((e) => {
-            console.error(e);
+            Logger.errorStack(`Something wrong when creating player on ${ctx.guildId}`, 'Command', e);
             return undefined;
         });
         if (!player) return CommandResponse.error('Failed to create player');

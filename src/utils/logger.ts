@@ -1,8 +1,13 @@
 import chalk from "chalk";
+import {ConfigHandler} from "./config.js";
 
 export class Logger {
     static log(message: string, service: string) {
         console.log(chalk.bgBlue("LOG\t") + chalk.blue(` [${new Date().toLocaleTimeString()}]`) + chalk.green(` [${service}]`) + chalk.white(` ${message}`));
+    }
+
+    static warn(message: string, service: string) {
+        console.warn(chalk.bgYellow("WARN\t") + chalk.yellow(` [${new Date().toLocaleTimeString()}]`) + chalk.green(` [${service}]`) + chalk.white(` ${message}`));
     }
 
     static error(message: string, service: string) {

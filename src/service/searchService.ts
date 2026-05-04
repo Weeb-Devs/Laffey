@@ -8,6 +8,7 @@ import type {InteractionAdapter} from "../adapter/InteractionAdapter.js";
 import type {CommandResponse, SearchResponse} from "../commands/commandResponse.js";
 import {ActionRowBuilder} from "@discordjs/builders";
 import type {KazagumoTrack} from "kazagumo";
+import {Logger} from "../utils/logger.js";
 
 export class SearchService {
     constructor(private readonly client: Laffey) {
@@ -80,7 +81,7 @@ export class SearchService {
             textId: interaction.channelId!,
             deaf: true
         }).catch((e) => {
-            console.error(e);
+            Logger.errorStack(`Something went wrong when creating player ${member.guild.id}`, 'SearchService', e);
             return undefined;
         });
         if (!player) return 'Failed to create player';

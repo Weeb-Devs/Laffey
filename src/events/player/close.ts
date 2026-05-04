@@ -1,5 +1,6 @@
 import {PlayerEvent} from "./playerEvent.js";
 import type {PlayerService} from "../../service/playerService.js";
+import {Logger} from "../../utils/logger.js";
 
 export default class close extends PlayerEvent {
     constructor(player: PlayerService) {
@@ -7,6 +8,6 @@ export default class close extends PlayerEvent {
     }
 
     execute(name: string, code: number, reason: string) {
-        console.warn(`Lavalink ${name}: Closed, code: ${code}, reason: ${reason}`);
+        Logger.warn(`Lavalink ${name}: Closed, code: ${code}, reason: ${reason}`, 'Kazagumo');
     }
 }
