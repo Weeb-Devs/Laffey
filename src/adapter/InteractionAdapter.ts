@@ -1,10 +1,8 @@
 import {
-    type APIInteractionGuildMember,
-    type ApplicationCommand, ChatInputCommandInteraction, CommandInteraction,
-    Guild, GuildMember, type Message, type User, VoiceState
+    type APIInteractionGuildMember, ChatInputCommandInteraction,
+    Guild, GuildMember, type Message, MessagePayload, type User
 } from "discord.js";
 import type {Laffey} from "../Laffey.js";
-import {CommandResponse} from "../commands/commandResponse.js";
 
 export class InteractionAdapter {
     constructor(
