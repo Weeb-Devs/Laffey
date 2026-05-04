@@ -6,6 +6,7 @@ export class Sharp {
         resize = 150,
         sample = 8,
         whiteThreshold = 245,
+        blackThreshold = 20,
         alphaThreshold = 128,
     } = {}) {
         const res = await fetch(url);
@@ -20,7 +21,7 @@ export class Sharp {
             .raw()
             .toBuffer({resolveWithObject: true});
 
-        const bins = new Map();
+        const bins = new Map<number, { count: number; rSum: number; gSum: number; bSum: number }>();
 
         for (let i = 0; i < data.length; i += info.channels * sample) {
             const r = data[i]!;
@@ -30,6 +31,7 @@ export class Sharp {
 
             if (a < alphaThreshold) continue;
             if (r >= whiteThreshold && g >= whiteThreshold && b >= whiteThreshold) continue;
+            if (r <= blackThreshold && g <= blackThreshold && b <= blackThreshold) continue;
 
             const qr = r >> 4;
             const qg = g >> 4;
@@ -56,11 +58,7 @@ export class Sharp {
                 const g = Math.round(x.gSum / x.count);
                 const b = Math.round(x.bSum / x.count);
                 const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, "0")).join("");
-                return {rgb: [r, g, b], hex, count: x.count} as {
-                    rgb: [number, number, number],
-                    hex: string,
-                    count: number
-                };
+                return {rgb: [r, g, b] as [number, number, number], hex, count: x.count};
             });
     }
 }
