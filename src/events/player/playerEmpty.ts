@@ -12,6 +12,7 @@ export default class playerEmpty extends PlayerEvent {
     async execute(player: KazagumoPlayer) {
         this.player.client.db.db.setPlayer(player.guildId, PlayerService.buildDbPlayer(player)).catch(() => undefined);
         player.data.get("message")?.delete().catch(() => void 0);
+        player.data.delete("message");
         if (!player.textId) return;
         const channel = this.player.client.channels.cache.get(player.textId);
         if (!channel || !(channel instanceof TextChannel)) return;

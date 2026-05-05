@@ -3,6 +3,7 @@ import {PlayerService} from "../../service/playerService.js";
 import type {KazagumoPlayer, KazagumoTrack} from "kazagumo";
 import {TextChannel} from "discord.js";
 import {Logger} from "../../utils/logger.js";
+import {ConfigHandler} from "../../utils/config.js";
 
 export default class playerStart extends PlayerEvent {
     constructor(player: PlayerService) {
@@ -19,10 +20,15 @@ export default class playerStart extends PlayerEvent {
         if (!channel || !(channel instanceof TextChannel)) return;
 
         const embed = await this.player.getPlayerEmbed(player, track);
+        if (ConfigHandler.playerEmbedMode === 'edit' && player.data.get('message')) {
+            const result = await player.data.get('message').edit({embeds: [embed]}).catch(() => undefined);
+            if (result !== undefined) return;
+        }
         const msg = await channel.send({
             embeds: [embed],
             components: this.player.getPlayerComponents(player)
         }).catch((e) => Logger.errorStack(`Failed to send player start message: ${e instanceof Error ? e.message : String(e)}`, 'PlayerStartEvent', e as Error));
         player.data.set('message', msg);
+        this.player.startNowPlaying(player);
     }
 }
