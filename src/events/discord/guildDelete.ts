@@ -1,6 +1,6 @@
 import {DiscordEvent} from "./discordEvent.js";
 import type {Laffey} from "../../Laffey.js";
-import type {Guild, Interaction, Message} from "discord.js";
+import type {Guild} from "discord.js";
 import {Logger} from "../../utils/logger.js";
 
 export default class guildDelete extends DiscordEvent {

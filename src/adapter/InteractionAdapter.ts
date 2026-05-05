@@ -1,6 +1,6 @@
 import {
     type APIInteractionGuildMember, ChatInputCommandInteraction,
-    Guild, GuildMember, type Message, MessagePayload, type User
+    Guild, GuildMember, type Message, type User
 } from "discord.js";
 import type {Laffey} from "../Laffey.js";
 import type {Command} from "../commands/Command.js";

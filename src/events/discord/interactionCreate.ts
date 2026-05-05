@@ -1,6 +1,6 @@
 import {DiscordEvent} from "./discordEvent.js";
 import type {Laffey} from "../../Laffey.js";
-import type {Interaction, Message} from "discord.js";
+import type {Interaction} from "discord.js";
 
 export default class interactionCreate extends DiscordEvent {
     constructor(laffey: Laffey) {
