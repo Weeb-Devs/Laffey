@@ -3,12 +3,14 @@ import {
     Guild, GuildMember, type Message, MessagePayload, type User
 } from "discord.js";
 import type {Laffey} from "../Laffey.js";
+import type {Command} from "../commands/Command.js";
 
 export class InteractionAdapter {
     constructor(
         public readonly client: Laffey,
         public readonly interaction?: ChatInputCommandInteraction,
-        public readonly message?: Message) {
+        public readonly message?: Message,
+        public readonly commands: Command[] = []) {
     }
 
     public get member(): GuildMember | APIInteractionGuildMember | null | undefined {
