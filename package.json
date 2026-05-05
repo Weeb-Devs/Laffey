@@ -30,6 +30,7 @@
     "@discordjs/rest": "^0.4.1",
     "@ksoft/api": "^3.1.9",
     "better-erela.js-spotify": "^1.3.11",
+    "better-sqlite3": "^12.9.0",
     "bufferutil": "^4.1.0",
     "chalk": "^4.1.2",
     "cli-interact": "^0.1.9",
@@ -43,8 +44,15 @@
     "lyrics-finder": "^21.7.0",
     "moment": "^2.30.1",
     "mongoose": "^9.1.5",
+    "mysql2": "^3.22.3",
+    "pg": "^8.20.0",
     "sharp": "^0.34.5",
     "shortid": "^2.2.17",
     "string-progressbar": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/pg": "^8.20.0",
+    "@types/shortid": "^2.2.0"
   }
 }
