@@ -1,10 +1,12 @@
-import {ActivityType, type BitFieldResolvable, Client, type GatewayIntentsString} from "discord.js";
+import {type BitFieldResolvable, Client, type GatewayIntentsString} from "discord.js";
 import {CommandService} from "./service/commandService.js";
 import {PlayerService} from "./service/playerService.js";
 import {SearchService} from "./service/searchService.js";
 import {Logger} from "./utils/logger.js";
-import {ConfigHandler} from "./utils/config.js";
 import {DatabaseService} from "./service/databaseService.js";
+import path from "node:path";
+import fs from "node:fs";
+import type {DiscordEvent} from "./events/discord/discordEvent.js";
 
 export class Laffey extends Client {
     public readonly commands: CommandService = new CommandService(this);
@@ -25,30 +27,27 @@ export class Laffey extends Client {
             throw err;
         }
 
-        this.on("messageCreate", this.commands.handleMessage.bind(this.commands));
-
-        this.on("interactionCreate", this.commands.handleInteraction.bind(this.commands));
-
-        this.on("guildCreate", guild => Logger.log(`Joined guild: ${guild.name} (${guild.id}); ${guild.memberCount} members`, 'Laffey')
-        );
-        this.on("guildDelete", guild => Logger.log(`Left guild: ${guild.name} (${guild.id})`, 'Laffey'));
-
-        this.on("clientReady", () => {
-            Logger.log(`${this.user!.username} is ready`, 'Laffey');
-            let statusList = ConfigHandler.statuses || [
-                `Slash command! | ${this.guilds.cache.size} guild${this.guilds.cache.size <= 1 ? '' : 's'}`,
-                `Slash command! | ${this.users.cache.size} user${this.users.cache.size <= 1 ? '' : 's'}`,
-                `Slash command! | ${this.player?.players.size} player${this.player?.players.size <= 1 ? '' : 's'}`
-            ];
-            this.user?.setActivity(statusList[0]!, {type: ActivityType.Playing});
-            if (statusList.length > 1) setInterval(() => {
-                let chosenStatus = statusList[Math.round(Math.random() * statusList.length)]!;
-                this.user?.setActivity(chosenStatus, {type: ActivityType.Playing});
-            }, 40000);
-            this.player.autoResume();
-        });
-
+        await this.listenEvents();
         await this.player.prepare();
         await this.commands.loadCommands();
+    }
+
+    private async listenEvents() {
+        const basePath = path.join("src", "events", "discord");
+        const events = fs.readdirSync(basePath);
+        for (const event of events) {
+            if (event.startsWith("discordEvent")) continue;
+            const eventPath = path.join(process.cwd(), basePath, event);
+            const modUrl = `file://${eventPath}?t=${Date.now()}`;
+            const mod = await import(modUrl);
+            const ev = new mod.default(this) as DiscordEvent;
+            Logger.debug(`Loaded ${ev.name} event`, 'Laffey');
+            if (ev.once) {
+                this.once(ev.name as any, (...args: any[]) => ev.execute(...args));
+            } else {
+                this.on(ev.name as any, (...args: any[]) => ev.execute(...args));
+            }
+        }
+        Logger.log(`Loaded ${events.length} events`, 'Laffey');
     }
 }
