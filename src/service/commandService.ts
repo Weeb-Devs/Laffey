@@ -75,12 +75,15 @@ export class CommandService {
         const command = this.commands.get(commandName);
         if (!command) return ctx.reply(`Unknown command ${commandName}`);
 
-        const interaction = new InteractionAdapter(this.client, undefined, ctx);
+        const interaction = new InteractionAdapter(this.client, undefined, ctx, this.commands.values().toArray());
         try {
             const response = await command.execute(interaction);
             if (!(await this.preSend(ctx, interaction, response))) return;
 
-            const msg = await ctx.reply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds});
+            const msg = await ctx.reply({
+                embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds,
+                components: response.components
+            });
             if (msg) await this.postSend(msg, ctx, interaction, response);
         } catch (e) {
             Logger.errorStack(`Error occurred while executing command: ${commandName}`, 'Command', e as Error);
@@ -95,14 +98,20 @@ export class CommandService {
         if (!command) return ctx.reply(`Unknown command ${ctx.commandName}`);
 
 
-        const interaction = new InteractionAdapter(this.client, ctx);
+        const interaction = new InteractionAdapter(this.client, ctx, undefined, this.commands.values().toArray());
         try {
             const response = await command.execute(interaction);
             if (!(await this.preSend(ctx, interaction, response))) return;
 
             const msg = ctx.deferred ?
-                await ctx.editReply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds}) :
-                await ctx.reply({embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds});
+                await ctx.editReply({
+                    embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds,
+                    components: response.components
+                }) :
+                await ctx.reply({
+                    embeds: response.type === CommandResponseType.paginated ? [response.embeds[0]!] : response.embeds,
+                    components: response.components
+                });
             if (msg) await this.postSend(msg, ctx, interaction, response);
         } catch (e) {
             Logger.errorStack(`Error occurred while executing command: ${ctx.commandName}`, 'Laffey', e as Error);
