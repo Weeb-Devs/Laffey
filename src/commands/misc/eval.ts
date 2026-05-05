@@ -5,6 +5,7 @@ import {CommandResponse} from "../commandResponse.js";
 import {ConfigHandler} from "../../utils/config.js";
 import util from "util";
 import {EmbedBuilder} from "../../builder/embedBuilder.js";
+import {InteractionContextType} from "discord.js";
 
 export default class _eval extends Command {
     constructor() {
@@ -13,7 +14,9 @@ export default class _eval extends Command {
                 .setName('code')
                 .setDescription('The code to evaluate')
                 .setRequired(true)
-        ]);
+        ], {
+            contexts: [InteractionContextType.BotDM, InteractionContextType.PrivateChannel, InteractionContextType.Guild]
+        });
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {

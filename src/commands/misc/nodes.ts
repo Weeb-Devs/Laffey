@@ -2,10 +2,13 @@ import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {Command} from "../Command.js";
 import {CommandResponse} from "../commandResponse.js";
 import {EmbedBuilder} from "../../builder/embedBuilder.js";
+import {InteractionContextType} from "discord.js";
 
 export default class nodes extends Command {
     constructor() {
-        super('nodes', 'get nodes');
+        super('nodes', 'get nodes', undefined, {
+            contexts: [InteractionContextType.BotDM, InteractionContextType.PrivateChannel, InteractionContextType.Guild]
+        });
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {

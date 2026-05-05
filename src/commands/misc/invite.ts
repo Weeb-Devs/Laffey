@@ -2,11 +2,13 @@ import {Command} from "../Command.js";
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse} from "../commandResponse.js";
 import {ActionRowBuilder, ButtonBuilder} from "@discordjs/builders";
-import {ButtonStyle} from "discord.js";
+import {ButtonStyle, InteractionContextType} from "discord.js";
 
 export default class invite extends Command {
     constructor() {
-        super('invite', 'Get the bot invite link');
+        super('invite', 'Get the bot invite link', undefined, {
+            contexts: [InteractionContextType.BotDM, InteractionContextType.PrivateChannel, InteractionContextType.Guild]
+        });
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
