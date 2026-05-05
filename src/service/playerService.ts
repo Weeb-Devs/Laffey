@@ -7,6 +7,7 @@ import type {PlayerEvent} from "../events/player/playerEvent.js";
 import {Logger} from "../utils/logger.js";
 import type {PlayerRateLimit} from "../events/player/playerException.js";
 import {ConfigHandler} from "../utils/config.js";
+import type {IPlayer} from "../database/IPlayer.js";
 
 export class PlayerService extends Kazagumo {
     constructor(public readonly client: Laffey) {
@@ -39,6 +40,63 @@ export class PlayerService extends Kazagumo {
             }
         }
         Logger.log(`Loaded ${events.length} events`, 'Kazagumo');
+    }
+
+    public async autoResume() {
+        const players = await this.client.db.db.getPlayers();
+        Logger.log(`Found ${players.length} players to resume`, 'Kazagumo');
+        if (!players.length) return;
+        let tries = 10;
+        while (tries > 0) {
+            if (this.shoukaku.nodes.values().toArray().find(x => x.state === 1)) {
+                Logger.log(`Node is ready, resuming players...`, 'Kazagumo');
+                break;
+            }
+            Logger.log(`Waiting for ${tries} seconds for a node to be ready...`, 'Kazagumo');
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            tries--;
+        }
+
+        for (const dbPlayer of players) {
+            const guild = this.client.guilds.cache.get(dbPlayer.guildId);
+            if (!guild) {
+                Logger.error(`Guild not found for player ${dbPlayer.guildId}`, 'Kazagumo');
+                await this.client.db.db.deletePlayer(dbPlayer.guildId);
+                continue;
+            }
+            try {
+                Logger.log(`Resuming player ${dbPlayer.guildId}`, 'Kazagumo');
+                const existingPlayer = this.getPlayer(dbPlayer.guildId);
+                if (existingPlayer) {
+                    Logger.error(`Player already exists for guild ${dbPlayer.guildId}`, 'Kazagumo');
+                    continue;
+                }
+                const voiceChannel = guild.channels.cache.get(dbPlayer.voiceId!);
+                if (!voiceChannel) {
+                    Logger.error(`Voice channel not found for guild ${dbPlayer.guildId}`, 'Kazagumo');
+                    await this.client.db.db.deletePlayer(dbPlayer.guildId);
+                    continue;
+                }
+                const player = await this.createPlayer({
+                    guildId: dbPlayer.guildId,
+                    voiceId: voiceChannel.id,
+                    deaf: true,
+                });
+                if (dbPlayer.textId) player.setTextChannel(dbPlayer.textId);
+                if (dbPlayer.currentSong) player.queue.add(dbPlayer.currentSong);
+                if (dbPlayer.queue.length > 0) player.queue.add(dbPlayer.queue);
+                if (!player.playing && !player.paused) await player.play();
+                if (dbPlayer.volume !== 100) await player.setVolume(dbPlayer.volume);
+                if (dbPlayer.loop !== "none") player.setLoop(dbPlayer.loop as any);
+                if (dbPlayer._24h) player.data.set("24h", true);
+                if (dbPlayer.filters && Object.keys(dbPlayer.filters).length > 0)
+                    await player.shoukaku.setFilters(dbPlayer.filters);
+                Logger.log(`Resumed player ${dbPlayer.guildId}`, 'Kazagumo');
+            } catch (err) {
+                Logger.errorStack(`Failed to resume player: ${err instanceof Error ? err.message : String(err)}`, 'Kazagumo', err as Error);
+                await this.client.db.db.deletePlayer(dbPlayer.guildId);
+            }
+        }
     }
 
     public static isPlayerRateLimited(player: KazagumoPlayer): boolean {
@@ -89,5 +147,19 @@ export class PlayerService extends Kazagumo {
         player.data.set("ratelimit.data", {windowStart: fresh.windowStart, count: newCount});
 
         return false;
+    }
+
+    public static buildDbPlayer(player: KazagumoPlayer): IPlayer {
+        return {
+            guildId: player.guildId,
+            voiceId: player.voiceId || undefined,
+            textId: player.textId,
+            _24h: player.data.get("24h") || false,
+            loop: player.loop,
+            volume: player.volume,
+            filters: player.filters,
+            currentSong: player.queue.current || undefined,
+            queue: player.queue
+        }
     }
 }
