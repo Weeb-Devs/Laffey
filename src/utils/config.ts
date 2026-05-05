@@ -103,6 +103,44 @@ export class ConfigHandler {
         return ConfigHandler.getInstance().get<string[]>("client.statuses") ?? [];
     }
 
+    public static get databaseType(): string | undefined {
+        return ConfigHandler.getInstance().get<string>("database.type");
+    }
+
+    public static get databaseSqlitePath(): string {
+        return ConfigHandler.getInstance().get<string>("database.sqlite.path") ?? "./laffey.db";
+    }
+
+    public static get databasePostgresql(): {
+        host: string;
+        port: number;
+        user?: string | undefined;
+        password?: string | undefined;
+        database?: string | undefined
+    } {
+        const host = ConfigHandler.getInstance().get<string>("database.postgres.host") ?? "localhost";
+        const port = ConfigHandler.getInstance().get<number>("database.postgres.port") ?? 5432;
+        const user = ConfigHandler.getInstance().get<string>("database.postgres.user");
+        const password = ConfigHandler.getInstance().get<string>("database.postgres.password");
+        const database = ConfigHandler.getInstance().get<string>("database.postgres.database");
+        return {host, port, user, password, database};
+    }
+
+    public static get databaseMysql(): {
+        host: string;
+        port: number;
+        user?: string | undefined;
+        password?: string | undefined;
+        database?: string | undefined
+    } {
+        const host = ConfigHandler.getInstance().get<string>("database.mysql.host") ?? "localhost";
+        const port = ConfigHandler.getInstance().get<number>("database.mysql.port") ?? 3306;
+        const user = ConfigHandler.getInstance().get<string>("database.mysql.user");
+        const password = ConfigHandler.getInstance().get<string>("database.mysql.password");
+        const database = ConfigHandler.getInstance().get<string>("database.mysql.database");
+        return {host, port, user, password, database};
+    }
+
     private get<T>(pathKey: string): T | undefined {
         const envValue = this.readEnv(pathKey);
         if (envValue !== undefined) return envValue as T;
