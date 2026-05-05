@@ -1,4 +1,4 @@
-import {Kazagumo, type KazagumoPlayer} from "kazagumo";
+import {Kazagumo, type KazagumoPlayer, type KazagumoTrack, Plugins} from "kazagumo";
 import type {Laffey} from "../Laffey.js";
 import {Connectors} from "shoukaku";
 import fs from "node:fs";
@@ -8,12 +8,19 @@ import {Logger} from "../utils/logger.js";
 import type {PlayerRateLimit} from "../events/player/playerException.js";
 import {ConfigHandler} from "../utils/config.js";
 import type {IPlayer} from "../database/IPlayer.js";
+import type {Interaction, Message, User} from "discord.js";
+import play from "../commands/music/play.js";
+import {PlayerButtons} from "../utils/playerButtons.js";
+import {ActionRowBuilder} from "@discordjs/builders";
+import {EmbedBuilder} from "../builder/embedBuilder.js";
+import {Sharp} from "../utils/sharp.js";
 
 export class PlayerService extends Kazagumo {
     constructor(public readonly client: Laffey) {
         super({
             defaultSearchEngine: "youtube",
             send: (guildId, payload) => client.guilds.cache.get(guildId)?.shard.send(payload),
+            plugins: [new Plugins.PlayerMoved(client)]
         }, new Connectors.DiscordJS(client), ConfigHandler.nodes);
     }
 
@@ -99,6 +106,64 @@ export class PlayerService extends Kazagumo {
         }
     }
 
+    public async handleInteraction(interaction: Interaction) {
+        if (!interaction.isButton() || !interaction.guildId) return;
+        const player = this.getPlayer(interaction.guildId);
+        if (!player) return;
+        const msg = player.data.get("message") as Message | undefined;
+        if (!msg || interaction.message.id !== msg.id) return;
+
+        const update = async (skipEdit = false) => {
+            if (!skipEdit) await interaction.message.edit({
+                embeds: [await this.getPlayerEmbed(player)],
+                components: this.getPlayerComponents(player)
+            });
+            await interaction.deferUpdate();
+        }
+
+        switch (interaction.customId) {
+            case "pause": {
+                if (player.paused) return;
+                player.pause(true);
+                await update();
+                break;
+            }
+            case "play": {
+                if (!player.paused) return;
+                player.pause(false);
+                await update();
+                break;
+            }
+            case "skip": {
+                if (!player.queue.current && !player.queue.length) return;
+                player.skip();
+                await update(true);
+                break;
+            }
+            case "stop": {
+                if (!player.playing && !player.queue.current) return;
+                await player.shoukaku.stopTrack();
+                player.queue.clear();
+                await update(true);
+                break;
+            }
+            case "previous": {
+                if (!player.queue.previous.length) return;
+                await player.play(player.getPrevious(true));
+                await update(true);
+                break;
+            }
+            case "loop":
+            case "loop_queue":
+            case "loop_track": {
+                const newLoop = player.loop === "none" ? "queue" : player.loop === "queue" ? "track" : player.loop === "track" ? "none" : "none";
+                player.setLoop(newLoop);
+                await update();
+                break;
+            }
+        }
+    }
+
     public static isPlayerRateLimited(player: KazagumoPlayer): boolean {
         const now = Date.now();
         const rateLimit = player.data.get("ratelimit.data") as PlayerRateLimit | undefined;
@@ -111,6 +176,50 @@ export class PlayerService extends Kazagumo {
         }
 
         return true;
+    }
+
+    public async getPlayerEmbed(player: KazagumoPlayer, _track?: KazagumoTrack) {
+        const track = _track || player.queue.current || undefined;
+        const playEmbed = new EmbedBuilder(undefined, "default", true)
+            .setAuthor({name: "Now Playing"})
+            .setDescription("No music is currently playing");
+        if (!track) return playEmbed;
+
+        const requester = track.requester as User | undefined;
+        playEmbed.setDescription(`[${track.title}](${track.uri})${track.author ? ` - ${track.author}` : ''} [<@!${requester?.id}>]`);
+        if (track.thumbnail) playEmbed.setThumbnail(track.thumbnail);
+
+        const color = track.thumbnail ? await Sharp.getPaletteFromUrl(track.thumbnail).catch(() => undefined) : undefined;
+        if (color?.length) playEmbed.setColor(color[0]!.rgb);
+
+        if (requester) {
+            playEmbed.data.footer = {text: `Requested by ${requester.tag}`};
+            if (requester.avatar) playEmbed.data.footer.icon_url = `https://cdn.discordapp.com/avatars/${requester.id}/${requester.avatar}.webp`;
+        }
+        if (player.loop !== "none") {
+            if (playEmbed.data.footer?.text) playEmbed.data.footer.text += ` | Loop: ${player.loop === "track" ? "Track" : "Queue"}`;
+            else playEmbed.data.footer = {text: `Loop: ${player.loop === "track" ? "Track" : "Queue"}`};
+        }
+        return playEmbed;
+    }
+
+    public getPlayerComponents(player: KazagumoPlayer) {
+        const controlActionRow = new ActionRowBuilder()
+            .addComponents([
+                PlayerButtons.loopButton(player.loop),
+                PlayerButtons.previousButton(!player.queue.previous.length),
+                PlayerButtons.playButton(!player.paused),
+                PlayerButtons.skipButton(!player.queue.length),
+                PlayerButtons.stopButton(!player.playing && !player.queue.current),
+            ]);
+        const volumeActionRow = new ActionRowBuilder()
+            .addComponents([
+                PlayerButtons.volumeDown(player.volume === 0),
+                player.volume === 0 ? PlayerButtons.volumeUnmute() : PlayerButtons.volumeMute(),
+                PlayerButtons.volumeUp(player.volume >= 100),
+            ]);
+
+        return [controlActionRow.toJSON()];
     }
 
     public static registerPlayerTrigger(player: KazagumoPlayer): boolean {
