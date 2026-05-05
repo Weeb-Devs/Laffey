@@ -4,17 +4,26 @@ import {PlayerService} from "./service/playerService.js";
 import {SearchService} from "./service/searchService.js";
 import {Logger} from "./utils/logger.js";
 import {ConfigHandler} from "./utils/config.js";
+import {DatabaseService} from "./service/databaseService.js";
 
 export class Laffey extends Client {
     public readonly commands: CommandService = new CommandService(this);
     public readonly player: PlayerService = new PlayerService(this);
     public readonly search: SearchService = new SearchService(this);
+    public readonly db: DatabaseService = new DatabaseService();
 
     constructor(intents: BitFieldResolvable<GatewayIntentsString, number>) {
         super({intents});
     }
 
     public async prepare() {
+        try {
+            await this.db.prepare();
+            Logger.log("Database initialized successfully", 'Laffey');
+        } catch (err) {
+            Logger.errorStack(`Failed to initialize database: ${err instanceof Error ? err.message : String(err)}`, 'Laffey', err as Error);
+            throw err;
+        }
 
         this.on("messageCreate", this.commands.handleMessage.bind(this.commands));
 
@@ -36,6 +45,7 @@ export class Laffey extends Client {
                 let chosenStatus = statusList[Math.round(Math.random() * statusList.length)]!;
                 this.user?.setActivity(chosenStatus, {type: ActivityType.Playing});
             }, 40000);
+            this.player.autoResume();
         });
 
         await this.player.prepare();
