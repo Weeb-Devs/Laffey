@@ -12,6 +12,7 @@ export default class playerStart extends PlayerEvent {
 
     async execute(player: KazagumoPlayer, track: KazagumoTrack) {
         if (PlayerService.isPlayerRateLimited(player)) return;
+        this.player.client.db.db.setPlayer(player.guildId, PlayerService.buildDbPlayer(player)).catch(() => undefined);
 
         if (player.data.get('empty.timeout')) clearTimeout(player.data.get('empty.timeout'));
         if (!player.textId) return;

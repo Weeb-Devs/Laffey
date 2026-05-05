@@ -1,4 +1,4 @@
-import type {PlayerService} from "../../service/playerService.js";
+import {PlayerService} from "../../service/playerService.js";
 import {PlayerEvent} from "./playerEvent.js";
 import type {KazagumoPlayer} from "kazagumo";
 import {TextChannel} from "discord.js";
@@ -10,6 +10,7 @@ export default class playerEmpty extends PlayerEvent {
     }
 
     async execute(player: KazagumoPlayer) {
+        this.player.client.db.db.setPlayer(player.guildId, PlayerService.buildDbPlayer(player)).catch(() => undefined);
         player.data.get("message")?.delete().catch(() => void 0);
         if (!player.textId) return;
         const channel = this.player.client.channels.cache.get(player.textId);
