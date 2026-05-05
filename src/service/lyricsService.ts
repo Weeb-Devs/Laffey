@@ -65,7 +65,7 @@ export class LyricsService {
 
         let msg: Message | undefined;
         if (ctx instanceof ChatInputCommandInteraction) {
-            await ctx.reply({embeds: [embed], components: [actionRow.toJSON()]});
+            await ctx.editReply({embeds: [embed], components: [actionRow.toJSON()]});
             msg = await ctx.fetchReply().catch(() => undefined) as Message | undefined;
         } else if (ctx instanceof Message) {
             msg = await ctx.reply({embeds: [embed], components: [actionRow.toJSON()]});

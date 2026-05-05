@@ -15,13 +15,14 @@ export default class lyrics extends Command {
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
+        await ctx.deferReply();
         const songQuery = ctx.getString("song", -1);
         let query, search = false;
         if (!songQuery) {
             let player = ctx.client.player.players.get(ctx.guildId!);
             if (!player) return CommandResponse.error('There\'s no active player');
             if (!player.queue.current) return CommandResponse.error(`There\'s no music playing`);
-            query = player.queue.current.title + player.queue.current.author ? ` - ${player.queue.current.author}` : '';
+            query = player.queue.current.title + (player.queue.current.author ? ` - ${player.queue.current.author}` : '');
         } else {
             query = songQuery;
             search = true;
