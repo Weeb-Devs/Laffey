@@ -68,6 +68,12 @@ export class ConfigHandler {
         return ConfigHandler.getInstance().get<string>("slash.guild_id");
     }
 
+    public static get playerEmbedMode(): 'edit' | 'replace' {
+        const mode = ConfigHandler.getInstance().get<string>("player.embed_mode");
+        if (mode && mode != "replace" && mode != "edit") Logger.warn(`Invalid player.embed_mode "${mode}" in config, defaulting to "replace"`, 'Config');
+        return (mode === "edit" ? "edit" : "replace");
+    }
+
     public static get owners(): string[] {
         const owners = ConfigHandler.getInstance().get<unknown>("owners");
         if (!owners) return [];
@@ -96,7 +102,7 @@ export class ConfigHandler {
     }
 
     public static get nodes(): NodeOption[] {
-        return ConfigHandler.getInstance().get<NodeOption[]>("nodes") || [];
+        return ConfigHandler.getInstance().get<NodeOption[]>("player.nodes") || [];
     }
 
     public static get statuses(): string[] {

@@ -9,13 +9,15 @@ import type {PlayerRateLimit} from "../events/player/playerException.js";
 import {ConfigHandler} from "../utils/config.js";
 import type {IPlayer} from "../database/IPlayer.js";
 import type {Interaction, Message, User} from "discord.js";
-import play from "../commands/music/play.js";
 import {PlayerButtons} from "../utils/playerButtons.js";
 import {ActionRowBuilder} from "@discordjs/builders";
 import {EmbedBuilder} from "../builder/embedBuilder.js";
 import {Sharp} from "../utils/sharp.js";
+import {ProgressBar} from "../utils/progressBar.js";
 
 export class PlayerService extends Kazagumo {
+    private nowPlayings = new Map<string, NodeJS.Timeout>();
+
     constructor(public readonly client: Laffey) {
         super({
             defaultSearchEngine: "youtube",
@@ -186,8 +188,13 @@ export class PlayerService extends Kazagumo {
         if (!track) return playEmbed;
 
         const requester = track.requester as User | undefined;
-        playEmbed.setDescription(`[${track.title}](${track.uri})${track.author ? ` - ${track.author}` : ''} [<@!${requester?.id}>]`);
+        playEmbed.setDescription(`[${track.title}](${track.uri})${track.author ? ` - ${track.author}` : ''}`);
         if (track.thumbnail) playEmbed.setThumbnail(track.thumbnail);
+
+        const current = track.isStream ? '◉ LIVE' : `${new Date(player.position).toISOString().slice(11, 19)}`;
+        const end = track.isStream ? '◉ LIVE' : `${new Date(track.length!).toISOString().slice(11, 19)}`;
+        const progress = ProgressBar.make(track.isStream ? 100 : player.position, track.length || 100, 20);
+        playEmbed.data.description += `\n[${current}] ${progress} [${end}]`;
 
         const color = track.thumbnail ? await Sharp.getPaletteFromUrl(track.thumbnail).catch(() => undefined) : undefined;
         if (color?.length) playEmbed.setColor(color[0]!.rgb);
@@ -203,6 +210,20 @@ export class PlayerService extends Kazagumo {
         return playEmbed;
     }
 
+    public startNowPlaying(_player: KazagumoPlayer) {
+        if (this.nowPlayings.get(_player.guildId)) clearInterval(this.nowPlayings.get(_player.guildId));
+        const interval = setInterval(async () => {
+            const player = this.getPlayer(_player.guildId);
+            if (!player || !player.queue.current) return clearInterval(interval);
+            const msg = player.data.get("message") as Message | undefined;
+            if (!msg) return clearInterval(interval);
+            const embed = await this.getPlayerEmbed(player);
+            const components = this.getPlayerComponents(player);
+            await msg.edit({embeds: [embed], components}).catch(() => clearInterval(interval));
+        }, 5000);
+        this.nowPlayings.set(_player.guildId, interval);
+    }
+
     public getPlayerComponents(player: KazagumoPlayer) {
         const controlActionRow = new ActionRowBuilder()
             .addComponents([
@@ -212,12 +233,12 @@ export class PlayerService extends Kazagumo {
                 PlayerButtons.skipButton(!player.queue.length),
                 PlayerButtons.stopButton(!player.playing && !player.queue.current),
             ]);
-        const volumeActionRow = new ActionRowBuilder()
-            .addComponents([
-                PlayerButtons.volumeDown(player.volume === 0),
-                player.volume === 0 ? PlayerButtons.volumeUnmute() : PlayerButtons.volumeMute(),
-                PlayerButtons.volumeUp(player.volume >= 100),
-            ]);
+        // const volumeActionRow = new ActionRowBuilder()
+        //     .addComponents([
+        //         PlayerButtons.volumeDown(player.volume === 0),
+        //         player.volume === 0 ? PlayerButtons.volumeUnmute() : PlayerButtons.volumeMute(),
+        //         PlayerButtons.volumeUp(player.volume >= 100),
+        //     ]);
 
         return [controlActionRow.toJSON()];
     }
