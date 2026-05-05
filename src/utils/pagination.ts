@@ -1,6 +1,5 @@
 import type {InteractionAdapter} from "../adapter/InteractionAdapter.js";
 import {
-    type BaseInteraction,
     ButtonInteraction,
     ButtonStyle,
     type EmbedBuilder,
@@ -20,12 +19,10 @@ export class Pagination {
     constructor(private msg: Message | InteractionResponse, private interaction: InteractionAdapter, private embeds: EmbedBuilder[]) {
     }
 
-    async start() {
+    async start(edit: boolean = true) {
         const row = new ActionRowBuilder().addComponents(this.buttons.left(true), this.buttons.trash(), this.buttons.right());
-        const message = await this.msg.edit({
-            embeds: [this.embeds[this.page]!.toJSON()],
-            components: [row.toJSON()]
-        });
+        const payload = {embeds: [this.embeds[this.page]!.toJSON()], components: [row.toJSON()]};
+        const message = edit ? await this.msg.edit(payload) : this.interaction.message ? await this.interaction.message.reply(payload) : await this.interaction.interaction?.reply(payload).then(() => this.interaction.interaction?.fetchReply()) as Message;
         if (!message) throw new Error("Message not found");
         const collector = message.createMessageComponentCollector({
             componentType: 2,
