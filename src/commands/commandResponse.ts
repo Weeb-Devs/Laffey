@@ -8,7 +8,8 @@ export enum CommandResponseType {
     nowplaying,
     paginated,
     search,
-    lyrics
+    lyrics,
+    none
 }
 
 export class CommandResponse {
@@ -24,6 +25,10 @@ export class CommandResponse {
 
     static success(embed: EmbedBuilder, type?: CommandResponseType): CommandResponse {
         return new CommandResponse([embed], type);
+    }
+
+    static none(): CommandResponse {
+        return new CommandResponse([], CommandResponseType.none);
     }
 
     static successPaginated(embeds: EmbedBuilder[], type: CommandResponseType = CommandResponseType.paginated): CommandResponse {

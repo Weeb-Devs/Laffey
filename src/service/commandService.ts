@@ -120,6 +120,8 @@ export class CommandService {
             case CommandResponseType.lyrics:
                 await LyricsService.getInstance().handle(ctx, interaction, response);
                 return false;
+            case CommandResponseType.none:
+                return false;
         }
         return true;
     }
