@@ -58,10 +58,11 @@ export class SearchService {
             else embed.setTitle(`Added track to player`).setColor('Green');
 
             await i.editReply({embeds: [embed], components: [actionRow.toJSON()]});
+            collector.stop('done');
         });
 
-        collector.on('end', () => {
-            if (!msg) return;
+        collector.on('end', (_, reason) => {
+            if (!msg || reason === "done") return;
             (actionRow.components[0] as StringSelectMenuBuilder).setDisabled(true);
             msg.edit({embeds: [embed], components: [actionRow.toJSON()]}).catch(() => void 0);
         })

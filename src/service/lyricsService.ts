@@ -86,9 +86,10 @@ export class LyricsService {
             const embeds = await LyricsService.getEmbed(song, lyrics);
             const pagination = new Pagination(i.message, interaction, embeds);
             await pagination.start().catch(() => i.editReply({embeds: [new EmbedBuilder(`Failed to display lyrics`, 'error')]}));
+            collector.stop('done');
         });
-        collector.on('end', () => {
-            if (!msg) return;
+        collector.on('end', (_, reason) => {
+            if (!msg || reason === 'done') return;
             (actionRow.components[0] as StringSelectMenuBuilder).setDisabled(true);
             msg.edit({
                 embeds: [new EmbedBuilder(`Selection expired`, 'error')],
