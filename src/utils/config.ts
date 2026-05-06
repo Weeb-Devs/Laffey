@@ -41,15 +41,15 @@ export class ConfigHandler {
     }
 
     public static get token(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("client.token");
+        return ConfigHandler.getInstance().get<string>("client.token", "string");
     }
 
     public static get prefix(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("client.prefix");
+        return ConfigHandler.getInstance().get<string>("client.prefix", "string");
     }
 
     public static get clientId(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("client.id");
+        return ConfigHandler.getInstance().get<string>("client.id", "string");
     }
 
     public static get isDev(): boolean {
@@ -57,7 +57,7 @@ export class ConfigHandler {
     }
 
     public static get geniusApiKey(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("genius.api_key");
+        return ConfigHandler.getInstance().get<string>("genius.api_key", "string");
     }
 
     public static get registerSlashCommand(): boolean {
@@ -65,7 +65,7 @@ export class ConfigHandler {
     }
 
     public static get registerSlashCommandGuildId(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("slash.guild_id");
+        return ConfigHandler.getInstance().get<string>("slash.guild_id", "string");
     }
 
     public static get playerEmbedMode(): 'edit' | 'replace' {
@@ -75,7 +75,7 @@ export class ConfigHandler {
     }
 
     public static get owners(): string[] {
-        const owners = ConfigHandler.getInstance().get<unknown>("owners");
+        const owners = ConfigHandler.getInstance().get<unknown>("owners", "array");
         if (!owners) return [];
         if (Array.isArray(owners)) return owners.map(String);
         if (typeof owners === "string") {
@@ -94,7 +94,7 @@ export class ConfigHandler {
 
     public static get embedFooter(): EmbedFooterData | undefined {
         const footerText = ConfigHandler.getInstance().get<string>("embed.footer.text", "string");
-        const footerIcon = ConfigHandler.getInstance().get<string>("embed.footer.icon", "string");
+        const footerIcon = ConfigHandler.getInstance().get<string>("embed.footer.icon_url", "string");
         if (!footerText) return;
         let data: EmbedFooterData = {text: footerText};
         if (footerIcon) data.iconURL = footerIcon;
@@ -106,7 +106,7 @@ export class ConfigHandler {
     }
 
     public static get playerDefaultSearch(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("player.default_search");
+        return ConfigHandler.getInstance().get<string>("player.default_search", "string");
     }
 
     public static get statuses(): string[] {
@@ -114,11 +114,11 @@ export class ConfigHandler {
     }
 
     public static get databaseType(): string | undefined {
-        return ConfigHandler.getInstance().get<string>("database.type");
+        return ConfigHandler.getInstance().get<string>("database.type", "string");
     }
 
     public static get databaseSqlitePath(): string {
-        return ConfigHandler.getInstance().get<string>("database.sqlite.path") ?? "./laffey.db";
+        return ConfigHandler.getInstance().get<string>("database.sqlite.path", "string") ?? "./laffey.db";
     }
 
     public static get databasePostgresql(): {
@@ -152,7 +152,7 @@ export class ConfigHandler {
     }
 
     private get<T>(pathKey: string, expectedType?: string): T | undefined {
-        const envValue = this.readEnv(pathKey);
+        const envValue = this.readEnv(pathKey, expectedType);
         if (envValue !== undefined) {
             this.validateType(envValue, pathKey, expectedType);
             return envValue as T;
@@ -187,33 +187,37 @@ export class ConfigHandler {
         }
     }
 
-    private readEnv(pathKey: string): unknown {
+    private readEnv(pathKey: string, expectedType?: string): unknown {
         const raw = process.env[pathKey] ?? process.env[pathKey.toUpperCase()] ?? process.env[pathKey.toLowerCase()];
         if (raw === undefined) return undefined;
-        return this.parseEnvValue(raw);
+        return this.parseEnvValue(raw, expectedType);
     }
 
-    private parseEnvValue(raw: string): unknown {
+    private parseEnvValue(raw: string, expectedType?: string): unknown {
         const trimmed = raw.trim();
         if (trimmed.length === 0) return "";
 
-        // Try parsing JSON objects and arrays
-        if ((trimmed.startsWith("{") && trimmed.endsWith("}")) || (trimmed.startsWith("[") && trimmed.endsWith("]"))) {
-            try {
-                return JSON.parse(trimmed);
-            } catch {
-                return raw;
-            }
+        if (expectedType === "boolean") {
+            if (trimmed.toLowerCase() === "true") return true;
+            if (trimmed.toLowerCase() === "false") return false;
+            return trimmed;
         }
 
-        // Parse booleans
-        if (trimmed.toLowerCase() === "true") return true;
-        if (trimmed.toLowerCase() === "false") return false;
-
-        // Parse numbers (but not if it looks like a path or special string)
-        if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+        if (expectedType === "number") {
             const num = Number(trimmed);
             if (!Number.isNaN(num)) return num;
+            return trimmed;
+        }
+
+        if (expectedType === "array" || expectedType === "object") {
+            if ((trimmed.startsWith("{") && trimmed.endsWith("}")) || (trimmed.startsWith("[") && trimmed.endsWith("]"))) {
+                try {
+                    return JSON.parse(trimmed);
+                } catch {
+                    return trimmed;
+                }
+            }
+            return trimmed;
         }
 
         return raw;
