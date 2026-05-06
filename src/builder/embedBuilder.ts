@@ -22,7 +22,10 @@ export class EmbedBuilder extends DiscordEmbedBuilder {
     setFooter(options: EmbedFooterOptions | null): this {
         const footer = ConfigHandler.embedFooter;
         if (options?.text) this.data.footer = {text: options.text + (footer && !this.noFooter ? ` | ${footer.text}` : '')};
-        if (options?.iconURL) options.iconURL = options.iconURL;
+        if (options?.iconURL) this.data.footer = {
+            ...(this.data.footer || {text: options.text || '\u200b'}),
+            icon_url: options.iconURL
+        };
         return this;
     }
 
