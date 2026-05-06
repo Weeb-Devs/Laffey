@@ -20,7 +20,8 @@ export class PlayerService extends Kazagumo {
 
     constructor(public readonly client: Laffey) {
         super({
-            defaultSearchEngine: "youtube",
+            defaultSearchEngine: 'youtube',
+            defaultSource: ConfigHandler.playerDefaultSearch ? ConfigHandler.playerDefaultSearch : 'ytsearch:',
             send: (guildId, payload) => client.guilds.cache.get(guildId)?.shard.send(payload),
             plugins: [new Plugins.PlayerMoved(client)]
         }, new Connectors.DiscordJS(client), ConfigHandler.nodes);

@@ -105,6 +105,10 @@ export class ConfigHandler {
         return ConfigHandler.getInstance().get<NodeOption[]>("player.nodes") || [];
     }
 
+    public static get playerDefaultSearch(): string | undefined {
+        return ConfigHandler.getInstance().get<string>("player.default_search");
+    }
+
     public static get statuses(): string[] {
         return ConfigHandler.getInstance().get<string[]>("client.statuses") ?? [];
     }
