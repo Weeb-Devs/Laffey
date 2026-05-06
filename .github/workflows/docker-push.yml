@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: takiyo0/laffey
+  IMAGE_NAME: weeb-devs/laffey
 
 jobs:
   build-and-push:
