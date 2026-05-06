@@ -9,6 +9,7 @@ import type {CommandResponse, SearchResponse} from "../commands/commandResponse.
 import {ActionRowBuilder} from "@discordjs/builders";
 import type {KazagumoTrack} from "kazagumo";
 import {Logger} from "../utils/logger.js";
+import {Utils} from "../utils/utils.js";
 
 export class SearchService {
     constructor(private readonly client: Laffey) {
@@ -24,11 +25,11 @@ export class SearchService {
         const selectComponent = new StringSelectMenuBuilder()
             .setCustomId('search_select')
             .setPlaceholder('Select a track')
-            .addOptions(tracks.slice(0, 25).map((track, index) => {
+            .addOptions(tracks.slice(0, 24).map((track, index) => {
                 return new StringSelectMenuOptionBuilder()
-                    .setLabel(track.title)
+                    .setLabel(Utils.trimString(track.title, 100))
                     .setValue(index.toString())
-                    .setDescription(`${track.author ? `${track.author} ` : ''}${track.length ? ` [${new Date(track.length).toISOString().slice(11, 19)}]` : ''}`)
+                    .setDescription(Utils.trimString(`${track.author ? `${track.author} ` : ''}${track.length ? ` [${new Date(track.length).toISOString().slice(11, 19)}]` : ''}`, 100));
             }))
         const actionRow = new ActionRowBuilder().addComponents(selectComponent);
 

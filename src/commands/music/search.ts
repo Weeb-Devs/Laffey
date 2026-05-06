@@ -28,7 +28,7 @@ export default class search extends Command {
         const query = ctx.getString("query", -1);
         if (!query) return CommandResponse.error('Query must be provided');
         const result = await ctx.client.player.search(query, {requester: ctx.user});
-
+        if (!result.tracks.length) return CommandResponse.error('No results found');
         return CommandResponse.search({query, tracks: result.tracks});
     }
 }
