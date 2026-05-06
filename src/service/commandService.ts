@@ -73,7 +73,7 @@ export class CommandService {
         const commandName = args.shift()!.toLowerCase();
 
         const command = this.commands.get(commandName);
-        if (!command) return ctx.reply(`Unknown command ${commandName}`);
+        if (!command) return;
 
         const interaction = new InteractionAdapter(this.client, undefined, ctx, this.commands.values().toArray());
         try {
