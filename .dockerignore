@@ -1,0 +1,43 @@
+# Node.js dependencies
+node_modules
+npm-debug.log*
+
+# Build artifacts
+dist
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+SECURITY.md
+LICENSE
+
+# Development files
+.env
+.env.*
+config.json
+*.local
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs
+*.log
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# CI/CD
+.github
+.gitlab-ci.yml
