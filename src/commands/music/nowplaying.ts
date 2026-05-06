@@ -11,16 +11,20 @@ export default class nowPlaying extends Command {
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
+        const guard = this.guardMusic(ctx, {
+            requirePlayer: true,
+            requireCurrentTrack: true
+        });
+        if (guard.response) return guard.response;
+
         const guildId = ctx.guildId!;
-        let player = ctx.client.player.players.get(guildId);
-        if (!player) return CommandResponse.error('There\'s no active player');
-        if (!player.queue.current) return CommandResponse.error(`There\'s no music playing`);
+        let player = guard.player!;
         if (player.data.get("nowplaying")) {
             clearInterval(player.data.get("nowplaying"));
             player.data.get("nowplaying.msg")?.delete().catch(() => void 0);
         }
 
-        let musicLength = player.queue.current.isStream ? null : ((!player.queue.current || !player.queue.current.length || isNaN(player.queue.current.length)) ? null : player.queue.current.length),
+        let musicLength = player.queue.current!.isStream ? null : ((!player.queue.current!.length || isNaN(player.queue.current!.length)) ? null : player.queue.current!.length),
             nowTime = (!player.position || isNaN(player.position)) ? null : player.position;
 
         const embed = (p: KazagumoPlayer, l: number | null, n: number | null) => {
@@ -38,7 +42,7 @@ export default class nowPlaying extends Command {
 
 
         const interval = setInterval(() => {
-            player = ctx.client.player.players.get(guildId);
+            player = ctx.client.player.players.get(guildId)!;
             if (!player || !player.queue.current) return clearInterval(interval);
 
             let musicLength = player.queue.current.isStream ? null : ((!player.queue.current || !player.queue.current.length || isNaN(player.queue.current.length)) ? null : player.queue.current.length);

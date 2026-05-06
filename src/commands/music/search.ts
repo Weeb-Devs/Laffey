@@ -2,7 +2,6 @@ import {Command} from "../Command.js";
 import {SlashCommandStringOption} from "@discordjs/builders";
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse} from "../commandResponse.js";
-import type {GuildMember} from "discord.js";
 
 export default class search extends Command {
     constructor() {
@@ -15,9 +14,15 @@ export default class search extends Command {
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
-        let player = ctx.client.player.players.get(ctx.guildId!);
-        const {channel} = (ctx.member as GuildMember)!.voice;
-
+        const player = ctx.client.player.players.get(ctx.guildId!);
+        if (player) {
+            const guard = this.guardMusic(ctx, {
+                requirePlayer: true,
+                requireVoiceChannel: true,
+                requireSameVoiceChannel: true
+            });
+            if (guard.response) return guard.response;
+        }
         await ctx.deferReply();
 
         const query = ctx.getString("query", -1);

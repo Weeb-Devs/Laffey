@@ -19,10 +19,13 @@ export default class lyrics extends Command {
         const songQuery = ctx.getString("song", -1);
         let query, search = false;
         if (!songQuery) {
-            let player = ctx.client.player.players.get(ctx.guildId!);
-            if (!player) return CommandResponse.error('There\'s no active player');
-            if (!player.queue.current) return CommandResponse.error(`There\'s no music playing`);
-            query = player.queue.current.title + (player.queue.current.author ? ` - ${player.queue.current.author}` : '');
+            const guard = this.guardMusic(ctx, {
+                requirePlayer: true,
+                requireCurrentTrack: true
+            });
+            if (guard.response) return guard.response;
+
+            query = guard.player!.queue.current!.title + (guard.player!.queue.current!.author ? ` - ${guard.player!.queue.current!.author}` : '');
         } else {
             query = songQuery;
             search = true;

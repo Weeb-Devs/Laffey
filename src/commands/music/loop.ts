@@ -1,7 +1,6 @@
 import {Command} from "../Command.js";
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse} from "../commandResponse.js";
-import type {GuildMember} from "discord.js";
 
 export default class loop extends Command {
     constructor() {
@@ -9,13 +8,14 @@ export default class loop extends Command {
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
-        const player = ctx.client.player.players.get(ctx.guildId!);
-        const {channel} = (ctx.member as GuildMember)!.voice;
-        if (!player) return CommandResponse.error('There\'s no active player');
-        if (!channel) return CommandResponse.error('You\'re not in a voice channel');
-        if (player && (channel.id !== player.voiceId)) return CommandResponse.error('You\'re not in the same voice channel as the bot');
+        const guard = this.guardMusic(ctx, {
+            requirePlayer: true,
+            requireVoiceChannel: true,
+            requireSameVoiceChannel: true
+        });
+        if (guard.response) return guard.response;
 
-        const status = player.setLoop();
+        const status = guard.player!.setLoop();
 
         return CommandResponse.successText(`Loop mode is now ${status.loop}`);
     }

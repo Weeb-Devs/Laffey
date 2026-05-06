@@ -2,7 +2,6 @@ import {Command} from "../Command.js";
 import {SlashCommandStringOption} from "@discordjs/builders";
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse} from "../commandResponse.js";
-import type {GuildMember} from "discord.js";
 import {Logger} from "../../utils/logger.js";
 
 export default class play extends Command {
@@ -16,7 +15,12 @@ export default class play extends Command {
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
         let player = ctx.client.player.players.get(ctx.guildId!);
-        const {channel} = (ctx.member as GuildMember)!.voice;
+
+        const guard = this.guardMusic(ctx, {
+            requireVoiceChannel: true,
+            requireSameVoiceChannel: !!player
+        });
+        if (guard.response) return guard.response;
 
         let query = ctx.getString("query", -1);
         if (!query) {
@@ -25,6 +29,8 @@ export default class play extends Command {
                 return CommandResponse.successText('Resumed the playback');
             } else return CommandResponse.error('Query must be provided');
         }
+
+        const channel = guard.voiceChannel;
         await ctx.deferReply();
 
         if (!player) player = await ctx.client.player.createPlayer({

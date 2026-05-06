@@ -65,13 +65,15 @@ export default class effect extends Command {
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
-        const player = ctx.client.player.players.get(ctx.guildId!);
-        const {channel} = (ctx.member as GuildMember)!.voice;
-        if (!player) return CommandResponse.error('There\'s no active player');
-        if (!channel) return CommandResponse.error('You\'re not in a voice channel');
-        if (player && (channel.id !== player.voiceId)) return CommandResponse.error('You\'re not in the same voice channel as the bot');
+        const guard = this.guardMusic(ctx, {
+            requirePlayer: true,
+            requireVoiceChannel: true,
+            requireSameVoiceChannel: true
+        });
+        if (guard.response) return guard.response;
 
-        const subCommand = ctx.getSubCommand()
+        const player = guard.player!;
+        const subCommand = ctx.getSubCommand();
         if (!subCommand) return CommandResponse.error('Invalid subcommand');
 
         const value = ctx.getInteger("value", 1);

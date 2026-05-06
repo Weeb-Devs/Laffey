@@ -10,11 +10,19 @@ export default class queue extends Command {
     }
 
     async execute(ctx: InteractionAdapter): Promise<CommandResponse> {
-        const player = ctx.client.player.players.get(ctx.guildId!);
-        if (!player) return CommandResponse.error('There\'s no active player');
+        const guard = this.guardMusic(ctx, {
+            requirePlayer: true,
+            requireCurrentTrack: true
+        });
+        if (guard.response) return guard.response;
+
+        const player = guard.player!;
         if (!player.queue.current) return CommandResponse.error('There\'s no music playing');
 
-        const current = player.queue.current;
+        return CommandResponse.successPaginated(this.buildQueueEmbeds(player, player.queue.current as any), CommandResponseType.paginated);
+    }
+
+    private buildQueueEmbeds(player: any, track: any) {
         const pageSize = 10;
 
         const trim = (value: string | undefined | null, max: number) => {
@@ -40,10 +48,10 @@ export default class queue extends Command {
         };
 
         const nowPlayingBlock = [
-            `**${trim(current.title, 60)}**`,
-            current.author ? `Author: ${trim(current.author, 50)}` : null,
-            `Duration: ${formatDuration(current.length, current.isStream)}`,
-            `Requester: ${formatRequester(current)}`,
+            `**${trim(track.title, 60)}**`,
+            track.author ? `Author: ${trim(track.author, 50)}` : null,
+            `Duration: ${formatDuration(track.length, track.isStream)}`,
+            `Requester: ${formatRequester(track)}`,
         ].filter(Boolean).join('\n');
 
         const formatTrackLine = (track: any, index: number) => {
@@ -53,18 +61,18 @@ export default class queue extends Command {
             return `\`${index}.\` **${title}** \`[${duration}]\` - ${requester}`;
         };
 
-        const queueTracks = player.queue.filter((track) => !!track);
+        const queueTracks = player.queue.filter((track: any) => !!track);
         let index = 0;
 
         let embeds = Utils.chunkArray(queueTracks, pageSize).map((chunk, pageIndex, allPages) => {
             const queueLines = chunk.length
-                ? chunk.map((track) => formatTrackLine(track, ++index)).join('\n')
+                ? chunk.map((track: any) => formatTrackLine(track, ++index)).join('\n')
                 : 'Add more song by using play command :D';
 
             return new EmbedBuilder()
                 .setTitle('Queue')
-                .setURL(current.uri || null)
-                .setThumbnail(current.thumbnail || null)
+                .setURL(track.uri || null)
+                .setThumbnail(track.thumbnail || null)
                 .addFields([
                     {name: "Now Playing:", value: nowPlayingBlock},
                     {name: "Up Next:", value: queueLines}
@@ -75,13 +83,13 @@ export default class queue extends Command {
         if (!embeds.length) {
             embeds = [new EmbedBuilder()
                 .setTitle('Queue')
-                .setURL(current.uri || null)
-                .setThumbnail(current.thumbnail || null)
+                .setURL(track.uri || null)
+                .setThumbnail(track.thumbnail || null)
                 .setDescription(`Now playing:\n${nowPlayingBlock}\n\nUp next:\nAdd more song by using play command :D`)
                 .setFooter({text: `Page 1/1 | ${queueTracks.length} track(s) in queue`})
             ];
         }
 
-        return CommandResponse.successPaginated(embeds, CommandResponseType.paginated);
+        return embeds;
     }
 }
