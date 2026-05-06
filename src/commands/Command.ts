@@ -44,8 +44,31 @@ export abstract class Command {
 
     protected guardMusic(ctx: InteractionAdapter, options: MusicCommandGuardOptions = {}): MusicCommandGuardResult {
         const player = ctx.guildId ? ctx.client.player.players.get(ctx.guildId) : undefined;
-        const voiceChannel = ctx.member && "voice" in ctx.member ? ctx.member.voice.channel || undefined : undefined;
+        const voiceChannel = this.getVoiceChannel(ctx);
 
+        const playerCheck = this.checkPlayerRequired(player, options);
+        if (playerCheck) return playerCheck;
+
+        const voiceCheck = this.checkVoiceChannelRequired(voiceChannel, options, player);
+        if (voiceCheck) return voiceCheck;
+
+        const sameVCCheck = this.checkSameVoiceChannel(voiceChannel, player, options);
+        if (sameVCCheck) return sameVCCheck;
+
+        const queueCheck = this.checkQueueRequired(player, options);
+        if (queueCheck) return queueCheck;
+
+        const trackCheck = this.checkCurrentTrackRequired(player, options);
+        if (trackCheck) return trackCheck;
+
+        return {player, voiceChannel};
+    }
+
+    private getVoiceChannel(ctx: InteractionAdapter): VoiceBasedChannel | undefined {
+        return ctx.member && "voice" in ctx.member ? ctx.member.voice.channel || undefined : undefined;
+    }
+
+    private checkPlayerRequired(player: KazagumoPlayer | undefined, options: MusicCommandGuardOptions): MusicCommandGuardResult | undefined {
         if ((options.requirePlayer || options.requireQueue || options.requireCurrentTrack || options.requireSameVoiceChannel) && !player) {
             return {
                 player: undefined,
@@ -53,36 +76,50 @@ export abstract class Command {
                 response: CommandResponse.error('There\'s no active player')
             };
         }
+        return undefined;
+    }
 
+    private checkVoiceChannelRequired(voiceChannel: VoiceBasedChannel | undefined, options: MusicCommandGuardOptions, player: KazagumoPlayer | undefined): MusicCommandGuardResult | undefined {
         if (options.requireVoiceChannel && !voiceChannel) {
             return {player, voiceChannel: undefined, response: CommandResponse.error('You\'re not in a voice channel')};
         }
-
-        if (options.requireSameVoiceChannel) {
-            if (!voiceChannel) {
-                return {
-                    player,
-                    voiceChannel: undefined,
-                    response: CommandResponse.error('You\'re not in a voice channel')
-                };
-            }
-            if (player && voiceChannel.id !== player.voiceId) {
-                return {
-                    player,
-                    voiceChannel,
-                    response: CommandResponse.error('You\'re not in the same voice channel as the bot')
-                };
-            }
-        }
-
-        if (options.requireQueue && !player?.queue.length) {
-            return {player, voiceChannel, response: CommandResponse.error('There\'s no music in the queue')};
-        }
-
-        if (options.requireCurrentTrack && !player?.queue.current) {
-            return {player, voiceChannel, response: CommandResponse.error('There\'s no music playing')};
-        }
-
-        return {player, voiceChannel};
+        return undefined;
     }
+
+    private checkSameVoiceChannel(voiceChannel: VoiceBasedChannel | undefined, player: KazagumoPlayer | undefined, options: MusicCommandGuardOptions): MusicCommandGuardResult | undefined {
+        if (!options.requireSameVoiceChannel) return undefined;
+
+        if (!voiceChannel) {
+            return {
+                player,
+                voiceChannel: undefined,
+                response: CommandResponse.error('You\'re not in a voice channel')
+            };
+        }
+
+        if (player && voiceChannel.id !== player.voiceId) {
+            return {
+                player,
+                voiceChannel,
+                response: CommandResponse.error('You\'re not in the same voice channel as the bot')
+            };
+        }
+
+        return undefined;
+    }
+
+    private checkQueueRequired(player: KazagumoPlayer | undefined, options: MusicCommandGuardOptions): MusicCommandGuardResult | undefined {
+        if (options.requireQueue && !player?.queue.length) {
+            return {player, voiceChannel: undefined, response: CommandResponse.error('There\'s no music in the queue')};
+        }
+        return undefined;
+    }
+
+    private checkCurrentTrackRequired(player: KazagumoPlayer | undefined, options: MusicCommandGuardOptions): MusicCommandGuardResult | undefined {
+        if (options.requireCurrentTrack && !player?.queue.current) {
+            return {player, voiceChannel: undefined, response: CommandResponse.error('There\'s no music playing')};
+        }
+        return undefined;
+    }
+
 }
