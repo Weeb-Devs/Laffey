@@ -1,0 +1,20 @@
+version: '3.8'
+
+# Edit config.json with your settings
+# docker-compose up -d
+
+services:
+  laffey:
+    image: ghcr.io/weeb-devs/laffey:latest
+    container_name: laffey-bot
+    restart: unless-stopped
+    volumes:
+      # Mount config file (read-only)
+      - ./config.json:/app/config.json:ro
+      # Mount database volume for persistence
+      - laffey-db:/app/data
+    environment:
+      NODE_ENV: production
+
+volumes:
+  laffey-db:

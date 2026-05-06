@@ -1,0 +1,15 @@
+version: '3.8'
+
+# Edit config.json with PostgreSQL connection details
+# docker-compose -f docker-compose.postgres.yml up -d
+
+services:
+  laffey:
+    image: ghcr.io/weeb-devs/laffey:latest
+    container_name: laffey-bot
+    restart: unless-stopped
+    volumes:
+      # Mount config file (read-only)
+      - ./config.json:/app/config.json:ro
+    environment:
+      NODE_ENV: production
