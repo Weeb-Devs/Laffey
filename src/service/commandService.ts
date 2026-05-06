@@ -61,7 +61,7 @@ export class CommandService {
                 Routes.applicationGuildCommands(ConfigHandler.clientId, ConfigHandler.registerSlashCommandGuildId) :
                 Routes.applicationCommands(ConfigHandler.clientId);
             const response = await this.rest.put(route, {body: this.commands.values().toArray().map(x => x.build())});
-            if (!!response) Logger.log(`Registered ${this.commands.values().toArray().length} slash commands`, "Command");
+            if (response) Logger.log(`Registered ${this.commands.values().toArray().length} slash commands`, "Command");
             else Logger.error("Failed to register slash commands", "Command");
         }
     }
