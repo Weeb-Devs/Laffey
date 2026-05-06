@@ -1,0 +1,159 @@
+server: # REST and WS server
+  port: 3490
+  address: 0.0.0.0
+  http2:
+    enabled: false # Whether to enable HTTP/2 support
+plugins:
+  youtube:
+    enabled: false
+    allowSearch: true
+    allowDirectVideoIds: true
+    allowDirectPlaylistIds: true
+    clients:
+      - TVHTML5_SIMPLY
+      - WEB
+      - MWEB
+      - WEBEMBEDDED
+    oauth:
+      enabled: true
+      refreshToken: "REFRESH_TOKEN"
+  lavasrc:
+    providers: # Custom providers for track loading. This is the default
+      # - "dzisrc:%ISRC%" # Deezer ISRC provider
+      # - "dzsearch:%QUERY%" # Deezer search provider
+      - "ytsearch:\"%ISRC%\"" # Will be ignored if track does not have an ISRC. See https://en.wikipedia.org/wiki/International_Standard_Recording_Code
+      - "ytsearch:%QUERY%" # Will be used if track has no ISRC or no track could be found for the ISRC
+      #  you can add multiple other fallback sources here
+    sources:
+      spotify: true # Enable Spotify source
+      applemusic: false # Enable Apple Music source
+      deezer: true # Enable Deezer source
+      yandexmusic: false # Enable Yandex Music source
+      flowerytts: false # Enable Flowery TTS source
+      youtube: true # Enable YouTube search source (https://github.com/topi314/LavaSearch)
+      vkmusic: false # Enable Vk Music source
+      tidal: false # Enable Tidal source
+      qobuz: false # Enabled qobuz source
+      ytdlp: true # Enable yt-dlp source
+      jiosaavn: false # Enable JioSaavn source
+    lyrics-sources:
+      spotify: false
+      deezer: false
+      youtube: false
+      yandexmusic: false
+      vkmusic: false
+      lrcLib: false
+    spotify:
+      clientId: "YOUR_CLIENT_ID"
+      clientSecret: "YOUR_CLIENT_SECRET"
+      spDc: "YOUR_SP_DC"
+      countryCode: "US"
+      playlistLoadLimit: 6
+      albumLoadLimit: 6
+    applemusic:
+      countryCode: "US"
+      mediaAPIToken: "your apple music api token"
+      keyID: "your key id"
+      teamID: "your team id"
+      musicKitKey: |
+        -----BEGIN PRIVATE KEY-----
+        your key
+        -----END PRIVATE KEY-----
+      playlistLoadLimit: 6
+      albumLoadLimit: 6
+    deezer:
+      masterDecryptionKey: "YOUR_MASTER_DECRYPTION_KEY"
+      arl: "YOUR_ARL"
+      formats: [ "FLAC", "MP3_320", "MP3_256", "MP3_128", "MP3_64", "AAC_64" ]
+    yandexmusic:
+      accessToken: "your access token"
+      playlistLoadLimit: 1
+      albumLoadLimit: 1
+      artistLoadLimit: 1
+    flowerytts:
+      voice: "default voice"
+      translate: false
+      silence: 0
+      speed: 1.0
+      audioFormat: "mp3"
+    youtube:
+      countryCode: "US" # the country code you want to use for searching & lyrics. See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+      language: "en"
+    ytdlp:
+      path: "FULL_PATH_TO_YTDL" # the path to the yt-dlp executable.
+      searchLimit: 10
+lavalink:
+  plugins:
+    - dependency: "com.github.topi314.lavasrc:lavasrc-plugin:4.8.1"
+      repository: "https://maven.lavalink.dev/releases"
+      snapshot: false
+  #    - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.0"
+  #      snapshot: false
+  server:
+    password: "securepassword"
+    sources:
+      youtube: false
+      bandcamp: true
+      soundcloud: true
+      twitch: true
+      vimeo: true
+      nico: true
+      http: true
+      local: false
+    filters:
+      volume: true
+      equalizer: true
+      karaoke: true
+      timescale: true
+      tremolo: true
+      vibrato: true
+      distortion: true
+      rotation: true
+      channelMix: true
+      lowPass: true
+    nonAllocatingFrameBuffer: false # Setting to true reduces the number of allocations made by each player at the expense of frame rebuilding (e.g. non-instantaneous volume changes)
+    bufferDurationMs: 400 # The duration of the NAS buffer. Higher values fare better against longer GC pauses. Duration <= 0 to disable JDA-NAS. Minimum of 40ms, lower values may introduce pauses.
+    frameBufferDurationMs: 5000 # How many milliseconds of audio to keep buffered
+    opusEncodingQuality: 10 # Opus encoder quality. Valid values range from 0 to 10, where 10 is best quality but is the most expensive on the CPU.
+    resamplingQuality: LOW # Quality of resampling operations. Valid values are LOW, MEDIUM and HIGH, where HIGH uses the most CPU.
+    trackStuckThresholdMs: 10000 # The threshold for how long a track can be stuck. A track is stuck if does not return any audio data.
+    useSeekGhosting: true # Seek ghosting is the effect where whilst a seek is in progress, the audio buffer is read from until empty, or until seek is ready.
+    youtubePlaylistLoadLimit: 6 # Number of pages at 100 each
+    playerUpdateInterval: 5 # How frequently to send player updates to clients, in seconds
+    youtubeSearchEnabled: true
+    soundcloudSearchEnabled: true
+    gc-warnings: true
+metrics:
+  prometheus:
+    enabled: false
+    endpoint: /metrics
+
+sentry:
+  dsn: ""
+  environment: ""
+#  tags:
+#    some_key: some_value
+#    another_key: another_value
+
+logging:
+  file:
+    path: ./logs/
+
+  level:
+    root: INFO
+    lavalink: INFO
+    dev.lavalink.youtube.http.YoutubeOauth2Handler: INFO
+
+  request:
+    enabled: true
+    includeClientInfo: true
+    includeHeaders: false
+    includeQueryString: true
+    includePayload: true
+    maxPayloadLength: 10000
+
+
+  logback:
+    rollingpolicy:
+      max-file-size: 1GB
+      max-history: 30

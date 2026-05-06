@@ -1,53 +1,62 @@
 # Lavalink Installation
-### Here, i will give you tutorial how to set up lavalink server on localhost or VPS. I'll do it on localhost, most of the steps are same for VPS.
+
+### Here, i will give you tutorial how to set up lavalink server on your pc or VPS. I'll do it on localhost, the steps are the same for VPS.
 
 ## Step by Step
-1. Go to [Lavalink's Github](https://github.com/freyacodes/Lavalink) and change the branch into dev
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/GxAzK7.png">   
-<br>
-2. Scroll down and click highlighted ` the CI server ` text.
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/ABntLg.png">   
-<br>
-3. If you're asked to login, just search `login by guest` button and click it.
-4. Go to lavalink path to see all available branch
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/Ufrbc8.png">   
-<br>
-5. Click on `refs/heads/dev` in build  
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/pwei28.png">   
-<br>
-6. Search for the latest build.  
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/yhpgiZ.png">   
-<br>
-7. Click on artifacts  
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/ujVzw8.png">   
-<br>
-8. Click on `Lavalink.jar` file and your download will start automatically  
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/1s0H8A.png">   
-<br>
-9. Now, create folder and insert `Lavalink.jar` inside the folder  
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/6ALMEF.png">   
-<br>
-10. Create a file with `application.yml` by right click, new, and text document, go here to copy the configuration [application.yml](https://github.com/freyacodes/Lavalink/blob/master/LavalinkServer/application.yml.example), and paste it on `application.yml` that you just created. If you don't have [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) like Visual Studio Code, you might can't open `application.yml` because no apps support it. You can download the `application.yml.example` that is in the link that i gave you, and then rename it from `application.yml.example` to `application.yml` and it will look like this  
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/WCQNSY.png">   
-<br>
-11. Now open your file into terminal, by typing `cd "path to lavalink's file with yml"` in command prompt or your lovely CMD, type `java -jar Lavalink.jar` and boom, lavalink is now started on `localhost` with `2333` port and `REMOVED` password. If you're using VPS, your lavalink will start in your domain or IP with the same port and password  
-<img align="center" width="40%" height="40%" src="https://takiyo.is-ne.at/hxHEsp.png">   
-<br>
-<img align="center" width="100%" height="100%" src="https://takiyo.is-ne.at/4PprZZ.jpeg">   
-<br>
-12. Now, your lavalink server started and you can connect your bot to the server with available [Client](https://github.com/freyacodes/Lavalink#client-libraries). Here's the example node data to connect it with [Laffey](https://github.com/Weeb-Devs/Laffey).
-```
-       nodes: [
-            {
-                identifier: 'QT Lavalink',
-                host: 'localhost',
-                password: 'REMOVED',
-                port: 2333,
-                retryDelay: 1000,
-                retryAmount: 7,
-            },
-        ],
-```
-<img align="center" width="80%" height="80%" src="https://takiyo.is-ne.at/05QoOE.png">  
+
+1. Download lavalink.jar through [Lavalink's GitHub](https://github.com/lavalink-devs/Lavalink/releases)
+   ![chrome_EHe3AUH6Lk.png](images/chrome_EHe3AUH6Lk.png)
+   <br>
+2. Move it to an empty folder
+   ![explorer_oPjczv82Cv.png](images/explorer_oPjczv82Cv.png)
+   <br>
+3. Create a folder named `plugins` within the folder that you just created
+   ![explorer_mWoGBJE8or.png](images/explorer_mWoGBJE8or.png)
+4. Download [application.yml](examples/application.yml) and
+   move the `application.yml` to the lavalink folder    
+   ![explorer_T8Ig7RHLDE.png](images/explorer_T8Ig7RHLDE.png)
+
+## Now you choose either 2 options:
+
+### a. Use lavasrc youtube (ytdl)
+
+This is the easiest option, as you don't need to modify clients and or refresh_token.
+
+1. Open `application.yml`, find `plugins: youtube: enabled` and set to `false`.
+2. On the same file, find `plugins: lavasrc: sources: youtube` and set to `true`.
+3. Download ytdl from https://github.com/yt-dlp/yt-dlp/releases, pick based on your OS and architecture. The most common
+   are windows: `yt-dlp.exe`, macos: `yt-dlp_macos`, linux: `yt-dlp_linux`
+4. Move the downloaded ytdl to the lavalink folder
+5. Get the full path of the ytdl file, e.g., windows:
+   ![explorer_tRN1tsrR55.png](images/explorer_tRN1tsrR55.png) `C:\Users\takiyo\Documents\projects\lavalink\yt-dlp.exe`  
+   linux:
+   ![WindowsTerminal_0KftvG8Co5.png](images/WindowsTerminal_0KftvG8Co5.png) `/home/takiyo/lavalink/yt-dlp_linux`
+6. On `application.yml`, replace `FULL_PATH_TO_YTDL` on `plugins: lavasrc: ytdlp: path` to the full path that you just
+   got
+7. Run the lavalink server with `java -jar Lavalink.jar`
+
+### b. Use youtube-source plugin
+
+1. Go to [YouTube Source's GitHub](https://github.com/lavalink-devs/youtube-source/releases) and download the
+   `youtube-plugin-<VERSION>.jar`
+   <br>
+2. Move the downloaded `youtube-plugin-<VERSION>.jar` to the `plugins` folder that you just created  
+   ![explorer_kApHJtQIqt.png](images/explorer_kApHJtQIqt.png)   
+   <br>
+3. Open `application.yml`, find `plugins: youtube: enabled` and set to `true`.
+4. On the same file, find `plugins: lavasrc: sources: youtube` and set to `false`.
+5. You can keep the `plugins: youtube: clients` as is, but you might need to get the `refresh_token` by yourself.
+6. Run the lavalink server with `java -jar Lavalink.jar`
+
+## Last step
+
+As we need three fields for the bot to run, which are `name`, `url`, and `auth`, get each of them by:
+
+- `name` name it whatever you want
+- `url` the url where the lavalink server is running (`host:port`). Host is usually `localhost` or your VPS's IP
+  address, and the port is the one you set on `application.yml` (default: 3490). So that would be `localhost:3490` or
+  `your-vps-ip:3490`
+- `auth` the password you set on `application.yml` at `lavalink: server: password` (default: `securepassword`). Change
+  it if you plan to host lavalink publicly
 
 ### Found something wrong? Feel free to make a pull request or submitting an issue from this tutorial. Thank you
