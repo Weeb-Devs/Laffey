@@ -20,7 +20,7 @@ export default class nodes extends Command {
                     `Player         : ${node.stats?.players}`,
                     `Playing        : ${node.stats?.playingPlayers}`,
                     `Uptime         : ${node.stats?.uptime ? new Date(node.stats?.uptime).toISOString().slice(11, 19) : '00:00:00'}`,
-                    `Resevable Mem. : ${Math.round(node.stats?.memory.reservable || 0 / 1024 / 1024)}mb`,
+                    `Resevable Mem. : ${Math.round((node.stats?.memory.reservable || 0) / 1024 / 1024)}mb`,
                     `Used Memory    : ${Math.round((node.stats?.memory.used || 0) / 1024 / 1024)}mb`,
                     `Free Memory    : ${Math.round((node.stats?.memory.free || 0) / 1024 / 1024)}mb`,
                     `Allocated Mem. : ${Math.round((node.stats?.memory.allocated || 0) / 1024 / 1024)}mb`,
