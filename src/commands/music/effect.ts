@@ -2,7 +2,6 @@ import {Command} from "../Command.js";
 import {SlashCommandBooleanOption, SlashCommandNumberOption, SlashCommandSubcommandBuilder} from "@discordjs/builders";
 import type {InteractionAdapter} from "../../adapter/InteractionAdapter.js";
 import {CommandResponse} from "../commandResponse.js";
-import {type GuildMember} from "discord.js";
 import type {KazagumoPlayer} from "kazagumo";
 import {EmbedBuilder} from "../../builder/embedBuilder.js";
 
@@ -78,114 +77,134 @@ export default class effect extends Command {
         const value = ctx.getInteger("value", 1);
         const state = ctx.getBoolean("state", 1);
 
+        return this.handleSubCommand(player, subCommand, value, state);
+    }
+
+    private async handleSubCommand(
+        player: KazagumoPlayer,
+        subCommand: string,
+        value: number | undefined,
+        state: boolean | undefined
+    ): Promise<CommandResponse> {
         const currentFilterState = this.checkFilterState(player, subCommand);
         const targetState = state === undefined ? !currentFilterState : state;
 
         switch (subCommand) {
-            case "reset": {
-                if (["bassboost", "nightcore", "8d", "vaporwave", "distort", "karaoke"].every(f => !this.checkFilterState(player, f)) && !player.shoukaku.filters.timescale)
-                    return CommandResponse.error('All filters are already reset');
-                await player.shoukaku.clearFilters();
-                return CommandResponse.successText('Reset all filters');
-            }
-
-            case "bassboost": {
-                if (value && (value < 0 || value > 100)) return CommandResponse.error('Invalid value for bass boost. Must be between 0-100');
-                const max = 5;
-                const gain = (value || 0) / 100 * max;
-                if (gain === player.shoukaku.filters.equalizer?.[0]?.gain) return CommandResponse.error(`Bass boost is already set to ${value}%`);
-
-                player.shoukaku.filters.equalizer = new Array(2).fill(null).map((_, i) => ({band: i, gain}));
-                await this.applyFilters(player);
-                return CommandResponse.successText(gain ? `Set bass boost to ${value}%` : 'Disabled bass boost');
-            }
-
-            case "nightcore": {
-                if (targetState === currentFilterState) return CommandResponse.error(`Nightcore is already ${targetState ? 'enabled' : 'disabled'}`);
-                player.shoukaku.filters.timescale = targetState ? this.nightCoreTimescale : null;
-                await this.applyFilters(player);
-                return CommandResponse.successText(`Nightcore is now ${targetState ? 'enabled' : 'disabled'}`);
-            }
-
-            case "8d": {
-                if (targetState === currentFilterState) return CommandResponse.error(`8d mode is already ${targetState ? 'enabled' : 'disabled'}`);
-                player.shoukaku.filters.rotation = targetState ? this.eightDimensionalRotation : null;
-                await this.applyFilters(player);
-                return CommandResponse.successText(`8d mode is now ${targetState ? 'enabled' : 'disabled'}`);
-            }
-
-            case "vaporwave": {
-                if (targetState === currentFilterState) return CommandResponse.error(`vaporwave mode is already ${targetState ? 'enabled' : 'disabled'}`);
-                player.shoukaku.filters.timescale = targetState ? this.vaporWaveTimescale : null;
-                await this.applyFilters(player);
-                return CommandResponse.successText(`Vaporwave is now ${targetState ? 'enabled' : 'disabled'}`);
-            }
-
-            case "distort": {
-                if (targetState === currentFilterState) return CommandResponse.error(`distort mode is already ${targetState ? 'enabled' : 'disabled'}`);
-                player.shoukaku.filters.distortion = targetState ? this.distortion : null;
-                await this.applyFilters(player);
-                return CommandResponse.successText(`Distortion is now ${targetState ? 'enabled' : 'disabled'}`);
-            }
-
-            case "karaoke": {
-                if (targetState === currentFilterState) return CommandResponse.error(`karaoke mode is already ${targetState ? 'enabled' : 'disabled'}`);
-                player.shoukaku.filters.karaoke = targetState ? this.karaoke : null;
-                await this.applyFilters(player);
-                return CommandResponse.successText(`Karaoke is now ${targetState ? 'enabled' : 'disabled'}`);
-            }
-
-            case "speed": {
-                if (value && (value < 0.5 || value > 2)) return CommandResponse.error('Invalid value for speed. Must be between 0.5-2');
-                if (value && value === player.shoukaku.filters.timescale?.speed) return CommandResponse.error(`Speed is already set to ${value}x`);
-
-                player.shoukaku.filters.timescale = player.shoukaku.filters.timescale ?
-                    {...player.shoukaku.filters.timescale, speed: value || 1} : value ? {speed: value} : null;
-                await this.applyFilters(player);
-                return CommandResponse.successText(`Set speed to ${value}x`);
-            }
-
-            case "pitch": {
-                if (value && (value < 0.5 || value > 3)) return CommandResponse.error('Invalid value for pitch. Must be between 0.5-3');
-                if (value && value === player.shoukaku.filters.timescale?.pitch) return CommandResponse.error(`Pitch is already set to ${value}x`);
-
-                player.shoukaku.filters.timescale = player.shoukaku.filters.timescale ?
-                    {...player.shoukaku.filters.timescale, pitch: value || 1} : value ? {pitch: value} : null;
-                await this.applyFilters(player);
-                return CommandResponse.successText(`Set pitch to ${value}x`);
-            }
-
-            case "rate": {
-                if (value && (value < 0.5 || value > 3)) return CommandResponse.error('Invalid value for rate. Must be between 0.5-3');
-                if (value && value === player.shoukaku.filters.timescale?.rate) return CommandResponse.error(`Rate is already set to ${value}x`);
-
-                player.shoukaku.filters.timescale = player.shoukaku.filters.timescale ?
-                    {...player.shoukaku.filters.timescale, rate: value || 1} : value ? {rate: value} : null;
-                await this.applyFilters(player);
-                return CommandResponse.successText(`Set pitch to ${value}x`);
-            }
-
-            case "list": {
-                const filters = player.filters;
-                const embed = new EmbedBuilder()
-                    .setDescription([
-                        `**bassboost:** ${filters.equalizer?.some(e => e.gain > 0) ? 'enabled' : 'disabled'}`,
-                        `**vaporwave:** ${filters.timescale?.speed === this.vaporWaveTimescale.speed && filters.timescale?.pitch === this.vaporWaveTimescale.pitch ? 'enabled' : 'disabled'}`,
-                        `**nightcore:** ${filters.timescale?.speed === this.nightCoreTimescale.speed && filters.timescale?.pitch === this.nightCoreTimescale.pitch ? 'enabled' : 'disabled'}`,
-                        `**8d:** ${filters.rotation?.rotationHz === this.eightDimensionalRotation.rotationHz ? 'enabled' : 'disabled'}`,
-                        `**distortion:** ${filters.distortion ? 'enabled' : 'disabled'}`,
-                        `**karaoke:** ${filters.karaoke ? 'enabled' : 'disabled'}`,
-                        `**speed:** ${filters.timescale?.speed ?? 1}`,
-                        `**pitch:** ${filters.timescale?.pitch ?? 1}`,
-                        `**rate:** ${filters.timescale?.rate ?? 1}`,
-                    ].join("\n"));
-                return CommandResponse.success(embed);
-            }
-
+            case "reset":
+                return this.handleReset(player);
+            case "bassboost":
+                return this.handleBassboost(player, value);
+            case "nightcore":
+                return this.handleNightcore(player, currentFilterState, targetState);
+            case "8d":
+                return this.handleEightDimensional(player, currentFilterState, targetState);
+            case "vaporwave":
+                return this.handleVaporwave(player, currentFilterState, targetState);
+            case "distort":
+                return this.handleDistort(player, currentFilterState, targetState);
+            case "karaoke":
+                return this.handleKaraoke(player, currentFilterState, targetState);
+            case "speed":
+                return this.handleTimescaleValue(player, "speed", value, 0.5, 2, "Speed", "speed");
+            case "pitch":
+                return this.handleTimescaleValue(player, "pitch", value, 0.5, 3, "Pitch", "pitch");
+            case "rate":
+                return this.handleTimescaleValue(player, "rate", value, 0.5, 3, "Rate", "pitch");
+            case "list":
+                return this.handleList(player);
             default:
                 return CommandResponse.error('Invalid subcommand');
         }
     }
+
+    private async handleReset(player: KazagumoPlayer): Promise<CommandResponse> {
+        if (["bassboost", "nightcore", "8d", "vaporwave", "distort", "karaoke"].every(f => !this.checkFilterState(player, f)) && !player.shoukaku.filters.timescale)
+            return CommandResponse.error('All filters are already reset');
+        await player.shoukaku.clearFilters();
+        return CommandResponse.successText('Reset all filters');
+    }
+
+    private async handleBassboost(player: KazagumoPlayer, value: number | undefined): Promise<CommandResponse> {
+        if (value && (value < 0 || value > 100)) return CommandResponse.error('Invalid value for bass boost. Must be between 0-100');
+        const max = 5;
+        const gain = (value || 0) / 100 * max;
+        if (gain === player.shoukaku.filters.equalizer?.[0]?.gain) return CommandResponse.error(`Bass boost is already set to ${value}%`);
+
+        player.shoukaku.filters.equalizer = new Array(2).fill(null).map((_, i) => ({band: i, gain}));
+        await this.applyFilters(player);
+        return CommandResponse.successText(gain ? `Set bass boost to ${value}%` : 'Disabled bass boost');
+    }
+
+    private async handleNightcore(player: KazagumoPlayer, currentState: boolean, targetState: boolean): Promise<CommandResponse> {
+        if (targetState === currentState) return CommandResponse.error(`Nightcore is already ${targetState ? 'enabled' : 'disabled'}`);
+        player.shoukaku.filters.timescale = targetState ? this.nightCoreTimescale : null;
+        await this.applyFilters(player);
+        return CommandResponse.successText(`Nightcore is now ${targetState ? 'enabled' : 'disabled'}`);
+    }
+
+    private async handleEightDimensional(player: KazagumoPlayer, currentState: boolean, targetState: boolean): Promise<CommandResponse> {
+        if (targetState === currentState) return CommandResponse.error(`8d mode is already ${targetState ? 'enabled' : 'disabled'}`);
+        player.shoukaku.filters.rotation = targetState ? this.eightDimensionalRotation : null;
+        await this.applyFilters(player);
+        return CommandResponse.successText(`8d mode is now ${targetState ? 'enabled' : 'disabled'}`);
+    }
+
+    private async handleVaporwave(player: KazagumoPlayer, currentState: boolean, targetState: boolean): Promise<CommandResponse> {
+        if (targetState === currentState) return CommandResponse.error(`vaporwave mode is already ${targetState ? 'enabled' : 'disabled'}`);
+        player.shoukaku.filters.timescale = targetState ? this.vaporWaveTimescale : null;
+        await this.applyFilters(player);
+        return CommandResponse.successText(`Vaporwave is now ${targetState ? 'enabled' : 'disabled'}`);
+    }
+
+    private async handleDistort(player: KazagumoPlayer, currentState: boolean, targetState: boolean): Promise<CommandResponse> {
+        if (targetState === currentState) return CommandResponse.error(`distort mode is already ${targetState ? 'enabled' : 'disabled'}`);
+        player.shoukaku.filters.distortion = targetState ? this.distortion : null;
+        await this.applyFilters(player);
+        return CommandResponse.successText(`Distortion is now ${targetState ? 'enabled' : 'disabled'}`);
+    }
+
+    private async handleKaraoke(player: KazagumoPlayer, currentState: boolean, targetState: boolean): Promise<CommandResponse> {
+        if (targetState === currentState) return CommandResponse.error(`karaoke mode is already ${targetState ? 'enabled' : 'disabled'}`);
+        player.shoukaku.filters.karaoke = targetState ? this.karaoke : null;
+        await this.applyFilters(player);
+        return CommandResponse.successText(`Karaoke is now ${targetState ? 'enabled' : 'disabled'}`);
+    }
+
+    private async handleTimescaleValue(
+        player: KazagumoPlayer,
+        key: "speed" | "pitch" | "rate",
+        value: number | undefined,
+        min: number,
+        max: number,
+        label: string,
+        successLabel: string
+    ): Promise<CommandResponse> {
+        if (value && (value < min || value > max)) return CommandResponse.error(`Invalid value for ${key}. Must be between ${min}-${max}`);
+        if (value && value === player.shoukaku.filters.timescale?.[key]) return CommandResponse.error(`${label} is already set to ${value}x`);
+
+        player.shoukaku.filters.timescale = player.shoukaku.filters.timescale ?
+            {...player.shoukaku.filters.timescale, [key]: value || 1} : value ? {[key]: value} : null;
+        await this.applyFilters(player);
+        return CommandResponse.successText(`Set ${successLabel} to ${value}x`);
+    }
+
+    private handleList(player: KazagumoPlayer): CommandResponse {
+        const filters = player.filters;
+        const embed = new EmbedBuilder()
+            .setDescription([
+                `**bassboost:** ${filters.equalizer?.some(e => e.gain > 0) ? 'enabled' : 'disabled'}`,
+                `**vaporwave:** ${filters.timescale?.speed === this.vaporWaveTimescale.speed && filters.timescale?.pitch === this.vaporWaveTimescale.pitch ? 'enabled' : 'disabled'}`,
+                `**nightcore:** ${filters.timescale?.speed === this.nightCoreTimescale.speed && filters.timescale?.pitch === this.nightCoreTimescale.pitch ? 'enabled' : 'disabled'}`,
+                `**8d:** ${filters.rotation?.rotationHz === this.eightDimensionalRotation.rotationHz ? 'enabled' : 'disabled'}`,
+                `**distortion:** ${filters.distortion ? 'enabled' : 'disabled'}`,
+                `**karaoke:** ${filters.karaoke ? 'enabled' : 'disabled'}`,
+                `**speed:** ${filters.timescale?.speed ?? 1}`,
+                `**pitch:** ${filters.timescale?.pitch ?? 1}`,
+                `**rate:** ${filters.timescale?.rate ?? 1}`,
+            ].join("\n"));
+        return CommandResponse.success(embed);
+    }
+
 
     private async applyFilters(player: KazagumoPlayer) {
         return player.shoukaku.setFilters(player.filters);
