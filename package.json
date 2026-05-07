@@ -1,6 +1,6 @@
 {
   "name": "laffey",
-  "version": "3.0.0-dev",
+  "version": "3.0.0",
   "description": "Adorable shipgirl music bot that will spice up your guild",
   "main": "index.js",
   "type": "module",
