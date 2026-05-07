@@ -45,7 +45,7 @@ version: '3.8'
 
 services:
   laffey:
-    image: ghcr.io/weeb-devs/laffey:latest
+    image: ghcr.io/weeb-devs/laffey:main
     container_name: laffey-bot
     restart: unless-stopped
     volumes:
@@ -133,7 +133,7 @@ version: '3.8'
 
 services:
   laffey:
-    image: ghcr.io/weeb-devs/laffey:latest
+    image: ghcr.io/weeb-devs/laffey:main
     container_name: laffey-bot
     restart: unless-stopped
     volumes:
@@ -180,7 +180,7 @@ docker run -d \
   -e database.type="sqlite" \
   -e database.sqlite.path="/app/data/laffey.db" \
   -v laffey-db:/app/data \
-  ghcr.io/weeb-devs/laffey:latest
+  ghcr.io/weeb-devs/laffey:main
 ```
 
 ---
@@ -335,7 +335,7 @@ version: '3.8'
 
 services:
   laffey:
-    image: ghcr.io/weeb-devs/laffey:latest
+    image: ghcr.io/weeb-devs/laffey:main
     container_name: laffey-bot
     restart: unless-stopped
     volumes:
@@ -369,7 +369,7 @@ version: '3.8'
 
 services:
   laffey:
-    image: ghcr.io/weeb-devs/laffey:latest
+    image: ghcr.io/weeb-devs/laffey:main
     container_name: laffey-bot
     restart: unless-stopped
     volumes:
@@ -409,7 +409,7 @@ version: '3.8'
 
 services:
   laffey:
-    image: ghcr.io/weeb-devs/laffey:latest
+    image: ghcr.io/weeb-devs/laffey:main
     container_name: laffey-bot
     restart: unless-stopped
     volumes:

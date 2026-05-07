@@ -5,7 +5,7 @@ version: '3.8'
 
 services:
   laffey:
-    image: ghcr.io/weeb-devs/laffey:latest
+    image: ghcr.io/weeb-devs/laffey:main
     container_name: laffey-bot
     restart: unless-stopped
     volumes:
