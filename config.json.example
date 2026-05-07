@@ -1,23 +1,65 @@
 {
-  "TOKEN": "",
-  "PREFIX": "?",
-  "OWNERS": [""],
-  "MONGODB_URI": "",
-  "KSOFT_API_KEY": "",
-  "GENIUS_API_KEY": "",
-  "NODES": [
-    {
-      "HOST": "",
-      "PASSWORD": "",
-      "PORT": 80,
-      "IDENTIFIER": "",
-      "RETRY_AMOUNT": 3,
-      "RETRY_DELAY": 1000,
-      "SECURE": false
-    }
+  "client": {
+    "token": "",
+    "prefix": "!",
+    "id": "BOT-ID",
+    "statuses": [
+      "Status 1",
+      "Status 2",
+      "Status 3"
+    ]
+  },
+  "genius": {
+    "api_key": "GENIUS-API-KEY"
+  },
+  "slash": {
+    "guild_id": "GUILD-ID",
+    "register": true
+  },
+  "owners": [
+    "OWNER-ID-1",
+    "OWNER-ID-2"
   ],
-  "AUTO_RESUME_DELAY": 1500,
-  "LYRICS_ENGINE": "ksoft",
-  "DEBUG": true,
-  "LOG_USAGE": false
+  "database": {
+    "type": "sqlite",
+    "sqlite": {
+      "path": "./laffey.db"
+    },
+    "postgres": {
+      "host": "localhost",
+      "port": 8334,
+      "user": "USER",
+      "password": "PASSWORD",
+      "database": "DATABASE"
+    },
+    "mysql": {
+      "host": "localhost",
+      "port": 8334,
+      "user": "USER",
+      "password": "PASSWORD",
+      "database": "DATABASE"
+    }
+  },
+  "embed": {
+    "colors": {
+      "default": "#6b92f3",
+      "success": "#43b581",
+      "error": "#f87171",
+      "warning": "#fbbf24"
+    },
+    "footer": {
+      "text": "",
+      "icon_url": ""
+    }
+  },
+  "player": {
+    "embed_mode": "edit",
+    "nodes": [
+      {
+        "name": "NAME",
+        "url": "HOST:PORT",
+        "auth": "AUTH"
+      }
+    ]
+  }
 }

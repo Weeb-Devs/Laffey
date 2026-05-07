@@ -1,8 +1,10 @@
 /node_modules
 .vscode
 /config.json
-.github
+.git
 .idea
-/package-lock.json
 .env
 /laffey.iml
+test/
+dist/
+*.db

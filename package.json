@@ -1,12 +1,15 @@
 {
   "name": "laffey",
-  "version": "2.0.0-dev",
+  "version": "3.0.0-dev",
   "description": "Adorable shipgirl music bot that will spice up your guild",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "slash:register": "node src/modules/slashRegister.js"
+    "slash:register": "node src/modules/slashRegister.js",
+    "dev": "tsx index.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "Weeb-Devs",
@@ -24,22 +27,21 @@
   "homepage": "https://github.com/Weeb-Devs/Laffey#readme",
   "dependencies": {
     "@discordjs/builders": "^1.13.1",
-    "@discordjs/rest": "^0.4.1",
-    "@ksoft/api": "^3.1.9",
-    "better-erela.js-spotify": "^1.3.11",
+    "better-sqlite3": "^12.9.0",
     "chalk": "^4.1.2",
-    "cli-interact": "^0.1.9",
-    "colorthief": "^2.6.0",
-    "discord-api-types": "^0.38.38",
     "discord.js": "^14.25.1",
     "dotenv": "^17.2.3",
-    "erela.js": "^2.3.3",
-    "erela.js-deezer": "^1.0.7",
     "genius-lyrics": "^4.4.7",
-    "lyrics-finder": "^21.7.0",
-    "moment": "^2.30.1",
+    "kazagumo": "^3.4.3",
     "mongoose": "^9.1.5",
-    "shortid": "^2.2.17",
+    "mysql2": "^3.22.3",
+    "pg": "^8.20.0",
+    "sharp": "^0.34.5",
     "string-progressbar": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/pg": "^8.20.0",
+    "tsc": "^2.0.4"
   }
 }
